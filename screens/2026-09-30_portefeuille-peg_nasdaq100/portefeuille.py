@@ -13,8 +13,12 @@ Sorties :
   portefeuille.csv        lignes du portefeuille retenu
   comparaison.csv         portefeuille vs Nasdaq 100 reconstitué
   stress_tests.csv        scénarios de rupture
+  sensibilites.csv        variantes du scénario de base
+  trios.csv               tous les trios à poids égaux parmi les meilleurs candidats
+  monzo.csv               effet d'un accord Nu-Monzo selon le montage
 """
 import csv
+import itertools
 import os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -44,6 +48,30 @@ PORTEFEUILLE_8 = {
 
 THEMES_IA = ("IA calcul", "IA fonderie et equipement", "IA memoire et stockage",
              "IA reseau et optique", "IA energie et refroidissement")
+
+# Candidats examinés à la demande, ajoutés aux trios même hors du top 8.
+CANDIDATS_EN_PLUS = ("ADYEY",)
+
+# Accord Nu-Monzo (presse du 26 au 29/09/2026 : 8 à 10 Md£, numéraire et actions).
+MONZO_GBPUSD = 1.33          # 10 Md£ ≈ 13,3 Md$
+MONZO_RN_FY26 = 126.0        # M£ : bénéfice avant impôt ajusté FY26 (172,6 M£) après ~27 % d'impôt
+MONZO_CROISSANCE_RN = 0.30   # hyp. : croissance annuelle du résultat net de Monzo
+MONZO_COUT_NUMERAIRE = 0.04  # hyp. : coût après impôt du numéraire (dette levée ou trésorerie)
+# FY26 (avril 2025-mars 2026) est centré sur le 01/10/2025 : l'année 2027 est 1,75 an plus
+# loin, le BPA des 12 mois suivant le 30/09/2030 est 5,5 ans plus loin.
+MONZO_ANS_2027, MONZO_ANS_2030 = 1.75, 5.5
+MONZO_CAS = [
+    # (libellé, valorisation en Md£, part payée en numéraire, part du capital acquise,
+    #  plafond de P/E de sortie imposé ou None). Un P/E de 13 (médiane 1 an de Nu : 13,75)
+    #  traduit la décote d'un groupe moins rentable après l'achat.
+    ("Pas d'accord", 0.0, 0.0, 0.0, None),
+    ("Participation de 15 % (valorisation 10 Md£)", 10.0, 1.0, 0.15, None),
+    ("Rachat à 8 Md£, 75 % en numéraire", 8.0, 0.75, 1.0, None),
+    ("Rachat à 9 Md£, moitié numéraire, moitié actions", 9.0, 0.5, 1.0, None),
+    ("Rachat à 10 Md£, 75 % en actions", 10.0, 0.25, 1.0, None),
+    ("Rachat à 10 Md£, tout en actions", 10.0, 0.0, 1.0, None),
+    ("Tout en actions et P/E de sortie plafonné à 13", 10.0, 0.0, 1.0, 13.0),
+]
 
 
 def fnum(x):
@@ -111,10 +139,11 @@ def pe_sortie(pe_now, g, scen, cap, constant=False):
     return min(pe, max(pe_now, cap))
 
 
-def rendements(r, h, constant=False, dg=0.0, ratio_base=None):
+def rendements(r, h, constant=False, dg=0.0, ratio_base=None, facteur_bpa=1.0):
     """Rendement total sur l'horizon, par scénario (dividendes réinvestis).
     constant : multiples inchangés (hors bear) ; dg : choc sur la croissance (pts) ;
-    ratio_base : BPA 2030 / BPA NTM imposé pour un cyclique en base."""
+    ratio_base : BPA 2030 / BPA NTM imposé pour un cyclique en base ;
+    facteur_bpa : BPA 2030 multiplié par ce facteur (dilution d'une acquisition)."""
     out = {}
     div = (fnum(r["div_yield"]) or 0.0) / 100
     pe_now = r["pe_ntm"]
@@ -130,7 +159,7 @@ def rendements(r, h, constant=False, dg=0.0, ratio_base=None):
             cap = fnum(h["pe_plafond"]) or 35.0
             pe = pe_sortie(pe_now, g, scen, cap, constant)
             mult = (1 + g / 100) ** HORIZON * pe / pe_now
-        out[scen] = mult * (1 + div) ** HORIZON - 1
+        out[scen] = facteur_bpa * mult * (1 + div) ** HORIZON - 1
         out[f"pe_{scen}"] = pe
     out["esperance"] = sum(PROBAS[s] * out[s] for s in PROBAS)
     for k in ("bear", "base", "bull", "esperance"):
@@ -176,11 +205,38 @@ def agregats(poids, rows):
     return res
 
 
-def terminal(poids, rows, choix):
-    """Valeur terminale avec un scénario imposé par titre (stress tests)."""
+def terminal(poids, rendement):
+    """TCAM du portefeuille quand rendement(t) donne le rendement total de chaque titre."""
     tot = sum(poids.values())
-    tv = sum(p / tot * (1 + rows[t]["scen"][choix(t)]) for t, p in poids.items())
+    tv = sum(p / tot * (1 + rendement(t)) for t, p in poids.items())
     return tv ** (1 / HORIZON) - 1
+
+
+def monzo(r, h):
+    """Effet d'un accord Monzo sur le BPA de Nu (2027 et horizon 2030) et sur ses rendements."""
+    prix = fnum(r["prix"])
+    n0 = fnum(r["cap_musd"]) / prix  # millions d'actions
+    rn27 = r["cy27"] * n0
+    bpa30 = r["eps_ntm"] * (1 + fnum(h["g_base"]) / 100) ** HORIZON
+    rn30 = bpa30 * n0
+    m27 = MONZO_RN_FY26 * MONZO_GBPUSD * (1 + MONZO_CROISSANCE_RN) ** MONZO_ANS_2027
+    m30 = MONZO_RN_FY26 * MONZO_GBPUSD * (1 + MONZO_CROISSANCE_RN) ** MONZO_ANS_2030
+    cas = []
+    for nom, val, part_num, part_cap, pe_cap in MONZO_CAS:
+        prix_musd = val * 1000 * MONZO_GBPUSD * part_cap
+        numeraire = prix_musd * part_num
+        nouvelles = (prix_musd - numeraire) / prix
+        cout = numeraire * MONZO_COUT_NUMERAIRE
+        n1 = n0 + nouvelles
+        d27 = (rn27 + part_cap * m27 - cout) / n1 / r["cy27"] - 1
+        d30 = (rn30 + part_cap * m30 - cout) / n1 / bpa30 - 1
+        cas.append({"cas": nom, "valorisation_md_gbp": val, "part_numeraire": part_num,
+                    "part_capital": part_cap, "prix_md_usd": prix_musd / 1000,
+                    "actions_emises_m": nouvelles, "hausse_actions": nouvelles / n0,
+                    "bpa_2027_var": d27, "bpa_2030_var": d30, "pe_plafond": pe_cap,
+                    "scen": rendements(r, dict(h, pe_plafond=pe_cap) if pe_cap else h,
+                                       facteur_bpa=1 + d30)})
+    return cas
 
 
 def main():
@@ -255,38 +311,49 @@ def main():
     ndx_hm = agregats({t: p for t, p in poids_ndx.items() if t not in ("MU", "SNDK")}, rows)
     eq = agregats(PORTEFEUILLE_8, rows)
 
+    # ---------------- accord Nu-Monzo ----------------
+    cas_monzo = monzo(rows["NU"], hyp["NU"])
+    tout_actions = next(c for c in cas_monzo if c["cas"] == "Rachat à 10 Md£, tout en actions")
+    for c in cas_monzo:
+        c["ptf_tcam_esperance"] = terminal(
+            PORTEFEUILLE, lambda t: (c if t == "NU" else rows[t])["scen"]["esperance"])
+
     # ---------------- stress tests ----------------
     def ia(t):
         return rows[t]["theme"] in THEMES_IA
 
+    def scen(choix):
+        return lambda t: rows[t]["scen"][choix(t)]
+
+    def nu_dilue(s):
+        return lambda t: tout_actions["scen"][s] if t == "NU" else rows[t]["scen"]["base"]
+
     tests = [
         ("Krach du capex IA (valeurs IA en bear, le reste en base)",
-         lambda t: "bear" if ia(t) else "base"),
+         scen(lambda t: "bear" if ia(t) else "base")),
         ("Supercycle mémoire prolongé (MU/SNDK en bull, le reste en base)",
-         lambda t: "bull" if t in ("MU", "SNDK") else "base"),
-        ("Choc de crédit ou politique au Brésil (NU en bear)", lambda t: "bear" if t == "NU" else "base"),
-        ("Paix durable en Ukraine (RNMBY en bear)", lambda t: "bear" if t == "RNMBY" else "base"),
-        ("Broadcom perd un grand client XPU (AVGO en bear)", lambda t: "bear" if t == "AVGO" else "base"),
-        ("Double choc : NU et RNMBY en bear", lambda t: "bear" if t in ("NU", "RNMBY") else "base"),
-        ("Tout en base", lambda t: "base"),
+         scen(lambda t: "bull" if t in ("MU", "SNDK") else "base")),
+        ("Choc de crédit ou politique au Brésil (NU en bear)",
+         scen(lambda t: "bear" if t == "NU" else "base")),
+        ("Paix durable en Ukraine (RNMBY en bear)", scen(lambda t: "bear" if t == "RNMBY" else "base")),
+        ("Broadcom perd un grand client XPU (AVGO en bear)", scen(lambda t: "bear" if t == "AVGO" else "base")),
+        ("Double choc : NU et RNMBY en bear", scen(lambda t: "bear" if t in ("NU", "RNMBY") else "base")),
+        ("Nu rachète Monzo 10 Md£ tout en actions (NU en base, BPA dilué)", nu_dilue("base")),
+        ("Monzo tout en actions et choc Brésil (NU en bear, BPA dilué)", nu_dilue("bear")),
+        ("Tout en base", scen(lambda t: "base")),
     ]
-    stress = [(nom, terminal(PORTEFEUILLE, rows, f), terminal(poids_ndx, rows, f)) for nom, f in tests]
+    stress = [(nom, terminal(PORTEFEUILLE, f), terminal(poids_ndx, f)) for nom, f in tests]
 
     # ---------------- sensibilités (scénario de base) ----------------
-    def base_tcam(poids, fn):
-        tot = sum(poids.values())
-        tv = sum(p / tot * (1 + fn(t)) for t, p in poids.items())
-        return tv ** (1 / HORIZON) - 1
-
-    def variante(constant=False, dg_ptf=0.0, ratio_mem=None):
+    def variante(poids=PORTEFEUILLE, constant=False, dg_ptf=0.0, ratio_mem=None):
         def fn_for(in_ptf):
             def fn(t):
                 h = hyp[t]
-                dg = dg_ptf if (in_ptf and t in PORTEFEUILLE) else 0.0
+                dg = dg_ptf if (in_ptf and t in poids) else 0.0
                 rb = ratio_mem if t in ("MU", "SNDK") else None
                 return rendements(rows[t], h, constant, dg, rb)["base"]
             return fn
-        return base_tcam(PORTEFEUILLE, fn_for(True)), base_tcam(poids_ndx, fn_for(False))
+        return terminal(poids, fn_for(True)), terminal(poids_ndx, fn_for(False))
 
     sensib = [
         ("Base du modèle (convergence des PEG à mi-chemin)", *variante()),
@@ -297,6 +364,18 @@ def main():
         ("Pire combinaison : -5 pts, multiples constants, mémoire au pic",
          *variante(constant=True, dg_ptf=-5.0, ratio_mem=1.0)),
     ]
+
+    # ---------------- trios à poids égaux ----------------
+    candidats = classement[:8] + [t for t in CANDIDATS_EN_PLUS if t in elig and t not in classement[:8]]
+    trios = []
+    for combo in itertools.combinations(candidats, 3):
+        poids = {t: 1 / 3 for t in combo}
+        a = agregats(poids, rows)
+        a["pessimiste"] = variante(poids, constant=True, dg_ptf=-5.0, ratio_mem=1.0)[0]
+        a["nb_ia"] = sum(1 for t in combo if ia(t))
+        trios.append((combo, a))
+    trios.sort(key=lambda x: -x[1]["tcam_esperance"])
+    ndx_pess = variante(constant=True, dg_ptf=-5.0, ratio_mem=1.0)[1]
 
     # ---------------- sorties CSV ----------------
     cols = ["ticker", "nom", "theme", "prix", "cap_musd", "zacks_rank", "cy26", "cy27", "eps_ntm",
@@ -352,6 +431,37 @@ def main():
         for nom, a, b in sensib:
             wr.writerow([nom, round(a, 4), round(b, 4), round((a - b) * 100, 2)])
 
+    with open(os.path.join(HERE, "trios.csv"), "w", newline="", encoding="utf-8") as f:
+        wr = csv.writer(f)
+        wr.writerow(["trio", "nb_valeurs_ia", "pe_ntm", "g27", "peg_lt", "tcam_bear", "tcam_base",
+                     "tcam_bull", "tcam_esperance", "tcam_pessimiste"])
+        for combo, a in trios:
+            wr.writerow([" + ".join(combo), a["nb_ia"], round(a["pe_ntm"], 2), round(a["g27"], 1),
+                         round(a["peg_lt"], 2),
+                         *[round(a[k], 4) for k in ("tcam_bear", "tcam_base", "tcam_bull", "tcam_esperance",
+                                                    "pessimiste")]])
+        wr.writerow(["Nasdaq 100 reconstitué", "", round(ndx["pe_ntm"], 2), round(ndx["g27"], 1),
+                     round(ndx["peg_lt"], 2),
+                     *[round(ndx[k], 4) for k in ("tcam_bear", "tcam_base", "tcam_bull", "tcam_esperance")],
+                     round(ndx_pess, 4)])
+
+    with open(os.path.join(HERE, "monzo.csv"), "w", newline="", encoding="utf-8") as f:
+        wr = csv.writer(f)
+        wr.writerow(["cas", "valorisation_md_gbp", "part_numeraire", "part_capital", "pe_plafond_impose",
+                     "prix_md_usd", "actions_emises_m", "hausse_actions_pct", "bpa_2027_var_pct",
+                     "bpa_2030_var_pct", "nu_tcam_bear", "nu_tcam_base", "nu_tcam_bull",
+                     "nu_tcam_esperance", "nu_cours_2030_base", "ptf_tcam_esperance"])
+        prix_nu = fnum(rows["NU"]["prix"])
+        for c in cas_monzo:
+            s = c["scen"]
+            wr.writerow([c["cas"], c["valorisation_md_gbp"], c["part_numeraire"], c["part_capital"],
+                         c["pe_plafond"] or "",
+                         round(c["prix_md_usd"], 2), round(c["actions_emises_m"], 0),
+                         round(c["hausse_actions"] * 100, 1), round(c["bpa_2027_var"] * 100, 1),
+                         round(c["bpa_2030_var"] * 100, 1),
+                         *[round(s[k], 4) for k in ("tcam_bear", "tcam_base", "tcam_bull", "tcam_esperance")],
+                         round(prix_nu * (1 + s["base"]), 2), round(c["ptf_tcam_esperance"], 4)])
+
     # ---------------- affichage ----------------
     def pct(x):
         return f"{x * 100:6.1f}%" if x is not None else "   n.d."
@@ -399,6 +509,22 @@ def main():
     print("\nStress tests (TCAM 4 ans)")
     for nom, a, b in stress:
         print(f"  {nom:<66} ptf {a * 100:6.1f}%  ndx {b * 100:6.1f}%  écart {(a - b) * 100:+5.1f} pts")
+
+    print("\nAccord Nu-Monzo : effet sur le BPA de Nu et sur le portefeuille")
+    print("  cas                                                 actions  BPA 2027  BPA 2030  NU esp.  ptf esp.")
+    for c in cas_monzo:
+        print(f"  {c['cas']:<50} {c['hausse_actions'] * 100:+6.1f}%  {c['bpa_2027_var'] * 100:+7.1f}%"
+              f"  {c['bpa_2030_var'] * 100:+7.1f}%  {pct(c['scen']['tcam_esperance'])}  {pct(c['ptf_tcam_esperance'])}")
+
+    print("\nTrios à poids égaux (TCAM 4 ans ; pessimiste = -5 pts, multiples constants, mémoire au pic)")
+    print(f"  candidats : {', '.join(candidats)}")
+    for i, (combo, a) in enumerate(trios, 1):
+        if i <= 12 or any(t in CANDIDATS_EN_PLUS for t in combo):
+            print(f"  {i:>2}. {' + '.join(combo):<22} IA {a['nb_ia']}  esp. {pct(a['tcam_esperance'])}  "
+                  f"bear {pct(a['tcam_bear'])}  base {pct(a['tcam_base'])}  bull {pct(a['tcam_bull'])}  "
+                  f"pess. {pct(a['pessimiste'])}")
+    print(f"      Nasdaq 100 reconstitué        esp. {pct(ndx['tcam_esperance'])}  bear {pct(ndx['tcam_bear'])}  "
+          f"base {pct(ndx['tcam_base'])}  bull {pct(ndx['tcam_bull'])}  pess. {pct(ndx_pess)}")
 
 
 if __name__ == "__main__":

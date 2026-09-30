@@ -41,3 +41,4 @@ CSCO,Cisco,Autres Nasdaq 100,7,106.94,421620,2,4.33,5.11,5.58,,1.57,1.00,38.83,1
 AMGN,Amgen,Autres Nasdaq 100,12,423.64,229033,3,21.84,22.94,24.42,,2.38,0.43,29.43,447.03,274.02,399,get_zacks_metrics
 TXN,Texas Instruments,Autres Nasdaq 100,12,281.69,257253,3,,8.45,9.84,21.1,,1.33,62.37,,,,profil_screen_precedent
 PANW,Palo Alto Networks,Autres Nasdaq 100,7,388.41,317719,3,,4.18,4.91,15,,0.91,110.86,,,,profil_screen_precedent
+ADYEY,Adyen (ADR 1/100),Paiements,12,9.80,31050,3,0.380,0.44,0.535,,0,2.34,,18.338,8.925,,"get_zacks_metrics ; FY0 = F1 / 1,1579 (croissance F1 Zacks)"
