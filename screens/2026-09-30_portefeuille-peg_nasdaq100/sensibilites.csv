@@ -1,0 +1,7 @@
+variante_scenario_base,tcam_portefeuille,tcam_nasdaq100,ecart_pts
+Base du modèle (convergence des PEG à mi-chemin),0.2562,0.1031,15.31
+Multiples constants pour tous (croissance pure),0.2199,0.1462,7.37
+Croissance du portefeuille -5 pts/an (NDX inchangé),0.1933,0.1031,9.03
+Croissance du portefeuille -5 pts + multiples constants,0.1696,0.1462,2.34
+"Mémoire : BPA MU/SNDK maintenus au pic (ratio 1,0)",0.2562,0.1123,14.38
+"Pire combinaison : -5 pts, multiples constants, mémoire au pic",0.1696,0.1545,1.52

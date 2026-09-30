@@ -1,0 +1,9 @@
+ticker,periode_ttm,ca_ttm_musd,croiss_ca_dernier_trim_pct,marge_brute_pct,marge_op_pct,rn_ttm_musd,fcf_ttm_musd,tresorerie_musd,dette_lt_musd,tresorerie_nette_musd,rachats_ytd_musd,note
+NVDA,T3 2025 - T2 2026 (fin juil. 2026),302969,105.9,74.7,65.2,192879,127006,99369,32366,67003,39044,FCF = OCF 134360 - capex 7354 ; rachats S1 FY27
+AVGO,T4 FY25 - T3 FY26 (fin juil. 2026),89104,85.5,68.8,48.0,38265,39403,23975,57167,-33192,8337,marges GAAP (amortissement VMware) ; dette nette/EBITDA TTM 0.64x
+TSM,T3 2025 - T2 2026,141671,32.7,64.2,56.0,71909,36114,114058,28452,85606,,capex TTM 46912 (cycle d'investissement N2/CoWoS)
+UBER,T3 2025 - T2 2026,55227,12.2,,12.1,9579,10116,6052,10726,-4674,3393,reservations brutes +22% a change constant (T2) ; BPA non-GAAP T2 0.81 (+35%)
+NU,T3 2025 - T2 2026,19340,37.3,,,3607,,13552,,,,banque : ROE T2 annualise ~33% ; NPL 90j 6.9% ; couverture 244%
+RDDT,T3 2025 - T2 2026,2779,61.0,,,,1019,2786,0,2786,230,T2 : RN 253 (31% du CA) ; EBITDA ajuste 43% ; DAUq 130.3 M (+18%)
+CRDO,T2 FY26 - T1 FY27 (fin juil. 2026),,114.7,,,,439,764,0,764,,T1 FY27 : CA 479 (+115%) ; RN non-GAAP 236.3 ; 4 clients >=10% du CA
+RNMBY,S1 2026 (EUR),,39.0,,15.0,,-1616,,,,,S1 : CA 5227 MEUR (+39%) ; marge op. 15% (T2 17.1%) ; FCF operationnel S1 -1616 MEUR ; carnet 80.5 MdEUR ; guidance 2026 CA 13.7-14.2 MdEUR marge ~19%

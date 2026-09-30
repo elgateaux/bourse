@@ -1,0 +1,43 @@
+ticker,g_bear,g_base,g_bull,pe_plafond,cyclique,ratio_bpa_bear,ratio_bpa_base,ratio_bpa_bull,pe_sortie_bear,pe_sortie_base,pe_sortie_bull,ntm_ajuste,justification
+NVDA,0,15,25,35,0,,,,,,,,Consensus FY28 +66% puis décélération ; LTG Zacks 14% ; bear = digestion du capex IA 2028-29 et montée des ASIC
+AMD,0,18,30,35,0,,,,,,,,MI450 (OpenAI ; Anthropic 2 GW) ; base prudente après +96% attendu en 2027
+AVGO,3,20,30,35,0,,,,,,,,Guidance IA 115 Md$ (FY27) puis 230 Md$ (FY28) ; 161 Md$ d'engagements Anthropic ; bear = concentration clients
+MRVL,0,18,28,35,0,,,,,,,,ASIC et optique ; croissance FY28 +58% puis normalisation
+TSM,6,18,26,26,0,,,,,,,,LTG Zacks 27% (hypothèse retenue plus prudente) ; CoWoS vendu jusqu'à fin 2027 ; plafond de P/E 26 (décote géopolitique)
+ASML,3,14,20,35,0,,,,,,,,EUV : ~60 à ~100 outils/an d'ici 2030 selon SemiAnalysis (~13%/an en volume) + prix High-NA
+LRCX,-3,10,16,30,0,,,,,,,,Équipementier cyclique ; croissance WFE séculaire
+AMAT,-3,10,16,30,0,,,,,,,,Équipementier cyclique ; croissance WFE séculaire
+KLAC,-3,10,16,30,0,,,,,,,,Équipementier cyclique ; croissance WFE séculaire
+MU,,,,,1,0.35,0.65,1.30,14,12,10,,Cyclique au pic (marge brute non-GAAP ~85%) : BPA 2030 = 35/65/130% du BPA NTM ; P/E de sortie plus élevé au creux
+SNDK,,,,,1,0.30,0.55,1.20,15,12,10,,Cyclique NAND au pic : consensus FY28 plat au T4
+ANET,6,18,24,35,0,,,,,,,,LTG Zacks 22.7%
+ALAB,5,25,35,40,0,,,,,,,,Connectivité scale-up ; croissance élevée mais multiple déjà très haut
+CRDO,0,25,35,35,0,,,,,,,,AEC + DSP optiques ; 4 clients à 33/28/13/10% du CA (risque de concentration)
+LITE,0,22,32,35,0,,,,,,,,Lasers InP ; FY28 +59% au consensus
+COHR,3,22,30,35,0,,,,,,,,Transceivers + lasers ; FY28 +46% au consensus
+VRT,4,18,25,35,0,,,,,,,,Énergie et refroidissement liquide des datacenters
+CEG,3,9,13,25,0,,,,,,,,Nucléaire ; contrats d'électricité avec les hyperscalers
+MSFT,7,15,18,35,0,,,,,,,,LTG Zacks 15.9%
+GOOGL,5,15,20,30,0,,,,,,,cy27,LTG Zacks 16.8% ; BPA 2026 gonflé par la réévaluation de participations (Anthropic 14% ; SpaceX) : base NTM = BPA 2027
+AMZN,6,16,22,35,0,,,,,,,cy27,LTG Zacks 16.1% ; BPA 2026 gonflé par la réévaluation de la participation Anthropic : base NTM = BPA 2027
+META,3,12,18,30,0,,,,,,,,Croissance 2027 +9.6% (amortissements du capex) ; LTG Zacks 20.5%
+AAPL,3,9,12,35,0,,,,,,,,Stalwart ; croissance 2027 +7.8% ; LTG Zacks 13.2%
+RDDT,5,22,30,35,0,,,,,,,,Pub +64% (T2) ; licences de données Google/OpenAI expirent en 2027 ; risque trafic recherche IA
+APP,-5,16,24,30,0,,,,,,,,Class action (sept. 2026) sur les annonces IA ; enquête SEC close sans suite
+PLTR,15,30,40,60,0,,,,,,,,Hypercroissance mais P/E NTM ~89
+NFLX,6,13,17,30,0,,,,,,,,Croissance 2027 +6.7% au consensus
+NU,6,22,30,15,0,,,,,,,,Banque émergente : plafond de P/E 15 (médiane 1 an du P/E 12 mois = 13.75 selon Zacks) ; risques crédit Brésil (NPL 90j 6.9%) et dilution Monzo
+MELI,8,22,28,35,0,,,,,,,,E-commerce + crédit LatAm ; révisions négatives (Rank 4)
+SE,5,20,28,30,0,,,,,,,,Révisions négatives (Rank 5)
+HOOD,0,18,28,35,0,,,,,,,,Courtage retail cyclique
+UBER,3,20,26,30,0,,,,,,,,Réservations +22% ; FCF TTM 10.1 Md$ ; BPA non-GAAP T3 guidé +28-35% ; bear = désintermédiation par les robotaxis
+TSLA,5,25,45,150,0,,,,,,,,Récit robotaxi/Optimus ; P/E NTM ~136
+RNMBY,5,22,35,28,0,,,,,,,,Objectif 2030 : 50 MdEUR de CA et marge >20% (base = ~60% de la trajectoire) ; FCF S1 négatif
+SPCX,10,30,50,150,0,,,,,,,,IPO récente ; BPA 2026 négatif ; Starlink + xAI
+WMT,4,9,12,35,0,,,,,,,,Stalwart
+COST,6,10,12,50,0,,,,,,,,Stalwart
+INTC,0,20,35,40,0,,,,,,,,Redressement ; P/E NTM ~62
+CSCO,3,7,10,25,0,,,,,,,,Croissance faible
+AMGN,2,5,7,20,0,,,,,,,,Pharma ; croissance faible
+TXN,4,12,18,30,0,,,,,,,,Reprise cyclique analogique ; LTG Zacks 21%
+PANW,8,15,20,45,0,,,,,,,,LTG Zacks 15%

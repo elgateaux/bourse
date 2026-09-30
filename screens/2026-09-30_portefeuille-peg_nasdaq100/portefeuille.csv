@@ -1,0 +1,4 @@
+ticker,nom,poids,theme,pe_ntm,g27,peg27,g_lt_base,peg_lt,tcam_bear,tcam_base,tcam_bull,tcam_esperance,prix,prix_peg1
+NU,Nu Holdings,0.3333333333333333,Fintech emergente,11.33,35.0,0.3,22.0,0.51,0.0008,0.3088,0.3946,0.2775,12.35,23.99
+AVGO,Broadcom,0.3333333333333333,IA calcul,19.85,50.1,0.36,20.0,0.99,-0.1276,0.2099,0.4492,0.234,355.10,357.73
+RNMBY,Rheinmetall (ADR),0.3333333333333333,Defense europeenne,20.25,38.8,0.49,22.0,0.92,-0.1094,0.2437,0.4767,0.2627,218.29,237.16
