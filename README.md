@@ -15,4 +15,6 @@ Prompt réutilisable pour refaire la démarche : [portefeuille concentré de 3 v
 
 Standard des prochaines recherches : le [cahier des charges de l'enquête longue](prompts/cahier-des-charges-enquete.md). Il fixe le plan de l'article, un chapitre en huit parties par valeur, les règles de preuve et les contrôles. Il s'accompagne des dossiers de recherche par valeur ([research/](research/README.md)), des outils de mise en page ([outils/](outils/README.md)) et des consignes de [CLAUDE.md](CLAUDE.md).
 
+Article de référence de ce standard : [« Cinq valeurs pour battre le Nasdaq 100 »](prompts/article-de-reference_enquete-longue_2026-10-01.pdf) (titre de journal fictif, 31 pages, 01/10/2026). Il sert de modèle pour la forme et la méthode. Ses chiffres viennent d'un autre univers (159 valeurs) et d'autres hypothèses que le modèle du dépôt, et les dossiers `research/` qu'il cite n'y figurent pas.
+
 Ces analyses sont quantitatives et datées ; elles ne constituent pas un conseil en investissement.

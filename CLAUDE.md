@@ -4,7 +4,7 @@ Ce dépôt réunit des analyses boursières en français. Ce sont des portefeuil
 
 ## Avant toute nouvelle recherche
 
-1. Lire [prompts/cahier-des-charges-enquete.md](prompts/cahier-des-charges-enquete.md). C'est le standard des articles :
+1. Lire [prompts/cahier-des-charges-enquete.md](prompts/cahier-des-charges-enquete.md). C'est le standard des articles, tiré de l'[article de référence](prompts/article-de-reference_enquete-longue_2026-10-01.pdf) :
    - le plan de l'enquête longue ;
    - le gabarit de chapitre par valeur ;
    - les règles de preuve ;

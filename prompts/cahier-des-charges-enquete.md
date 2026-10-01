@@ -1,6 +1,6 @@
 # Cahier des charges : l'enquête longue sur un portefeuille PEG
 
-Ce document fixe le standard des prochaines recherches du dépôt. Il reprend la structure, la profondeur et les règles de preuve de l'article « Cinq valeurs pour battre le Nasdaq 100 : l'enquête complète sur un portefeuille PEG » (*La Gazette du PEG*, titre fictif, 31 pages), fourni comme modèle le 1er octobre 2026.
+Ce document fixe le standard des prochaines recherches du dépôt. Il reprend la structure, la profondeur et les règles de preuve de l'article « Cinq valeurs pour battre le Nasdaq 100 : l'enquête complète sur un portefeuille PEG » (*La Gazette du PEG*, titre fictif, 31 pages), fourni comme modèle le 1er octobre 2026 : [PDF de l'article de référence](article-de-reference_enquete-longue_2026-10-01.pdf).
 
 On en garde la méthode, pas les chiffres. L'article part d'un univers de 159 valeurs et d'hypothèses qui ne sont pas celles du modèle du dépôt (47 valeurs au 1er octobre 2026). Ses conclusions ne remplacent donc pas celles du [bilan du 1er octobre 2026](../screens/2026-09-30_portefeuille-peg_nasdaq100/BILAN.html) sans être recalculées. Ces conclusions sont Broadcom plutôt que NVIDIA, et les poids suivants : Nu 25 %, Rheinmetall, Broadcom et Uber 20 % chacun, TSMC 15 %.
 
