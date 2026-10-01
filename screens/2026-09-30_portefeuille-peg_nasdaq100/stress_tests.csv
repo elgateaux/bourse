@@ -1,11 +1,17 @@
-scenario,tcam_portefeuille,tcam_nasdaq100,ecart_pts
-"Krach du capex IA (valeurs IA en bear, le reste en base)",0.1846,0.0291,15.54
-"Supercycle mémoire prolongé (MU/SNDK en bull, le reste en base)",0.2454,0.1141,13.13
-Choc de crédit ou politique au Brésil (NU en bear),0.1521,0.1031,4.9
-Paix durable en Ukraine (RNMBY en bear),0.1611,0.1031,5.8
-NVIDIA perd du terrain face au sur-mesure (NVDA en bear),0.217,0.0737,14.33
-Choc géopolitique sur Taïwan (TSM en bear),0.2152,0.1031,11.21
-Double choc : NU et RNMBY en bear,0.0409,0.1031,-6.22
-"Nu rachète Monzo 10 Md£ tout en actions (NU en base, BPA dilué)",0.2283,0.1031,12.52
-"Monzo tout en actions et choc Brésil (NU en bear, BPA dilué)",0.1448,0.1031,4.17
-Tout en base,0.2454,0.1031,14.23
+scenario,tcam_portefeuille,tcam_version_4_lignes,tcam_nasdaq100,ecart_pts
+"Krach du capex IA (valeurs IA en bear, le reste en base)",0.202954,0.184554,0.02915,17.3804
+"Supercycle mémoire prolongé (MU/SNDK en bull, le reste en base)",0.247695,0.245372,0.114076,13.3619
+Choc de crédit ou politique au Brésil (NU en bear),0.165335,0.1521,0.103087,6.2247
+Paix durable en Ukraine (RNMBY en bear),0.173194,0.161122,0.103087,7.0107
+NVIDIA perd du terrain face au sur-mesure (NVDA en bear),0.231002,0.216996,0.073682,15.732
+Choc géopolitique sur Taïwan (TSM en bear),0.220808,0.215209,0.103087,11.7721
+Double choc : NU et RNMBY en bear,0.07089,0.040923,0.103087,-3.2198
+"Nu rachète Monzo 10 Md£ tout en actions (NU en base, BPA dilué)",0.23246,0.228311,0.103087,12.9373
+"Monzo tout en actions et choc Brésil (NU en bear, BPA dilué)",0.159006,0.144812,0.103087,5.5918
+Tout en base,0.247695,0.245372,0.103087,14.4608
+"Les puces sur mesure gagnent (NVDA en bear, TSM en bull)",0.24999,0.238751,0.073682,17.6308
+Choc dur sur Taïwan (TSM et NVDA en bear),0.202954,0.184554,0.073682,12.9272
+NVIDIA tient ses promesses (NVDA en bull),0.27105,0.283811,0.142407,12.8643
+Les robotaxis contournent Uber (UBER en bear),0.212354,0.245372,0.103087,10.9267
+Tout en bear,-0.07799,-0.073313,-0.122914,4.4924
+Tout en bull,0.40869,0.409582,0.23124,17.745

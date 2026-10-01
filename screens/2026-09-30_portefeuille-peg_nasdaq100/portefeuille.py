@@ -11,11 +11,15 @@ Entrées (dossier data/) :
 Sorties :
   resultats_univers.csv   métriques PEG + rendements par scénario, titre par titre
   portefeuille.csv        lignes du portefeuille retenu
-  comparaison.csv         portefeuille vs Nasdaq 100 reconstitué
+  comparaison.csv         portefeuille vs Nasdaq 100 reconstitué et versions précédentes
   stress_tests.csv        scénarios de rupture
   sensibilites.csv        variantes du scénario de base
-  trios.csv               tous les trios à poids égaux parmi les meilleurs candidats
+  trios.csv               trios à poids égaux parmi les candidats du 30/09/2026
   monzo.csv               effet d'un accord Nu-Monzo selon le montage
+  variantes.csv           autres compositions et probabilité de finir sous l'indice
+  poche_etf.csv           poche d'ETF Nasdaq 100 ou de fonds small caps à côté du portefeuille
+  memoire.csv             SK Hynix, Micron, SanDisk : rendement selon le sort du cycle
+  nvidia.csv              marges de NVIDIA comprimées ou disruption par les puces sur mesure
 """
 import csv
 import itertools
@@ -35,11 +39,15 @@ FY0_ANNEE = {
     "AVGO": 2025, "AMAT": 2025,
     "LRCX": 2026, "KLAC": 2026, "SNDK": 2026, "LITE": 2026, "COHR": 2026, "MSFT": 2026,
     "MU": 2025, "COST": 2026, "AAPL": 2025, "CRDO": 2026, "CSCO": 2026, "PANW": 2026,
+    "ORCL": 2026, "ATEYY": 2026,
 }
 
-# Portefeuille retenu au 01/10/2026 : Broadcom remplacé par NVIDIA et TSMC, qui se
-# partagent son tiers (voir ARTICLE.html et RAPPORT.md).
-PORTEFEUILLE = {"NU": 1 / 3, "RNMBY": 1 / 3, "NVDA": 1 / 6, "TSM": 1 / 6}
+# Portefeuille retenu au bilan du 01/10/2026 : Uber entre à 15 %, financé par Nu, Rheinmetall
+# et NVIDIA ; TSMC reste au-dessus de NVIDIA (voir BILAN.html).
+PORTEFEUILLE = {"NU": 0.30, "RNMBY": 0.30, "TSM": 0.15, "UBER": 0.15, "NVDA": 0.10}
+
+# Version du 01/10/2026 au matin : Broadcom remplacé par NVIDIA et TSMC (voir ARTICLE.html).
+PORTEFEUILLE_4 = {"NU": 1 / 3, "RNMBY": 1 / 3, "NVDA": 1 / 6, "TSM": 1 / 6}
 
 # Version du 30/09/2026 (trio avec Broadcom) et variante à poids égaux, pour comparaison.
 PORTEFEUILLE_TRIO = {"NU": 1 / 3, "AVGO": 1 / 3, "RNMBY": 1 / 3}
@@ -52,10 +60,53 @@ PORTEFEUILLE_8 = {
 }
 
 THEMES_IA = ("IA calcul", "IA fonderie et equipement", "IA memoire et stockage",
-             "IA reseau et optique", "IA energie et refroidissement")
+             "IA reseau et optique", "IA energie et refroidissement", "IA cloud")
 
-# Candidats examinés à la demande, ajoutés aux trios même hors du top 8.
+# Trios à poids égaux : les huit premiers du classement du 30/09/2026, plus Adyen examiné à la
+# demande. Liste figée : les valeurs ajoutées le 01/10 (Oracle, Grab...) ne changent pas cette
+# analyse datée.
+TOP8_30_09 = ("NU", "UBER", "RNMBY", "AVGO", "SE", "CRDO", "RDDT", "NVDA")
 CANDIDATS_EN_PLUS = ("ADYEY",)
+
+# Compositions comparées dans variantes.csv (sans les versions déjà dans comparaison.csv).
+VARIANTES = [
+    ("Version du matin penchée vers TSMC (NVIDIA 1/9, TSMC 2/9)",
+     {"NU": 1 / 3, "RNMBY": 1 / 3, "NVDA": 1 / 9, "TSM": 2 / 9}),
+    ("Version du matin, Uber à la place de NVIDIA",
+     {"NU": 1 / 3, "RNMBY": 1 / 3, "UBER": 1 / 6, "TSM": 1 / 6}),
+    ("Version du matin, Oracle à la place de NVIDIA",
+     {"NU": 1 / 3, "RNMBY": 1 / 3, "ORCL": 1 / 6, "TSM": 1 / 6}),
+    ("Version du matin, Advantest à la place de TSMC",
+     {"NU": 1 / 3, "RNMBY": 1 / 3, "NVDA": 1 / 6, "ATEYY": 1 / 6}),
+    ("Version du matin, SK Hynix à la place de NVIDIA",
+     {"NU": 1 / 3, "RNMBY": 1 / 3, "SKHY": 1 / 6, "TSM": 1 / 6}),
+    ("Retenu, Oracle à la place de NVIDIA",
+     {"NU": 0.30, "RNMBY": 0.30, "TSM": 0.15, "UBER": 0.15, "ORCL": 0.10}),
+    ("Retenu, Grab à la place d'Uber",
+     {"NU": 0.30, "RNMBY": 0.30, "TSM": 0.15, "GRAB": 0.15, "NVDA": 0.10}),
+    ("Uber pris sur Nu et Rheinmetall (25/25/16,7/16,7/16,7)",
+     {"NU": 0.25, "RNMBY": 0.25, "TSM": 1 / 6, "UBER": 1 / 6, "NVDA": 1 / 6}),
+]
+
+# Poches à côté du portefeuille : ETF Nasdaq 100 (même règles que l'indice reconstitué) ou fonds
+# small caps européens à rendement annuel supposé constant (hyp. : 8, 12 ou 15 %).
+PARTS_ETF = (0.0, 0.10, 0.20, 1 / 3, 0.50)
+FONDS_RENDEMENTS = (0.08, 0.12, 0.15)
+PARTS_FONDS = (0.10, 0.20)
+
+# Mémoire : BPA 2030 en multiple du BPA NTM, et P/E de sortie (le cycle revient ou disparaît).
+MEMOIRE_CAS = [
+    ("Cycle sévère", 0.35, 14), ("Cycle normal", 0.50, 12), ("Cycle doux", 0.65, 12),
+    ("Le cycle disparaît, P/E 10", 1.00, 10), ("Le cycle disparaît, P/E 12", 1.00, 12),
+    ("Le cycle disparaît, P/E 15", 1.00, 15), ("Croissance de 10 %/an, P/E 12", 1.10 ** 4, 12),
+    ("Croissance de 10 %/an, P/E 15", 1.10 ** 4, 15),
+]
+
+# NVIDIA face aux puces sur mesure : croissance annuelle du BPA NTM jusqu'en 2030 et P/E de sortie.
+NVIDIA_CAS = [
+    ("Marges comprimées", 0.07, 14.0),
+    ("Disruption", 0.0, 10.0),
+]
 
 # Accord Nu-Monzo (presse du 26 au 29/09/2026 : 8 à 10 Md£, numéraire et actions).
 MONZO_GBPUSD = 1.33          # 10 Md£ ≈ 13,3 Md$
@@ -217,6 +268,24 @@ def terminal(poids, rendement):
     return tv ** (1 / HORIZON) - 1
 
 
+def probas_sous(poids, rows, seuil):
+    """Chaque titre tire son scénario indépendamment des autres (25/50/25) : probabilité que le
+    TCAM du portefeuille finisse sous `seuil`, puis sous zéro. Calcul simplifié, sans corrélation."""
+    ts = list(poids)
+    sous = perte = 0.0
+    for combo in itertools.product(PROBAS, repeat=len(ts)):
+        p = 1.0
+        for s in combo:
+            p *= PROBAS[s]
+        choix = dict(zip(ts, combo))
+        x = terminal(poids, lambda t: rows[t]["scen"][choix[t]])
+        if x < seuil:
+            sous += p
+        if x < 0:
+            perte += p
+    return sous, perte
+
+
 def monzo(r, h):
     """Effet d'un accord Monzo sur le BPA de Nu (2027 et horizon 2030) et sur ses rendements."""
     prix = fnum(r["prix"])
@@ -314,10 +383,11 @@ def main():
     ptf = agregats(PORTEFEUILLE, rows)
     ndx = agregats(poids_ndx, rows)
     ndx_hm = agregats({t: p for t, p in poids_ndx.items() if t not in ("MU", "SNDK")}, rows)
+    quatre = agregats(PORTEFEUILLE_4, rows)
     eq = agregats(PORTEFEUILLE_8, rows)
     trio = agregats(PORTEFEUILLE_TRIO, rows)
     egal = agregats(PORTEFEUILLE_EGAL, rows)
-    versions = (ptf, ndx, ndx_hm, trio, egal, eq)
+    versions = (ptf, ndx, ndx_hm, quatre, trio, egal, eq)
 
     # ---------------- accord Nu-Monzo ----------------
     cas_monzo = monzo(rows["NU"], hyp["NU"])
@@ -350,8 +420,81 @@ def main():
         ("Nu rachète Monzo 10 Md£ tout en actions (NU en base, BPA dilué)", nu_dilue("base")),
         ("Monzo tout en actions et choc Brésil (NU en bear, BPA dilué)", nu_dilue("bear")),
         ("Tout en base", scen(lambda t: "base")),
+        ("Les puces sur mesure gagnent (NVDA en bear, TSM en bull)",
+         scen(lambda t: {"NVDA": "bear", "TSM": "bull"}.get(t, "base"))),
+        ("Choc dur sur Taïwan (TSM et NVDA en bear)", scen(lambda t: "bear" if t in ("TSM", "NVDA") else "base")),
+        ("NVIDIA tient ses promesses (NVDA en bull)", scen(lambda t: "bull" if t == "NVDA" else "base")),
+        ("Les robotaxis contournent Uber (UBER en bear)", scen(lambda t: "bear" if t == "UBER" else "base")),
+        ("Tout en bear", scen(lambda t: "bear")),
+        ("Tout en bull", scen(lambda t: "bull")),
     ]
-    stress = [(nom, terminal(PORTEFEUILLE, f), terminal(poids_ndx, f)) for nom, f in tests]
+    stress = [(nom, terminal(PORTEFEUILLE, f), terminal(PORTEFEUILLE_4, f), terminal(poids_ndx, f))
+              for nom, f in tests]
+    test = dict(tests)
+
+    # ---------------- autres compositions ----------------
+    ndx_base = ndx["tcam_base"]
+    compos = [("Retenu : Nu 30 %, Rheinmetall 30 %, TSMC 15 %, Uber 15 %, NVIDIA 10 %", PORTEFEUILLE),
+              ("Version du matin : Nu, Rheinmetall 1/3 ; NVIDIA, TSMC 1/6", PORTEFEUILLE_4),
+              ("Trio du 30/09 : Nu, Broadcom, Rheinmetall", PORTEFEUILLE_TRIO),
+              ("Première version à 8 lignes", PORTEFEUILLE_8),
+              ("Version du matin à poids égaux (4 x 25 %)", PORTEFEUILLE_EGAL)] + VARIANTES
+    cles_var = [("double_choc", "Double choc : NU et RNMBY en bear"),
+                ("krach_ia", "Krach du capex IA (valeurs IA en bear, le reste en base)"),
+                ("sur_mesure", "Les puces sur mesure gagnent (NVDA en bear, TSM en bull)"),
+                ("nvda_bull", "NVIDIA tient ses promesses (NVDA en bull)"),
+                ("uber_bear", "Les robotaxis contournent Uber (UBER en bear)")]
+    variantes = []
+    for nom, poids in compos:
+        a = agregats(poids, rows)
+        for cle, t_nom in cles_var:
+            a[cle] = terminal(poids, test[t_nom])
+        a["p_sous_indice"], a["p_perte"] = probas_sous(poids, rows, ndx_base)
+        variantes.append((nom, a))
+
+    # ---------------- poche d'ETF Nasdaq 100 ou de fonds small caps ----------------
+    def vf(poids, f):
+        return (1 + terminal(poids, f)) ** HORIZON
+
+    cles_poche = [("esperance", lambda t: rows[t]["scen"]["esperance"])] + \
+        [(cle, test[t_nom]) for cle, t_nom in cles_var[:2]] + [("bear", scen(lambda t: "bear"))]
+    poches = []
+    for w in PARTS_ETF:
+        poches.append(("ETF Nasdaq 100", w, None,
+                       {cle: ((1 - w) * vf(PORTEFEUILLE, f) + w * vf(poids_ndx, f)) ** (1 / HORIZON) - 1
+                        for cle, f in cles_poche}))
+    for r_f in FONDS_RENDEMENTS:
+        for w in PARTS_FONDS:
+            # rendement du fonds supposé constant : on ne l'applique qu'aux cas où il est plausible
+            poches.append(("Fonds small caps européens", w, r_f,
+                           {cle: ((1 - w) * vf(PORTEFEUILLE, f) + w * (1 + r_f) ** HORIZON) ** (1 / HORIZON) - 1
+                            for cle, f in cles_poche[:2]}))
+
+    # ---------------- mémoire : le cycle revient ou disparaît ----------------
+    memoire = []
+    for t in ("SKHY", "MU", "SNDK"):
+        r = rows[t]
+        div = (fnum(r["div_yield"]) or 0.0) / 100
+        for nom, ratio, pe in MEMOIRE_CAS:
+            x = ratio * pe / r["pe_ntm"] * (1 + div) ** HORIZON
+            memoire.append((t, nom, ratio, pe, r["pe_ntm"], x ** (1 / HORIZON) - 1, fnum(r["prix"]) * x))
+
+    # ---------------- NVIDIA face aux puces sur mesure ----------------
+    nv = rows["NVDA"]
+    nv_div = (fnum(nv["div_yield"]) or 0.0) / 100
+    nv_cas = [("Bear du modèle", nv["scen"]["bear"])]
+    for nom, g, pe in NVIDIA_CAS:
+        nv_cas.append((nom, (1 + g) ** HORIZON * pe / nv["pe_ntm"] * (1 + nv_div) ** HORIZON - 1))
+    nv_cas += [("Base du modèle", nv["scen"]["base"]), ("Bull du modèle", nv["scen"]["bull"])]
+    nvidia = []
+    for nom, rv in nv_cas:
+        out = {"nvda_tcam": (1 + rv) ** (1 / HORIZON) - 1, "nvda_cours_2030": fnum(nv["prix"]) * (1 + rv)}
+        for cle, poids in (("ptf", PORTEFEUILLE), ("ptf4", PORTEFEUILLE_4)):
+            for s_tsm in ("base", "bull"):
+                out[f"{cle}_tsm_{s_tsm}"] = terminal(
+                    poids, lambda t: rv if t == "NVDA" else rows[t]["scen"][s_tsm if t == "TSM" else "base"])
+        out["ndx"] = terminal(poids_ndx, lambda t: rv if t == "NVDA" else rows[t]["scen"]["base"])
+        nvidia.append((nom, out))
 
     # ---------------- sensibilités (scénario de base) ----------------
     def variante(poids=PORTEFEUILLE, constant=False, dg_ptf=0.0, ratio_mem=None):
@@ -375,7 +518,7 @@ def main():
     ]
 
     # ---------------- trios à poids égaux ----------------
-    candidats = classement[:8] + [t for t in CANDIDATS_EN_PLUS if t in elig and t not in classement[:8]]
+    candidats = list(TOP8_30_09) + [t for t in CANDIDATS_EN_PLUS if t in elig and t not in TOP8_30_09]
     trios = []
     for combo in itertools.combinations(candidats, 3):
         poids = {t: 1 / 3 for t in combo}
@@ -401,7 +544,7 @@ def main():
             for c in cols:
                 v = r.get(c)
                 line.append(round(v, 4) if isinstance(v, float) else v)
-            line += [round(r["scen"][c], 4) for c in scols]
+            line += [round(r["scen"][c], 6) for c in scols]
             line += [" | ".join(r["alertes"]), r["justification"]]
             wr.writerow(line)
 
@@ -415,7 +558,7 @@ def main():
                          round(r["g27"], 1) if r["g27"] is not None else "",
                          round(r["peg27"], 2) if r["peg27"] is not None else "",
                          r["g_lt_base"], round(r["peg_lt"], 2),
-                         *[round(r["scen"][k], 4) for k in ("tcam_bear", "tcam_base", "tcam_bull", "tcam_esperance")],
+                         *[round(r["scen"][k], 6) for k in ("tcam_bear", "tcam_base", "tcam_bull", "tcam_esperance")],
                          r["prix"], round(r["prix_peg1"], 2)])
 
     with open(os.path.join(HERE, "comparaison.csv"), "w", newline="", encoding="utf-8") as f:
@@ -423,22 +566,22 @@ def main():
         keys = ["pe_ntm", "g27", "peg27", "g_lt", "peg_lt", "beta", "div", "part_ia",
                 "tcam_bear", "tcam_base", "tcam_bull", "tcam_esperance"]
         wr.writerow(["indicateur", "portefeuille", "nasdaq100_reconstitue", "nasdaq100_hors_memoire",
-                     "version_trio_avgo", "version_4_poids_egaux", "version_8_lignes"])
+                     "version_4_lignes", "version_trio_avgo", "version_4_poids_egaux", "version_8_lignes"])
         for k in keys:
-            wr.writerow([k] + [round(x[k], 4) if x[k] is not None else "" for x in versions])
+            wr.writerow([k] + [round(x[k], 6) if x[k] is not None else "" for x in versions])
         wr.writerow(["couverture_ndx_pct", "", round(couverture, 2), ""])
 
     with open(os.path.join(HERE, "stress_tests.csv"), "w", newline="", encoding="utf-8") as f:
         wr = csv.writer(f)
-        wr.writerow(["scenario", "tcam_portefeuille", "tcam_nasdaq100", "ecart_pts"])
-        for nom, a, b in stress:
-            wr.writerow([nom, round(a, 4), round(b, 4), round((a - b) * 100, 2)])
+        wr.writerow(["scenario", "tcam_portefeuille", "tcam_version_4_lignes", "tcam_nasdaq100", "ecart_pts"])
+        for nom, a, a4, b in stress:
+            wr.writerow([nom, round(a, 6), round(a4, 6), round(b, 6), round((a - b) * 100, 4)])
 
     with open(os.path.join(HERE, "sensibilites.csv"), "w", newline="", encoding="utf-8") as f:
         wr = csv.writer(f)
         wr.writerow(["variante_scenario_base", "tcam_portefeuille", "tcam_nasdaq100", "ecart_pts"])
         for nom, a, b in sensib:
-            wr.writerow([nom, round(a, 4), round(b, 4), round((a - b) * 100, 2)])
+            wr.writerow([nom, round(a, 6), round(b, 6), round((a - b) * 100, 4)])
 
     with open(os.path.join(HERE, "trios.csv"), "w", newline="", encoding="utf-8") as f:
         wr = csv.writer(f)
@@ -468,8 +611,42 @@ def main():
                          round(c["prix_md_usd"], 2), round(c["actions_emises_m"], 0),
                          round(c["hausse_actions"] * 100, 1), round(c["bpa_2027_var"] * 100, 1),
                          round(c["bpa_2030_var"] * 100, 1),
-                         *[round(s[k], 4) for k in ("tcam_bear", "tcam_base", "tcam_bull", "tcam_esperance")],
-                         round(prix_nu * (1 + s["base"]), 2), round(c["ptf_tcam_esperance"], 4)])
+                         *[round(s[k], 6) for k in ("tcam_bear", "tcam_base", "tcam_bull", "tcam_esperance")],
+                         round(prix_nu * (1 + s["base"]), 2), round(c["ptf_tcam_esperance"], 6)])
+
+    with open(os.path.join(HERE, "variantes.csv"), "w", newline="", encoding="utf-8") as f:
+        wr = csv.writer(f)
+        kv = ["pe_ntm", "peg_lt", "tcam_esperance", "tcam_base", "tcam_bear", "tcam_bull"] + \
+             [cle for cle, _ in cles_var] + ["p_sous_indice", "p_perte"]
+        wr.writerow(["variante", "pe_ntm", "peg_lt", "tcam_esperance", "tcam_base", "tcam_bear", "tcam_bull",
+                     "tcam_double_choc", "tcam_krach_ia", "tcam_sur_mesure", "tcam_nvda_bull", "tcam_uber_bear",
+                     "p_sous_indice", "p_perte"])
+        for nom, a in variantes:
+            wr.writerow([nom] + [round(a[k], 6) for k in kv])
+        wr.writerow(["Nasdaq 100 reconstitué", round(ndx["pe_ntm"], 4), round(ndx["peg_lt"], 4)] +
+                    [round(ndx[k], 6) for k in ("tcam_esperance", "tcam_base", "tcam_bear", "tcam_bull")] +
+                    [round(terminal(poids_ndx, test[t_nom]), 6) for _, t_nom in cles_var] + ["", ""])
+
+    with open(os.path.join(HERE, "poche_etf.csv"), "w", newline="", encoding="utf-8") as f:
+        wr = csv.writer(f)
+        wr.writerow(["poche", "part", "rendement_fonds_hyp", "tcam_esperance", "tcam_double_choc",
+                     "tcam_krach_ia", "tcam_bear"])
+        for nom, w, r_f, res in poches:
+            wr.writerow([nom, round(w, 4), r_f if r_f is not None else ""] +
+                        [round(res[k], 6) if k in res else "" for k in ("esperance", "double_choc", "krach_ia", "bear")])
+
+    with open(os.path.join(HERE, "memoire.csv"), "w", newline="", encoding="utf-8") as f:
+        wr = csv.writer(f)
+        wr.writerow(["ticker", "cas", "bpa_2030_sur_bpa_ntm", "pe_sortie", "pe_ntm", "tcam", "cours_2030"])
+        for t, nom, ratio, pe, pe_now, x, c30 in memoire:
+            wr.writerow([t, nom, round(ratio, 4), pe, round(pe_now, 2), round(x, 6), round(c30, 2)])
+
+    with open(os.path.join(HERE, "nvidia.csv"), "w", newline="", encoding="utf-8") as f:
+        wr = csv.writer(f)
+        kn = ["nvda_tcam", "nvda_cours_2030", "ptf_tsm_base", "ptf_tsm_bull", "ptf4_tsm_base", "ptf4_tsm_bull", "ndx"]
+        wr.writerow(["cas"] + kn)
+        for nom, out in nvidia:
+            wr.writerow([nom] + [round(out[k], 6) for k in kn])
 
     # ---------------- affichage ----------------
     def pct(x):
@@ -499,7 +676,8 @@ def main():
               f"TCAM bear {pct(s['tcam_bear'])} base {pct(s['tcam_base'])} bull {pct(s['tcam_bull'])} "
               f"esp. {pct(s['tcam_esperance'])}  prix PEG1 {r['prix_peg1']:.2f} (cours {r['prix']})")
 
-    print("\n                       Portefeuille   Nasdaq 100  NDX hors mém.   Trio AVGO   4 égaux   8 lignes")
+    print("\n                       Portefeuille   Nasdaq 100  NDX hors mém.    4 lignes   Trio AVGO"
+          "     4 égaux    8 lignes")
     for k, lab in (("pe_ntm", "P/E NTM"), ("g27", "Croiss. BPA 2027 %"), ("peg27", "PEG 2027"),
                    ("g_lt", "Croiss. LT hyp. %"), ("peg_lt", "PEG LT"), ("beta", "Bêta"),
                    ("div", "Rendement div. %"), ("part_ia", "Part IA")):
@@ -516,8 +694,31 @@ def main():
         print(f"  {nom:<66} ptf {a * 100:6.1f}%  ndx {b * 100:6.1f}%  écart {(a - b) * 100:+5.1f} pts")
 
     print("\nStress tests (TCAM 4 ans)")
-    for nom, a, b in stress:
-        print(f"  {nom:<66} ptf {a * 100:6.1f}%  ndx {b * 100:6.1f}%  écart {(a - b) * 100:+5.1f} pts")
+    for nom, a, a4, b in stress:
+        print(f"  {nom:<66} ptf {a * 100:6.1f}%  4 lignes {a4 * 100:6.1f}%  ndx {b * 100:6.1f}%  "
+              f"écart {(a - b) * 100:+5.1f} pts")
+
+    print(f"\nAutres compositions (probabilités : scénarios indépendants, seuil = indice en base "
+          f"{ndx_base * 100:.1f} %)")
+    for nom, a in variantes:
+        print(f"  {nom:<66} esp. {pct(a['tcam_esperance'])}  bear {pct(a['tcam_bear'])}  "
+              f"2 chocs {pct(a['double_choc'])}  krach IA {pct(a['krach_ia'])}  "
+              f"P<indice {a['p_sous_indice'] * 100:4.1f}%  P<0 {a['p_perte'] * 100:4.1f}%")
+
+    print("\nPoche à côté du portefeuille (TCAM 4 ans)")
+    for nom, w, r_f, res in poches:
+        lab = f"{nom} {w * 100:.0f} %" + (f" (fonds à {r_f * 100:.0f} %/an)" if r_f is not None else "")
+        print(f"  {lab:<50} " + "  ".join(f"{k} {pct(v)}" for k, v in res.items()))
+
+    print("\nMémoire : rendement selon le sort du cycle (TCAM 4 ans)")
+    for t, nom, ratio, pe, pe_now, x, c30 in memoire:
+        print(f"  {t:<5} {nom:<32} BPA x{ratio:4.2f}  P/E {pe:>4}  {pct(x)}  cours 2030 {c30:9.2f}")
+
+    print("\nNVIDIA face aux puces sur mesure (TCAM 4 ans, le reste en base)")
+    for nom, out in nvidia:
+        print(f"  {nom:<22} NVDA {pct(out['nvda_tcam'])} ({out['nvda_cours_2030']:6.0f} $)  "
+              f"ptf {pct(out['ptf_tsm_base'])} / TSM bull {pct(out['ptf_tsm_bull'])}  "
+              f"4 lignes {pct(out['ptf4_tsm_base'])} / {pct(out['ptf4_tsm_bull'])}  ndx {pct(out['ndx'])}")
 
     print("\nAccord Nu-Monzo : effet sur le BPA de Nu et sur le portefeuille")
     print("  cas                                                 actions  BPA 2027  BPA 2030  NU esp.  ptf esp.")

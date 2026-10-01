@@ -42,3 +42,7 @@ AMGN,2,5,7,20,0,,,,,,,,Pharma ; croissance faible
 TXN,4,12,18,30,0,,,,,,,,Reprise cyclique analogique ; LTG Zacks 21%
 PANW,8,15,20,45,0,,,,,,,,LTG Zacks 15%
 ADYEY,8,19,25,30,0,,,,,,,,Objectif de CA net ~20 %/an après 2026 et marge d'EBITDA > 55 % en 2028 ; base 19 % car objectifs déjà revus à la baisse (marge en 2023 ; croissance 2026 en février 2026) et produits financiers en baisse ; bear = take rate comprimé et concurrence de Stripe
+GRAB,5,22,30,30,0,,,,,,,cy27,BPA 2026 gonflé par un gain ponctuel de 307 M$ (consolidation de Superbank) : base NTM = BPA 2027 ; objectifs 2028 relevés (EBITDA ajusté 1.7 Md$ ; CA > +30 %/an de 2025 à 2028) ; bear = régulation (Vietnam ; Indonésie) et pertes du crédit fractionné d'Atome
+ORCL,0,18,24,25,0,,,,,,,,Carnet de commandes 664 Md$ dont plus de 300 Md$ pour OpenAI ; direction : BPA +28 %/an jusqu'à l'exercice 2030 ; LTG Zacks 21 % ; base 18 % (dilution : ATM 20 Md$ et convertibles obligatoires ; intérêts ; amortissements) ; bear = OpenAI ne tient pas ses engagements
+ATEYY,3,18,25,30,0,,,,,,,,Testeurs SoC et mémoire ; marché des testeurs SoC relevé à 10.5-11.5 Md$ en 2026 ; BPA consensus +90 % puis +43 % ; bear = retournement des équipements après le pic du capex IA (2028-29)
+SKHY,,,,,1,0.35,0.65,1.30,14,12,10,,Leader de la HBM ; mêmes règles que Micron : cyclique au pic (P/E 6) ; BPA 2030 = 35/65/130 % du BPA NTM

@@ -30,7 +30,7 @@ NU,Nu Holdings,Fintech emergente,12,12.35,59968,3,0.623,0.864,1.166,,0,0.94,,18.
 MELI,MercadoLibre,Fintech emergente,12,1724.90,87447,4,39.40,39.11,56.05,,0,1.31,-14.37,2481.1,1495,2023,get_zacks_metrics
 SE,Sea Ltd,Fintech emergente,12,98.62,60260,5,3.29,3.79,5.43,,0,1.51,-22.69,193.48,77.27,96,get_zacks_metrics
 HOOD,Robinhood,Fintech emergente,12,116.22,104491,1,2.05,2.21,2.73,,0,2.34,2.76,153.86,63.52,144,get_zacks_metrics
-UBER,Uber Technologies,Mobilite et robotaxi,12,69.36,141672,3,5.30,3.54,4.77,,0,1.16,-15.11,101.30,65.41,90,get_zacks_metrics
+UBER,Uber Technologies,Mobilite et robotaxi,12,69.36,141672,3,5.30,3.355,4.591,,0,1.16,-15.11,101.30,65.41,90,get_zacks_metrics ; BPA 2026-2027 : consensus compare_stocks du 30/09/2026
 TSLA,Tesla,Mobilite et robotaxi,12,352.84,1393558,4,1.66,1.78,2.86,,0,1.84,-21.54,498.83,297.38,399,get_zacks_metrics
 RNMBY,Rheinmetall (ADR),Defense europeenne,12,218.29,50936,2,,8.35,11.59,,0.87,0.17,,468,211.2,247,get_zacks_metrics
 SPCX,SpaceX,Autres Nasdaq 100,12,149.24,1967249,3,,-0.15,1.63,,0,,,225.64,104.83,162,get_zacks_metrics
@@ -42,3 +42,7 @@ AMGN,Amgen,Autres Nasdaq 100,12,423.64,229033,3,21.84,22.94,24.42,,2.38,0.43,29.
 TXN,Texas Instruments,Autres Nasdaq 100,12,281.69,257253,3,,8.45,9.84,21.1,,1.33,62.37,,,,profil_screen_precedent
 PANW,Palo Alto Networks,Autres Nasdaq 100,7,388.41,317719,3,,4.18,4.91,15,,0.91,110.86,,,,profil_screen_precedent
 ADYEY,Adyen (ADR 1/100),Paiements,12,9.80,31050,3,0.380,0.44,0.535,,0,2.34,,18.338,8.925,,"get_zacks_metrics ; FY0 = F1 / 1,1579 (croissance F1 Zacks)"
+GRAB,Grab Holdings,Mobilite et robotaxi,12,3.12,12785,3,0.06,0.13,0.1325,29.3,0,0.89,-37.47,6.39,2.80,6.01,compare_stocks
+ORCL,Oracle,IA cloud,5,137.79,416641,3,7.63,8.12,10.86,21.1,1.45,1.74,-29.31,313,114.99,246.68,compare_stocks
+ATEYY,Advantest (ADR),IA fonderie et equipement,3,223.36,163500,1,3.41,6.48,9.24,,0.12,2.12,76.81,237.44,97.27,257,compare_stocks
+SKHY,SK Hynix (ADR),IA memoire et stockage,12,186.68,1363683,2,,25.685,32.661,,0.06,,,199.865,124.80,204,get_zacks_metrics

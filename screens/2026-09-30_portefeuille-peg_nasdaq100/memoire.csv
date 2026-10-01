@@ -1,0 +1,25 @@
+ticker,cas,bpa_2030_sur_bpa_ntm,pe_sortie,pe_ntm,tcam,cours_2030
+SKHY,Cycle sévère,0.35,14,6.04,-0.050304,151.86
+SKHY,Cycle normal,0.5,12,6.04,-0.000982,185.95
+SKHY,Cycle doux,0.65,12,6.04,0.066741,241.73
+SKHY,"Le cycle disparaît, P/E 10",1.0,10,6.04,0.135103,309.91
+SKHY,"Le cycle disparaît, P/E 12",1.0,12,6.04,0.188039,371.9
+SKHY,"Le cycle disparaît, P/E 15",1.0,15,6.04,0.256198,464.87
+SKHY,"Croissance de 10 %/an, P/E 12",1.4641,12,6.04,0.306843,544.49
+SKHY,"Croissance de 10 %/an, P/E 15",1.4641,15,6.04,0.381818,680.61
+MU,Cycle sévère,0.35,14,7.09,-0.087558,738.25
+MU,Cycle normal,0.5,12,7.09,-0.040171,903.98
+MU,Cycle doux,0.65,12,7.09,0.024896,1175.17
+MU,"Le cycle disparaît, P/E 10",1.0,10,7.09,0.090576,1506.63
+MU,"Le cycle disparaît, P/E 12",1.0,12,7.09,0.141435,1807.96
+MU,"Le cycle disparaît, P/E 15",1.0,15,7.09,0.206921,2259.94
+MU,"Croissance de 10 %/an, P/E 12",1.4641,12,7.09,0.255579,2647.03
+MU,"Croissance de 10 %/an, P/E 15",1.4641,15,7.09,0.327613,3308.78
+SNDK,Cycle sévère,0.35,14,8.22,-0.121443,1030.54
+SNDK,Cycle normal,0.5,12,8.22,-0.075815,1261.89
+SNDK,Cycle doux,0.65,12,8.22,-0.013165,1640.46
+SNDK,"Le cycle disparaît, P/E 10",1.0,10,8.22,0.050077,2103.15
+SNDK,"Le cycle disparaît, P/E 12",1.0,12,8.22,0.099047,2523.78
+SNDK,"Le cycle disparaît, P/E 15",1.0,15,8.22,0.162101,3154.72
+SNDK,"Croissance de 10 %/an, P/E 12",1.4641,12,8.22,0.208952,3695.07
+SNDK,"Croissance de 10 %/an, P/E 15",1.4641,15,8.22,0.278311,4618.83

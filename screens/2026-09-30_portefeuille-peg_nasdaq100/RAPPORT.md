@@ -3,11 +3,19 @@
 *Méthode PEG de Peter Lynch, horizon 3 à 5 ans. Données arrêtées au 30/09/2026, cours de clôture du 29/09/2026. Consensus de BPA non-GAAP Zacks.*
 *Document d'analyse, pas un conseil en investissement personnalisé. Les chiffres marqués « hyp. » sont des hypothèses éditoriales, modifiables dans `data/hypotheses.csv`.*
 
-> **Mise à jour du 01/10/2026 : Broadcom remplacé par NVIDIA et TSMC.** À la demande de l'investisseur, le portefeuille retenu devient Nu 1/3, Rheinmetall 1/3, NVIDIA 1/6 et TSMC 1/6.
+> **Bilan du 01/10/2026 (après-midi) : Uber entre, le portefeuille passe à cinq lignes.** Nu 30 %, Rheinmetall 30 %, TSMC 15 %, Uber 15 %, NVIDIA 10 %.
+> - P/E des 12 prochains mois de 15,9, contre 22,2 pour le Nasdaq 100 ; PEG long terme de 0,77.
+> - Rendement espéré modélisé de 24,2 % par an, contre 24,1 % pour la version du matin et 10,0 % pour l'indice ; scénario bear à −7,8 %.
+> - Si Nu et Rheinmetall passent tous deux en bear, le portefeuille rapporte 7,1 % par an au lieu de 4,1 % (indice : 10,3 %). C'est la raison de l'entrée d'Uber.
+> - Candidats ajoutés au screen : Oracle, Grab, Advantest et SK Hynix (47 valeurs). Consensus d'Uber corrigé : BPA 2026 et 2027 de 3,36 $ et 4,59 $, au lieu de 3,54 $ et 4,77 $ saisis par erreur. Précision des CSV portée à 6 décimales.
+> - Nouvelles sorties : `variantes.csv`, `poche_etf.csv`, `memoire.csv` et `nvidia.csv`. Article complet : `BILAN.html` et `Bilan_portefeuille_PEG_2026-10-01.pdf`.
+> - `portefeuille.csv`, `stress_tests.csv`, `sensibilites.csv` et `monzo.csv` portent sur la version à cinq lignes. La version du matin reste dans `comparaison.csv` (colonne `version_4_lignes`) et dans `stress_tests.csv` (colonne `tcam_version_4_lignes`). `trios.csv` garde les candidats du 30/09.
+>
+> **Mise à jour du 01/10/2026 (matin) : Broadcom remplacé par NVIDIA et TSMC.** À la demande de l'investisseur, le portefeuille retenu devient Nu 1/3, Rheinmetall 1/3, NVIDIA 1/6 et TSMC 1/6.
 > - P/E des 12 prochains mois de 15,9, contre 22,2 pour le Nasdaq 100, pour la même croissance du BPA 2027 (+40 %).
 > - Rendement espéré modélisé de 24,1 % par an, contre 25,8 % pour le trio avec Broadcom et 10,0 % pour l'indice ; scénario bear inchangé à −7,3 %.
 > - Analyse de NVIDIA et de TSMC, dossier Reddit et mode d'emploi : `ARTICLE.html` et `Article_PEG_Nu_Rheinmetall_NVIDIA_TSMC.pdf`.
-> - Les sections ci-dessous documentent la version du 30/09 (trio avec Broadcom). Ses chiffres restent dans `comparaison.csv` (colonne `version_trio_avgo`) ; `portefeuille.csv`, `stress_tests.csv` et `sensibilites.csv` portent désormais sur le nouveau portefeuille.
+> - Les sections ci-dessous documentent la version du 30/09 (trio avec Broadcom). Ses chiffres restent dans `comparaison.csv` (colonne `version_trio_avgo`).
 
 ---
 
