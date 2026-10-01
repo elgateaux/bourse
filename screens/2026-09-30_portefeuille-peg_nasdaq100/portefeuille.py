@@ -37,8 +37,13 @@ FY0_ANNEE = {
     "MU": 2025, "COST": 2026, "AAPL": 2025, "CRDO": 2026, "CSCO": 2026, "PANW": 2026,
 }
 
-# Portefeuille retenu (pondérations éditoriales, voir RAPPORT.md).
-PORTEFEUILLE = {"NU": 1 / 3, "AVGO": 1 / 3, "RNMBY": 1 / 3}
+# Portefeuille retenu au 01/10/2026 : Broadcom remplacé par NVIDIA et TSMC, qui se
+# partagent son tiers (voir ARTICLE.html et RAPPORT.md).
+PORTEFEUILLE = {"NU": 1 / 3, "RNMBY": 1 / 3, "NVDA": 1 / 6, "TSM": 1 / 6}
+
+# Version du 30/09/2026 (trio avec Broadcom) et variante à poids égaux, pour comparaison.
+PORTEFEUILLE_TRIO = {"NU": 1 / 3, "AVGO": 1 / 3, "RNMBY": 1 / 3}
+PORTEFEUILLE_EGAL = {"NU": 0.25, "RNMBY": 0.25, "NVDA": 0.25, "TSM": 0.25}
 
 # Première version à 8 lignes, conservée pour comparaison.
 PORTEFEUILLE_8 = {
@@ -310,6 +315,9 @@ def main():
     ndx = agregats(poids_ndx, rows)
     ndx_hm = agregats({t: p for t, p in poids_ndx.items() if t not in ("MU", "SNDK")}, rows)
     eq = agregats(PORTEFEUILLE_8, rows)
+    trio = agregats(PORTEFEUILLE_TRIO, rows)
+    egal = agregats(PORTEFEUILLE_EGAL, rows)
+    versions = (ptf, ndx, ndx_hm, trio, egal, eq)
 
     # ---------------- accord Nu-Monzo ----------------
     cas_monzo = monzo(rows["NU"], hyp["NU"])
@@ -336,7 +344,8 @@ def main():
         ("Choc de crédit ou politique au Brésil (NU en bear)",
          scen(lambda t: "bear" if t == "NU" else "base")),
         ("Paix durable en Ukraine (RNMBY en bear)", scen(lambda t: "bear" if t == "RNMBY" else "base")),
-        ("Broadcom perd un grand client XPU (AVGO en bear)", scen(lambda t: "bear" if t == "AVGO" else "base")),
+        ("NVIDIA perd du terrain face au sur-mesure (NVDA en bear)", scen(lambda t: "bear" if t == "NVDA" else "base")),
+        ("Choc géopolitique sur Taïwan (TSM en bear)", scen(lambda t: "bear" if t == "TSM" else "base")),
         ("Double choc : NU et RNMBY en bear", scen(lambda t: "bear" if t in ("NU", "RNMBY") else "base")),
         ("Nu rachète Monzo 10 Md£ tout en actions (NU en base, BPA dilué)", nu_dilue("base")),
         ("Monzo tout en actions et choc Brésil (NU en bear, BPA dilué)", nu_dilue("bear")),
@@ -414,9 +423,9 @@ def main():
         keys = ["pe_ntm", "g27", "peg27", "g_lt", "peg_lt", "beta", "div", "part_ia",
                 "tcam_bear", "tcam_base", "tcam_bull", "tcam_esperance"]
         wr.writerow(["indicateur", "portefeuille", "nasdaq100_reconstitue", "nasdaq100_hors_memoire",
-                     "version_8_lignes"])
+                     "version_trio_avgo", "version_4_poids_egaux", "version_8_lignes"])
         for k in keys:
-            wr.writerow([k] + [round(x[k], 4) if x[k] is not None else "" for x in (ptf, ndx, ndx_hm, eq)])
+            wr.writerow([k] + [round(x[k], 4) if x[k] is not None else "" for x in versions])
         wr.writerow(["couverture_ndx_pct", "", round(couverture, 2), ""])
 
     with open(os.path.join(HERE, "stress_tests.csv"), "w", newline="", encoding="utf-8") as f:
@@ -490,17 +499,17 @@ def main():
               f"TCAM bear {pct(s['tcam_bear'])} base {pct(s['tcam_base'])} bull {pct(s['tcam_bull'])} "
               f"esp. {pct(s['tcam_esperance'])}  prix PEG1 {r['prix_peg1']:.2f} (cours {r['prix']})")
 
-    print("\n                       Portefeuille   Nasdaq 100  NDX hors mém.  Version 8 lignes")
+    print("\n                       Portefeuille   Nasdaq 100  NDX hors mém.   Trio AVGO   4 égaux   8 lignes")
     for k, lab in (("pe_ntm", "P/E NTM"), ("g27", "Croiss. BPA 2027 %"), ("peg27", "PEG 2027"),
                    ("g_lt", "Croiss. LT hyp. %"), ("peg_lt", "PEG LT"), ("beta", "Bêta"),
                    ("div", "Rendement div. %"), ("part_ia", "Part IA")):
-        vals = [x[k] for x in (ptf, ndx, ndx_hm, eq)]
+        vals = [x[k] for x in versions]
         if k == "part_ia":
             print(f"  {lab:<20} " + "  ".join(f"{v * 100:10.0f}%" for v in vals))
         else:
             print(f"  {lab:<20} " + "  ".join(f"{v:11.2f}" for v in vals))
     for k in ("tcam_bear", "tcam_base", "tcam_bull", "tcam_esperance"):
-        print(f"  {k:<20} " + "  ".join(f"{x[k] * 100:10.1f}%" for x in (ptf, ndx, ndx_hm, eq)))
+        print(f"  {k:<20} " + "  ".join(f"{x[k] * 100:10.1f}%" for x in versions))
 
     print("\nSensibilités du scénario de base (TCAM 4 ans)")
     for nom, a, b in sensib:

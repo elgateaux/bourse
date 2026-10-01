@@ -3,6 +3,12 @@
 *Méthode PEG de Peter Lynch, horizon 3 à 5 ans. Données arrêtées au 30/09/2026, cours de clôture du 29/09/2026. Consensus de BPA non-GAAP Zacks.*
 *Document d'analyse, pas un conseil en investissement personnalisé. Les chiffres marqués « hyp. » sont des hypothèses éditoriales, modifiables dans `data/hypotheses.csv`.*
 
+> **Mise à jour du 01/10/2026 : Broadcom remplacé par NVIDIA et TSMC.** À la demande de l'investisseur, le portefeuille retenu devient Nu 1/3, Rheinmetall 1/3, NVIDIA 1/6 et TSMC 1/6.
+> - P/E des 12 prochains mois de 15,9, contre 22,2 pour le Nasdaq 100, pour la même croissance du BPA 2027 (+40 %).
+> - Rendement espéré modélisé de 24,1 % par an, contre 25,8 % pour le trio avec Broadcom et 10,0 % pour l'indice ; scénario bear inchangé à −7,3 %.
+> - Analyse de NVIDIA et de TSMC, dossier Reddit et mode d'emploi : `ARTICLE.html` et `Article_PEG_Nu_Rheinmetall_NVIDIA_TSMC.pdf`.
+> - Les sections ci-dessous documentent la version du 30/09 (trio avec Broadcom). Ses chiffres restent dans `comparaison.csv` (colonne `version_trio_avgo`) ; `portefeuille.csv`, `stress_tests.csv` et `sensibilites.csv` portent désormais sur le nouveau portefeuille.
+
 ---
 
 ## En bref
@@ -771,6 +777,7 @@ python3 portefeuille.py
 | `stress_tests.csv` | Sortie du modèle, scénarios de rupture |
 | `trios.csv` | Sortie du modèle, les 84 trios à poids égaux |
 | `monzo.csv` | Sortie du modèle, effet d'un accord Nu-Monzo selon le montage |
+| `ARTICLE.html`, `Article_PEG_Nu_Rheinmetall_NVIDIA_TSMC.pdf` | Article du 01/10/2026 : Nu, Rheinmetall, NVIDIA, TSMC et dossier Reddit |
 
 La première version à 8 lignes reste calculée dans `portefeuille.py` (`PORTEFEUILLE_8`).
 

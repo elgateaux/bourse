@@ -1,10 +1,11 @@
 scenario,tcam_portefeuille,tcam_nasdaq100,ecart_pts
-"Krach du capex IA (valeurs IA en bear, le reste en base)",0.1845,0.0291,15.54
-"Supercycle mémoire prolongé (MU/SNDK en bull, le reste en base)",0.2562,0.1141,14.21
-Choc de crédit ou politique au Brésil (NU en bear),0.1657,0.1031,6.26
-Paix durable en Ukraine (RNMBY en bear),0.1744,0.1031,7.13
-Broadcom perd un grand client XPU (AVGO en bear),0.1845,0.0924,9.22
-Double choc : NU et RNMBY en bear,0.0591,0.1031,-4.39
-"Nu rachète Monzo 10 Md£ tout en actions (NU en base, BPA dilué)",0.2395,0.1031,13.65
-"Monzo tout en actions et choc Brésil (NU en bear, BPA dilué)",0.1586,0.1031,5.55
-Tout en base,0.2562,0.1031,15.31
+"Krach du capex IA (valeurs IA en bear, le reste en base)",0.1846,0.0291,15.54
+"Supercycle mémoire prolongé (MU/SNDK en bull, le reste en base)",0.2454,0.1141,13.13
+Choc de crédit ou politique au Brésil (NU en bear),0.1521,0.1031,4.9
+Paix durable en Ukraine (RNMBY en bear),0.1611,0.1031,5.8
+NVIDIA perd du terrain face au sur-mesure (NVDA en bear),0.217,0.0737,14.33
+Choc géopolitique sur Taïwan (TSM en bear),0.2152,0.1031,11.21
+Double choc : NU et RNMBY en bear,0.0409,0.1031,-6.22
+"Nu rachète Monzo 10 Md£ tout en actions (NU en base, BPA dilué)",0.2283,0.1031,12.52
+"Monzo tout en actions et choc Brésil (NU en bear, BPA dilué)",0.1448,0.1031,4.17
+Tout en base,0.2454,0.1031,14.23
