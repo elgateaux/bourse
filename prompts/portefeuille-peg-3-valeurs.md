@@ -65,13 +65,12 @@ Contrôles obligatoires :
 - **BPA des 12 prochains mois (NTM)** à la date d'analyse : (12 − k)/12 × BPA de l'année civile N + k/12 × BPA de l'année civile N+1, où k est le nombre de mois écoulés dans l'année N. Au 30 septembre, cela donne 0,25 et 0,75.
 - **P/E NTM** = cours / BPA NTM. **P/E N+1** = cours / BPA N+1.
 - **PEG N+1** = P/E N+1 / min(croissance du BPA N+1 en %, 50). Le plafond neutralise les effets de base.
-- **Croissance de long terme retenue** (de N+1 à N+5), par scénario pessimiste, central et optimiste. C'est une hypothèse éditoriale, justifiée en une ligne par valeur à partir de :
+- **Croissance de long terme retenue** (de N+1 à N+5), par scénario pessimiste, central et optimiste. C'est une hypothèse éditoriale, plus prudente que le consensus quand celui-ci extrapole un pic. Justifie-la en une ligne par valeur à partir de :
   - le LTG du consensus ;
   - les objectifs de la direction ;
   - la croissance du marché ;
   - la dilution prévue ;
   - la maturité de l'activité et la concurrence.
-  Sois plus prudent que le consensus quand celui-ci extrapole un pic.
 - **PEG long terme** = P/E NTM / croissance centrale.
 - **Zone d'achat de Lynch** : cours pour lequel le PEG long terme vaut 1, soit croissance centrale × BPA NTM. Zone de forte sécurité : PEG de 0,8.
 - **Valeurs cycliques** (mémoire, matières premières, équipementiers au sommet) : pas de PEG.
@@ -99,11 +98,10 @@ Les mêmes règles s'appliquent aux valeurs et à l'indice.
 ## Étape 6 : classement
 
 - **Éligibles** : valeurs non cycliques dont le PEG long terme est inférieur ou égal à 1,5.
-- **Score Lynch.** Il additionne trois rangs centiles :
+- **Score Lynch.** Il additionne trois rangs centiles, puis retire 5 points pour un Zacks Rank 4 et 10 points pour un Zacks Rank 5 :
   - 50 % pour le PEG long terme (le plus bas est le meilleur) ;
   - 30 % pour le rendement espéré ;
   - 20 % pour le PEG N+1, avec 2,0 retenu s'il est indisponible.
-  Retire 5 points pour un Zacks Rank 4 et 10 points pour un Zacks Rank 5.
 - Publie le classement complet, puis la liste des exclus avec leur raison (PEG supérieur à 1,5 ou cyclique) et leur rendement espéré.
 
 ## Étape 7 : construction du portefeuille de 3 valeurs
@@ -175,11 +173,10 @@ Fais-en une pour chaque valeur retenue et pour le premier remplaçant.
 
 ## Livrables
 
-1. **Dans la conversation**, la réponse commence par le verdict :
+1. **Dans la conversation**, la réponse commence par le verdict, puis donne les tableaux clés et ce qui a été écarté, avec la raison. Le verdict comprend :
    - les trois valeurs et leurs poids ;
    - le rendement espéré contre celui de l'indice ;
    - le pire cas.
-   Viennent ensuite les tableaux clés et ce qui a été écarté, avec la raison.
 2. **Un script reproductible** en Python, avec la seule bibliothèque standard. Il comprend :
    - les données brutes (CSV) ;
    - les hypothèses éditoriales (CSV, une justification par ligne) ;
