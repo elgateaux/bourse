@@ -13,4 +13,6 @@ uniquement), les données brutes utilisées (`data/`) et les résultats (`result
 
 Prompt réutilisable pour refaire la démarche : [portefeuille concentré de 3 valeurs, méthode PEG](prompts/portefeuille-peg-3-valeurs.md) ([PDF](prompts/portefeuille-peg-3-valeurs.pdf)).
 
+Standard des prochaines recherches : le [cahier des charges de l'enquête longue](prompts/cahier-des-charges-enquete.md). Il fixe le plan de l'article, un chapitre en huit parties par valeur, les règles de preuve et les contrôles. Il s'accompagne des dossiers de recherche par valeur ([research/](research/README.md)), des outils de mise en page ([outils/](outils/README.md)) et des consignes de [CLAUDE.md](CLAUDE.md).
+
 Ces analyses sont quantitatives et datées ; elles ne constituent pas un conseil en investissement.

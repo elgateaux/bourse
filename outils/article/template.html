@@ -1,0 +1,662 @@
+<title>Quatre valeurs contre le Nasdaq</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Mise en page : une « une » de quotidien financier. Titre sur toute la largeur, chapô et chiffres
+   clés, puis un long article sur une colonne de lecture dont les infographies débordent. */
+:root {
+  --paper: #F3F4F0;      /* papier, gris froid */
+  --paper-2: #E6EAE5;    /* encadrés */
+  --ink: #13222A;        /* texte principal */
+  --ink-2: #3B4A50;      /* texte courant */
+  --muted: #66757A;      /* légendes */
+  --rule: #C8D0CB;       /* filets */
+  --accent: #1D5FC4;     /* bleu presse, série 1 */
+  --series-2: #C8522A;   /* série 2 */
+  --mark-muted: #A7B1B4; /* marques de second plan */
+  --on-series: #FFFFFF;  /* texte posé sur une barre */
+  --good: #2E7D4F;
+  --bad: #B03A28;
+  --display: "Archivo", "Arial Narrow", Arial, sans-serif;
+  --text: "Newsreader", Georgia, "Times New Roman", serif;
+  --data: "IBM Plex Mono", "Courier New", monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #10181C; --paper-2: #18242A; --ink: #E9EDEA; --ink-2: #C3CDCB; --muted: #93A1A4;
+    --rule: #2C3A40; --accent: #3987E5; --series-2: #D95926; --mark-muted: #4F5D63; --on-series: #0B1216;
+    --good: #5FB487; --bad: #E07A65; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #10181C; --paper-2: #18242A; --ink: #E9EDEA; --ink-2: #C3CDCB; --muted: #93A1A4;
+  --rule: #2C3A40; --accent: #3987E5; --series-2: #D95926; --mark-muted: #4F5D63; --on-series: #0B1216;
+  --good: #5FB487; --bad: #E07A65; color-scheme: dark;
+}
+*, *::before, *::after { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink-2); font-family: var(--text); font-size: 1.125rem; line-height: 1.6;
+  -webkit-font-smoothing: antialiased; }
+.page { max-width: 72rem; margin: 0 auto; padding-inline: clamp(1rem, 4vw, 2.5rem); padding-block: 1.5rem 4rem; }
+a { color: var(--accent); text-underline-offset: 2px; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+b, strong { color: var(--ink); font-weight: 600; }
+.num, td, .kpi-v, .gb-val, .rg-val, .col-v { font-variant-numeric: tabular-nums; }
+
+/* ---- bandeau du journal ---- */
+.mast { border-bottom: 3px double var(--ink); padding-bottom: .9rem; margin-bottom: 2rem; }
+.mast-top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .4rem 1.5rem;
+  font-family: var(--data); font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted);
+  border-bottom: 1px solid var(--rule); padding-bottom: .5rem; }
+.mast-name { font-family: var(--display); font-stretch: 70%; font-weight: 800; font-size: clamp(2.6rem, 8vw, 4.6rem);
+  line-height: 1; color: var(--ink); letter-spacing: -.01em; margin: .7rem 0 .25rem; }
+.mast-sub { font-style: italic; color: var(--muted); font-size: 1rem; }
+
+/* ---- une ---- */
+.kicker { font-family: var(--data); font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--accent);
+  font-weight: 600; }
+h1 { font-family: var(--display); font-stretch: 75%; font-weight: 800; color: var(--ink);
+  font-size: clamp(2.2rem, 6vw, 4.2rem); line-height: 1.02; letter-spacing: -.015em; margin: .5rem 0 1rem; text-wrap: balance; }
+.chapo { font-size: clamp(1.2rem, 2.2vw, 1.45rem); line-height: 1.45; color: var(--ink); max-width: 48rem; margin: 0 0 1rem; }
+.byline { font-family: var(--data); font-size: .76rem; color: var(--muted); letter-spacing: .03em;
+  border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: .55rem 0; margin-bottom: 2rem; }
+
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr)); gap: 0; border-top: 2px solid var(--ink);
+  margin-bottom: 2.5rem; }
+.kpi { padding: 1rem 1.1rem 1.1rem 0; border-bottom: 1px solid var(--rule); }
+.kpi + .kpi { padding-left: 1.1rem; border-left: 1px solid var(--rule); }
+.kpi-l { font-family: var(--data); font-size: .74rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.kpi-v { font-family: var(--display); font-stretch: 80%; font-weight: 800; font-size: 2.6rem; line-height: 1.05; color: var(--ink); margin: .3rem 0 .15rem; }
+.kpi.key .kpi-v { color: var(--accent); }
+.kpi-s { font-size: .95rem; color: var(--muted); }
+@media (max-width: 52rem) { .kpi + .kpi { border-left: 0; padding-left: 0; } }
+
+/* ---- corps ---- */
+.lead-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2rem; }
+@media (min-width: 60rem) { .lead-grid { grid-template-columns: minmax(0, 1fr) 20rem; } }
+.prose { max-width: 42rem; min-width: 0; }
+.prose p { margin: 0 0 1.05rem; }
+.drop::first-letter { font-family: var(--display); font-stretch: 75%; font-weight: 800; float: left; font-size: 4.4rem;
+  line-height: .82; padding: .3rem .5rem 0 0; color: var(--ink); }
+h2 { font-family: var(--display); font-stretch: 80%; font-weight: 800; color: var(--ink); font-size: clamp(1.7rem, 3.4vw, 2.3rem);
+  line-height: 1.1; margin: 3.2rem 0 .8rem; padding-top: .9rem; border-top: 2px solid var(--ink); text-wrap: balance; max-width: 48rem; }
+h2 .h2-k { display: block; font-family: var(--data); font-stretch: 100%; font-size: .74rem; font-weight: 600; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: .4rem; }
+h3 { font-family: var(--display); font-stretch: 85%; font-weight: 700; color: var(--ink); font-size: 1.3rem; line-height: 1.2;
+  margin: 2rem 0 .6rem; text-wrap: balance; }
+.dek { font-size: 1.2rem; color: var(--ink); font-style: italic; max-width: 44rem; margin: 0 0 1.2rem; }
+ul.puces, ol.puces { padding-left: 1.2rem; margin: 0 0 1.1rem; }
+.puces li { margin-bottom: .55rem; }
+.puces li::marker { color: var(--muted); }
+
+.encadre { background: var(--paper-2); padding: 1.2rem 1.3rem; border-top: 3px solid var(--ink); align-self: start; min-width: 0; }
+.encadre h4 { font-family: var(--data); font-size: .76rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ink); margin: 0 0 .8rem; }
+.compo { list-style: none; padding: 0; margin: 0; display: grid; gap: .75rem; }
+.compo li { display: grid; grid-template-columns: 3.2rem minmax(0, 1fr); gap: .7rem; align-items: baseline;
+  border-bottom: 1px solid var(--rule); padding-bottom: .65rem; }
+.compo .w { font-family: var(--display); font-stretch: 80%; font-weight: 800; font-size: 1.6rem; color: var(--ink); }
+.compo .n { font-weight: 600; color: var(--ink); display: block; line-height: 1.25; }
+.compo .t { font-size: .92rem; color: var(--muted); }
+.encadre .note { font-size: .9rem; color: var(--muted); margin: .8rem 0 0; }
+
+.quote { margin: 1.8rem 0; padding: 0 0 0 1.2rem; border-left: 3px solid var(--accent); max-width: 40rem; }
+.quote p { font-family: var(--display); font-stretch: 85%; font-weight: 600; font-size: 1.45rem; line-height: 1.3; color: var(--ink); margin: 0 0 .5rem; }
+.quote cite { font-style: normal; font-family: var(--data); font-size: .78rem; color: var(--muted); }
+
+.zone { display: flex; flex-wrap: wrap; gap: .4rem 1rem; align-items: baseline; border: 1px solid var(--rule); border-left: 4px solid var(--series-2);
+  padding: .8rem 1rem; margin: 1.2rem 0; max-width: 42rem; font-size: 1rem; }
+.zone b { font-family: var(--data); font-weight: 600; font-size: .9rem; }
+
+/* fiches et tableaux */
+.cols-2 { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2rem; align-items: start; }
+@media (min-width: 60rem) { .cols-2 { grid-template-columns: minmax(0, 1fr) 24rem; } }
+.fiche { background: var(--paper-2); padding: 1rem 1.2rem; border-top: 3px solid var(--ink); min-width: 0; }
+.fiche h4 { font-family: var(--data); font-size: .76rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ink); margin: 0 0 .5rem; }
+.fiche dl { margin: 0; display: grid; grid-template-columns: minmax(0, 1fr) auto; }
+.fiche dt, .fiche dd { padding: .45rem 0; border-bottom: 1px solid var(--rule); font-size: .92rem; margin: 0; }
+.fiche dt { color: var(--muted); padding-right: .8rem; }
+.fiche dd { font-family: var(--data); font-size: .84rem; color: var(--ink); text-align: right; font-weight: 500; }
+.tbl { overflow-x: auto; margin: 1rem 0 1.4rem; max-width: 100%; }
+table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+th { font-family: var(--data); font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted);
+  font-weight: 500; text-align: right; padding: .45rem .6rem; border-bottom: 2px solid var(--ink); white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; padding-left: 0; }
+td { font-family: var(--data); font-size: .84rem; color: var(--ink); text-align: right; padding: .5rem .6rem; border-bottom: 1px solid var(--rule); }
+td:first-child { font-family: var(--text); font-size: .95rem; color: var(--ink-2); }
+tr.tot td { font-weight: 600; border-top: 1px solid var(--ink); }
+td.hl { color: var(--accent); font-weight: 600; }
+tr.neg td { color: var(--bad); }
+tr.neg td:first-child { color: var(--bad); }
+.tbl-note { font-size: .86rem; color: var(--muted); margin: -.6rem 0 1.4rem; max-width: 46rem; }
+.sens { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--ink); margin: 1rem 0 1.4rem; max-width: 34rem; }
+.sens div { padding: .6rem .7rem .6rem 0; border-bottom: 1px solid var(--rule); }
+.sens div + div { padding-left: .7rem; border-left: 1px solid var(--rule); }
+.sens span { display: block; font-family: var(--data); font-size: .7rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.sens b { font-family: var(--display); font-stretch: 80%; font-size: 1.5rem; font-weight: 800; }
+
+/* ---- infographies ---- */
+.fig { margin: 2.2rem 0; padding: 1.2rem 0 1rem; border-top: 2px solid var(--ink); border-bottom: 1px solid var(--rule); min-width: 0; }
+.fig-k { font-family: var(--data); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+.fig-t { font-family: var(--display); font-stretch: 85%; font-weight: 800; font-size: 1.35rem; color: var(--ink); margin: .2rem 0 .2rem; line-height: 1.2; }
+.fig-d { font-size: .95rem; color: var(--muted); margin: 0 0 .9rem; max-width: 46rem; }
+.fig-n { font-size: .82rem; color: var(--muted); margin: .9rem 0 0; max-width: 52rem; }
+.leg { display: flex; flex-wrap: wrap; gap: .4rem 1.3rem; font-family: var(--data); font-size: .76rem; color: var(--ink-2); margin-bottom: .6rem; }
+.leg span { display: inline-flex; align-items: center; gap: .45rem; }
+.sw { display: inline-block; width: 14px; height: 10px; border-radius: 0 3px 3px 0; }
+.sw.s1 { background: var(--accent); } .sw.s2 { background: var(--series-2); }
+.sw.dot { width: 11px; height: 11px; border-radius: 50%; background: var(--accent); }
+.sw.dia { width: 9px; height: 9px; border-radius: 0; background: var(--series-2); transform: rotate(45deg); margin: 0 2px; }
+.sw.line { width: 22px; height: 2px; border-radius: 0; background: var(--accent); }
+.sw.est { background: repeating-linear-gradient(135deg, var(--accent) 0 2px, transparent 2px 5px); border: 1px solid var(--accent); }
+
+/* barres groupées */
+.gb-row { display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: .4rem 1.2rem; padding: .75rem 0; border-top: 1px solid var(--rule); align-items: center; }
+.gb-row.is-key .gb-label b { color: var(--accent); }
+.gb-label b { display: block; font-family: var(--display); font-stretch: 90%; font-size: 1.02rem; line-height: 1.2; }
+.gb-label span { font-size: .84rem; color: var(--muted); line-height: 1.3; display: block; }
+.gb-bars { display: grid; gap: 4px; min-width: 0; }
+.gb-line { display: grid; grid-template-columns: minmax(0, 1fr) 4.6rem; gap: .6rem; align-items: center; }
+.gb-track { min-width: 0; }
+.gb-bar { height: 14px; border-radius: 0 4px 4px 0; }
+.gb-bar.s1 { background: var(--accent); } .gb-bar.s2 { background: var(--series-2); }
+.gb-val { font-family: var(--data); font-size: .82rem; color: var(--ink); }
+.gb-axis { display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 1.2rem; }
+.gb-axis div { display: grid; grid-template-columns: minmax(0, 1fr) 4.6rem; gap: .6rem; }
+.gb-ticks { position: relative; height: 1.2rem; border-top: 1px solid var(--ink); font-family: var(--data); font-size: .7rem; color: var(--muted); }
+.gb-ticks span { position: absolute; top: .2rem; transform: translateX(-50%); }
+.gb-ticks span:first-child { transform: none; }
+@media (max-width: 40rem) { .gb-row, .gb-axis { grid-template-columns: minmax(0, 1fr); } .gb-axis > span { display: none; } }
+
+/* fourchettes de scénarios */
+.rg { position: relative; }
+.rg-row { display: grid; grid-template-columns: 8.5rem minmax(0, 1fr) 8rem; gap: 1rem; align-items: center; padding: .55rem 0; border-top: 1px solid var(--rule); }
+.rg-label { font-family: var(--display); font-stretch: 90%; font-weight: 700; color: var(--ink); font-size: 1rem; }
+.rg-row.is-key .rg-label { color: var(--accent); }
+.rg-row.is-ref .rg-label { color: var(--muted); }
+.rg-track { position: relative; height: 24px; }
+.rg-zero { position: absolute; top: -.55rem; bottom: -.55rem; width: 1px; background: var(--ink); opacity: .55; }
+.rg-span { position: absolute; top: 11px; height: 2px; background: var(--accent); }
+.rg-end { position: absolute; top: 6px; width: 2px; height: 12px; background: var(--accent); margin-left: -1px; }
+.rg-base { position: absolute; top: 6px; width: 12px; height: 12px; margin-left: -6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 2px var(--paper); }
+.rg-exp { position: absolute; top: 7px; width: 10px; height: 10px; margin-left: -5px; background: var(--series-2); transform: rotate(45deg); box-shadow: 0 0 0 2px var(--paper); }
+.rg-row.is-ref .rg-span, .rg-row.is-ref .rg-end, .rg-row.is-ref .rg-base { background: var(--mark-muted); }
+.rg-val { font-family: var(--data); font-size: .8rem; color: var(--ink); text-align: right; line-height: 1.25; }
+.rg-val span { display: block; color: var(--muted); font-size: .72rem; }
+.rg-axis { display: grid; grid-template-columns: 8.5rem minmax(0, 1fr) 8rem; gap: 1rem; }
+.rg-ticks { position: relative; height: 1.3rem; border-top: 1px solid var(--ink); font-family: var(--data); font-size: .7rem; color: var(--muted); }
+.rg-ticks span { position: absolute; top: .25rem; transform: translateX(-50%); white-space: nowrap; }
+@media (max-width: 40rem) {
+  .rg-row, .rg-axis { grid-template-columns: 5.6rem minmax(0, 1fr) 4.4rem; gap: .5rem; }
+  .rg-val span { display: none; } .rg-label { font-size: .88rem; }
+  .rg-ticks span:nth-child(even) { display: none; }
+}
+
+/* nuage de points */
+.fig-scroll { overflow-x: auto; }
+.scatter { width: 100%; min-width: 34rem; height: auto; display: block; }
+.scatter text { font-family: var(--data); font-size: 14px; fill: var(--ink-2); }
+.scatter .tick { fill: var(--muted); font-size: 12.5px; }
+.scatter .axis-lab { fill: var(--muted); font-size: 12.5px; }
+.scatter .grid { stroke: var(--rule); stroke-width: 1; }
+.scatter .peg { stroke: var(--ink); stroke-width: 1.5; opacity: .6; }
+.scatter .peg15 { opacity: .3; }
+.scatter .peg-lab { fill: var(--muted); font-size: 12.5px; }
+.scatter .pt { fill: var(--accent); stroke: var(--paper); stroke-width: 2; }
+.scatter .pt-out { fill: var(--paper); stroke: var(--muted); stroke-width: 2; }
+.scatter .pt-ndx { fill: var(--series-2); stroke: var(--paper); stroke-width: 2; }
+.scatter .pt-ptf { fill: var(--ink); stroke: var(--paper); stroke-width: 2.5; }
+.scatter .pt-lab { fill: var(--ink); }
+.scatter .pt-lab.strong { font-weight: 600; }
+
+/* barres empilées (Anthropic) */
+.stk-row { display: grid; grid-template-columns: 7.5rem minmax(0, 1fr); gap: 1rem; align-items: center; margin: .5rem 0; }
+.stk-row > span { font-family: var(--data); font-size: .74rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.stk { display: flex; gap: 2px; height: 2.6rem; min-width: 0; }
+.seg { display: flex; align-items: center; padding: 0 .6rem; color: var(--on-series); font-family: var(--data); font-size: .78rem; font-weight: 600;
+  white-space: nowrap; overflow: visible; min-width: 0; }
+.seg.s1 { background: var(--accent); } .seg.s2 { background: var(--series-2); } .seg.s3 { background: var(--mark-muted); }
+.seg.fab { background: var(--ink); color: var(--paper); }
+.seg:last-child { border-radius: 0 4px 4px 0; }
+@media (max-width: 40rem) { .stk-row { grid-template-columns: minmax(0, 1fr); gap: .3rem; } .seg { font-size: .68rem; padding: 0 .35rem; } }
+
+/* colonnes trimestrielles */
+.cols { display: flex; align-items: flex-end; gap: 4px; height: 13rem; border-bottom: 1px solid var(--ink); padding-top: 1.6rem; }
+.col { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; height: 100%; min-width: 0; position: relative; }
+.col-b { width: 100%; max-width: 24px; border-radius: 4px 4px 0 0; background: var(--accent); }
+.col-b.est { background: repeating-linear-gradient(135deg, var(--accent) 0 2px, transparent 2px 5px); border: 1px solid var(--accent); border-bottom: 0; }
+.col-v { position: absolute; font-family: var(--data); font-size: .68rem; color: var(--ink); white-space: nowrap; transform: translateY(-1.25rem); }
+.cols-x { display: flex; gap: 4px; }
+.cols-x span { flex: 1; text-align: center; font-family: var(--data); font-size: .62rem; color: var(--muted); padding-top: .3rem; min-width: 0; }
+.cols-x span.y { color: var(--ink); }
+@media (max-width: 40rem) { .cols-x span:not(.y) { visibility: hidden; } .col-v.opt { display: none; } }
+
+.attente { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 0; border-top: 1px solid var(--ink); }
+.attente div { padding: .8rem 1rem .8rem 0; border-bottom: 1px solid var(--rule); }
+.attente b { display: block; font-family: var(--display); font-stretch: 85%; font-size: 1.1rem; }
+.attente span { font-size: .92rem; color: var(--muted); }
+
+.plan { display: grid; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); gap: 1.5rem; margin-top: 1rem; }
+.plan section { border-top: 3px solid var(--ink); padding-top: .7rem; min-width: 0; }
+.plan h4 { font-family: var(--data); font-size: .76rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ink); margin: 0 0 .6rem; }
+.plan ul { padding-left: 1.1rem; margin: 0; font-size: 1rem; }
+.plan li { margin-bottom: .5rem; }
+.cal { list-style: none; padding: 0 !important; }
+.cal li { display: grid; grid-template-columns: 4.6rem minmax(0, 1fr); gap: .6rem; border-bottom: 1px solid var(--rule); padding-bottom: .45rem; }
+.cal b { font-family: var(--data); font-size: .82rem; }
+
+.transp { font-size: .92rem; color: var(--muted); border-left: 3px solid var(--rule); padding-left: .9rem; max-width: 42rem; }
+
+footer.sources { margin-top: 3.5rem; border-top: 3px double var(--ink); padding-top: 1rem; font-size: .9rem; color: var(--muted); }
+footer.sources h2 { border: 0; padding: 0; margin: .5rem 0 .8rem; font-size: 1.3rem; }
+.src-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1rem 2rem; }
+.src-grid h5 { font-family: var(--data); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ink); margin: 0 0 .4rem; }
+.src-grid ul { padding-left: 1rem; margin: 0; }
+.src-grid li { margin-bottom: .3rem; }
+.avert { margin-top: 1.4rem; padding: .9rem 1rem; background: var(--paper-2); color: var(--ink-2); font-size: .92rem; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .gb-bar, .rg-span { transition: opacity .2s; }
+}
+@media print {
+  .page { max-width: none; padding: 0; }
+  h2 { break-after: avoid; }
+  .fig, .fiche, .encadre, table, .quote { break-inside: avoid; }
+  a { color: var(--ink); text-decoration: none; }
+}
+</style>
+
+<div class="page">
+<header class="mast">
+  <div class="mast-top"><span>Jeudi 1er octobre 2026</span><span>Marchés · Portefeuille concentré</span><span>Cours du 29/09/2026 · Données Zacks</span></div>
+  <div class="mast-name">Le Cahier PEG</div>
+  <div class="mast-sub">La croissance au juste prix, selon la méthode de Peter Lynch</div>
+</header>
+
+<article>
+<header>
+  <div class="kicker">Stratégie · Le portefeuille</div>
+  <h1>Nu, Rheinmetall, NVIDIA, TSMC : quatre valeurs pour battre le Nasdaq 100</h1>
+  <p class="chapo">Broadcom quitte le portefeuille, NVIDIA et TSMC se partagent sa place. L'ensemble reste payé 16 fois ses bénéfices pour la même croissance que l'indice, qui en vaut 22. Le changement coûte {{cout}} point de rendement espéré par an. Voici pourquoi il se défend, ce qu'il faut surveiller, et pourquoi Reddit attend à la porte.</p>
+  <div class="byline">Analyse quantitative · Horizon de quatre ans, du 30/09/2026 au 30/09/2030 · Analyse, pas un conseil en investissement personnalisé</div>
+</header>
+
+<section class="kpis" aria-label="Chiffres clés">
+  <div class="kpi"><div class="kpi-l">P/E des 12 prochains mois</div><div class="kpi-v">{{pe}}</div><div class="kpi-s">Nasdaq 100 : {{pe_ndx}}</div></div>
+  <div class="kpi"><div class="kpi-l">Croissance du BPA 2027</div><div class="kpi-v">+{{g27}} %</div><div class="kpi-s">Nasdaq 100 : +{{g27_ndx}} %</div></div>
+  <div class="kpi key"><div class="kpi-l">Rendement annuel espéré</div><div class="kpi-v">{{esp}}</div><div class="kpi-s">Nasdaq 100 : {{esp_ndx}}</div></div>
+  <div class="kpi"><div class="kpi-l">Scénario bear, par an</div><div class="kpi-v">{{bear}}</div><div class="kpi-s">Nasdaq 100 : {{bear_ndx}}</div></div>
+</section>
+
+<div class="lead-grid">
+  <div class="prose">
+    <p class="drop">Le portefeuille change de moteur dans l'intelligence artificielle. Depuis sa création, le 30 septembre, Broadcom en tenait seul un tiers, à côté de Nu Holdings et de Rheinmetall. Ce tiers est désormais partagé à parts égales entre NVIDIA, qui conçoit les accélérateurs d'IA les plus vendus au monde, et TSMC, qui les fabrique. Nu et Rheinmetall gardent chacun leur tiers.</p>
+    <p>Le changement a un prix, et notre modèle le chiffre. Le rendement annuel espéré sur quatre ans passe de {{esp_trio}} à {{esp}}. Le scénario pessimiste ne bouge pas : {{bear}} par an. Face au Nasdaq 100, reconstitué titre par titre avec exactement les mêmes règles, l'écart reste large : {{esp}} contre {{esp_ndx}}.</p>
+    <p>En échange, le portefeuille détient les deux maillons de la chaîne de l'IA qui gagnent quel que soit le vainqueur. NVIDIA vend les GPU. TSMC grave à la fois ces GPU et les puces sur mesure de Google, d'Amazon et de Broadcom. Le portefeuille ne dépend plus d'un seul grand client, Anthropic, ni d'une garantie de dette accordée à ce client.</p>
+  </div>
+  <aside class="encadre" aria-label="Composition">
+    <h4>La composition</h4>
+    <ul class="compo">
+      <li><span class="w">1/3</span><span><span class="n">Nu Holdings</span><span class="t">Banque numérique des pays émergents</span></span></li>
+      <li><span class="w">1/3</span><span><span class="n">Rheinmetall</span><span class="t">Réarmement européen</span></span></li>
+      <li><span class="w">1/6</span><span><span class="n">NVIDIA</span><span class="t">Accélérateurs d'IA</span></span></li>
+      <li><span class="w">1/6</span><span><span class="n">TSMC</span><span class="t">Fabrication des puces</span></span></li>
+    </ul>
+    <p class="note">Broadcom sort. Rééquilibrage une fois par an, ou si une ligne dépasse 45 % du portefeuille.</p>
+  </aside>
+</div>
+
+<figure class="fig" aria-labelledby="f1t">
+  <div class="fig-k">Infographie 1</div>
+  <div class="fig-t" id="f1t">Ce que coûte le départ de Broadcom</div>
+  <p class="fig-d">Rendement annuel sur quatre ans selon notre modèle, en pourcentage.</p>
+  <div class="leg"><span><i class="sw s1"></i>Espéré (scénarios pondérés 25/50/25)</span><span><i class="sw s2"></i>Cas pessimiste*</span></div>
+{{FIG1}}
+  <div class="gb-axis"><span></span><div><div class="gb-ticks"><span style="left:0%">0</span><span style="left:33.3%">10 %</span><span style="left:66.7%">20 %</span><span style="left:100%">30 %</span></div><span></span></div></div>
+  <p class="fig-n">* Croissance de nos titres réduite de 5 points par an, multiples figés, bénéfices de la mémoire (Micron, SanDisk) maintenus au pic dans l'indice. Source : modèle du Cahier PEG, consensus Zacks au 29/09/2026.</p>
+</figure>
+
+<h2><span class="h2-k">Le choix</span>Un tiers partagé, pas un quart chacun</h2>
+<div class="prose">
+  <p>Couper la part de Broadcom en deux est un choix délibéré. Le portefeuille garde ainsi sa structure : trois moteurs indépendants, le crédit en Amérique latine, les budgets de défense européens et l'IA, chacun pour un tiers.</p>
+  <p>À 25 % par valeur, l'IA monterait à la moitié du portefeuille. Notre modèle n'y gagne rien : {{esp_egal}} par an espérés, et dans le cas pessimiste le portefeuille passerait sous l'indice (15,0 % contre 15,4 %). Doubler la part de l'IA reviendrait à doubler le poids des deux valeurs que notre méthode juge les moins bon marché.</p>
+</div>
+<div class="tbl">
+  <table>
+    <caption class="fig-k" style="text-align:left;padding-bottom:.4rem">Avant, après</caption>
+    <thead><tr><th>Indicateur</th><th>Nouveau portefeuille</th><th>Ancien trio</th><th>4 × 25 %</th><th>Nasdaq 100</th></tr></thead>
+    <tbody>{{COMP}}</tbody>
+  </table>
+</div>
+<p class="tbl-note">Ancien trio : Nu, Broadcom et Rheinmetall, un tiers chacun. Nasdaq 100 reconstitué avec 31 valeurs, 74 % du poids de l'indice. * Croissance −5 points par an, multiples figés, mémoire au pic dans l'indice.</p>
+
+<h2><span class="h2-k">Analyse détaillée · NVIDIA (NVDA)</span>NVIDIA, la locomotive</h2>
+<div class="cols-2">
+  <div class="prose">
+    <p>Les chiffres de NVIDIA ressemblent à ceux d'une jeune pousse, à l'échelle d'un géant. Au trimestre clos le 26 juillet, le chiffre d'affaires a doublé sur un an, à 96,2 milliards de dollars. Le data center en représente 89 milliards. La marge brute reste à 75 %. Pour le trimestre en cours, le groupe vise 108 milliards, sans compter aucune vente de puces de calcul en Chine.</p>
+    <figure class="quote"><p>« Nous avons l'offre pour 70 % de croissance. Notre demande est bien supérieure. »</p><cite>Jensen Huang, PDG de NVIDIA, 26/08/2026 (« We have supply for 70% growth… Our demand is much higher than that. »)</cite></figure>
+    <p>Le patron de NVIDIA prévoit une croissance de 70 % du chiffre d'affaires sur l'exercice qui s'ouvre en février 2027, bien au-delà des attentes de l'époque. La nouvelle génération, Vera Rubin, est livrée depuis août et devrait peser environ 20 % du chiffre d'affaires data center dès ce trimestre. NVIDIA dit avoir une visibilité de 1 000 milliards de dollars de ventes Blackwell et Rubin jusqu'à fin 2027.</p>
+  </div>
+  <aside class="fiche" aria-label="Fiche NVIDIA">
+    <h4>Fiche · NVIDIA</h4>
+    <dl>
+      <dt>Cours (29/09)</dt><dd>227,21 $</dd>
+      <dt>Capitalisation</dt><dd>5 476 Md$</dd>
+      <dt>P/E 12 mois / 2027</dt><dd>17,0 / 15,3</dd>
+      <dt>BPA 2026 → 2027 (années civiles)</dt><dd>8,88 $ → 14,82 $</dd>
+      <dt>CA du T2 (exercice 2027)</dt><dd>96,2 Md$ (+106 %)</dd>
+      <dt>dont data center</dt><dd>89,0 Md$ (+117 %)</dd>
+      <dt>Marge brute</dt><dd>75,0 %</dd>
+      <dt>Prévision du T3</dt><dd>108 Md$ ± 2 %</dd>
+      <dt>Cash-flow libre 12 mois</dt><dd>127 Md$</dd>
+      <dt>Trésorerie nette</dt><dd>67 Md$</dd>
+      <dt>Rendu aux actionnaires au T2</dt><dd>26 Md$</dd>
+      <dt>Poids dans le Nasdaq 100</dt><dd>8,85 % (1re ligne)</dd>
+      <dt>Zacks (29/09)</dt><dd>Rank 1, Strong Buy</dd>
+      <dt>Objectif de cours Zacks</dt><dd>261 $</dd>
+    </dl>
+  </aside>
+</div>
+
+<figure class="fig" aria-labelledby="fnt">
+  <div class="fig-k">Infographie 2</div>
+  <div class="fig-t" id="fnt">NVIDIA : le chiffre d'affaires trimestriel a doublé en un an</div>
+  <p class="fig-d">Chiffre d'affaires par trimestre fiscal, en milliards de dollars. L'exercice 2027 court de février 2026 à janvier 2027.</p>
+  <div class="leg"><span><i class="sw s1"></i>Publié</span><span><i class="sw est"></i>Estimation Zacks au 29/09/2026</span></div>
+{{NVDA_COLS}}
+  <p class="fig-n">Source : Zacks Investment Research (chiffres publiés et consensus). Sur l'exercice 2028, le consensus attend 672 Md$, soit +65 %.</p>
+</figure>
+
+<div class="prose">
+  <h3>Pourquoi notre méthode ne la classe que huitième</h3>
+  <p>Tout dépend de la croissance qu'on prête à NVIDIA après 2027. Le consensus Zacks attend un bénéfice par action en hausse de 67 % l'an prochain. À ce rythme, le PEG tombe à 0,31, le plus bas des quatre valeurs. Notre modèle retient une hypothèse bien plus prudente, 15 % par an de 2027 à 2031. Un groupe qui vaut déjà 5 500 milliards de dollars ne peut pas doubler indéfiniment, et les puces sur mesure gagnent du terrain. Avec cette hypothèse, le PEG long terme monte à 1,14 et le rendement espéré tombe à 17,8 % par an.</p>
+  <p>L'hypothèse pèse lourd. À 20 % de croissance annuelle, NVIDIA rapporterait 21,6 % par an dans notre modèle, presque autant que Broadcom (23,4 %).</p>
+</div>
+<div class="sens" aria-label="Sensibilité de NVIDIA à la croissance retenue">
+  <div><span>Croissance 15 %</span><b>17,8 %</b></div><div><span>Croissance 20 %</span><b>21,6 %</b></div><div><span>Croissance 25 %</span><b>26,6 %</b></div>
+</div>
+<p class="tbl-note">Rendement annuel espéré de NVIDIA selon la croissance du BPA retenue pour 2027-2031.</p>
+<div class="tbl"><table>
+  <thead><tr><th>Scénario</th><th>BPA par an</th><th>P/E de sortie</th><th>Cours en 2030</th><th>Rendement par an</th></tr></thead>
+  <tbody>{{NVDA_SCEN}}</tbody>
+</table></div>
+<div class="prose">
+  <h3>Les risques</h3>
+  <ul class="puces">
+    <li><b>Les puces sur mesure.</b> Sur les 518 milliards de dollars d'engagements de calcul révélés par le prospectus d'Anthropic, 74 % vont à des puces sur mesure (TPU de Google, Trainium d'Amazon) et 22 % seulement à des GPU NVIDIA.</li>
+    <li><b>Le financement circulaire.</b> NVIDIA étudie de garantir environ 250 milliards de dollars de baux de data centers pour OpenAI, l'un de ses grands clients (Axios, 27/07/2026). L'action a perdu 5 % le lendemain. C'est le même type de risque que celui reproché à Broadcom avec Anthropic.</li>
+    <li><b>La Chine.</b> NVIDIA n'intègre plus aucune vente de calcul pour data center chinois dans ses prévisions.</li>
+    <li><b>Le recoupement avec l'indice.</b> NVIDIA est déjà la première ligne du Nasdaq 100, à 8,85 %. En détenir un sixième ne nous en distingue que de 8 points.</li>
+  </ul>
+</div>
+<p class="zone"><b>Zone d'achat (PEG long terme ≤ 1)</b> jusqu'à 200 $. Le titre cote 227 $, 14 % au-dessus.</p>
+
+<h2><span class="h2-k">Analyse détaillée · TSMC (TSM)</span>TSMC, le péage de l'IA</h2>
+<div class="cols-2">
+  <div class="prose">
+    <p>TSMC ne choisit pas de camp. Elle grave les GPU de NVIDIA, les TPU que Broadcom conçoit pour Google, les Trainium d'Amazon et les puces d'AMD. Si le sur-mesure gagne contre le GPU, TSMC gagne aussi.</p>
+    <p>Le goulot d'étranglement est chez elle. L'assemblage avancé CoWoS, indispensable aux accélérateurs d'IA, reste le premier frein de toute l'industrie, et TSMC en contrôle plus de 90 %. Ses lignes 3 nanomètres tournent au-delà de 100 % de leur capacité, et sa direction répète que la demande dépasse l'offre. En août, son chiffre d'affaires mensuel a battu un record, en hausse de 53 % sur un an.</p>
+    <p>Au deuxième trimestre, TSMC a encaissé 40,2 milliards de dollars, avec une marge brute de 67,7 % et une marge opérationnelle de 60,3 %. Le calcul haute performance pèse désormais 66 % de ses ventes. Pour 2026, le groupe vise une croissance d'un peu plus de 40 % en dollars, et investit 60 à 64 milliards.</p>
+  </div>
+  <aside class="fiche" aria-label="Fiche TSMC">
+    <h4>Fiche · TSMC</h4>
+    <dl>
+      <dt>Cours de l'ADR (29/09)</dt><dd>456,94 $</dd>
+      <dt>Capitalisation</dt><dd>2 370 Md$</dd>
+      <dt>P/E 12 mois / 2027</dt><dd>22,8 / 21,5</dd>
+      <dt>BPA 2026 → 2027</dt><dd>16,56 $ → 21,22 $</dd>
+      <dt>CA du T2 2026</dt><dd>40,2 Md$ (+36 %*)</dd>
+      <dt>Marge brute / opérationnelle</dt><dd>67,7 % / 60,3 %</dd>
+      <dt>Prévision du T3</dt><dd>44,6 à 45,8 Md$</dd>
+      <dt>Marge brute visée au T3</dt><dd>65 à 67 %</dd>
+      <dt>CA d'août 2026</dt><dd>+53 %, record</dd>
+      <dt>Investissements 2026</dt><dd>60 à 64 Md$</dd>
+      <dt>Trésorerie nette</dt><dd>85,6 Md$</dd>
+      <dt>Dans le Nasdaq 100</dt><dd>Non (cotée au NYSE)</dd>
+      <dt>Zacks (29/09)</dt><dd>Rank 2, Buy</dd>
+      <dt>Prochains résultats</dt><dd>15/10/2026</dd>
+    </dl>
+    <p class="note">* En dollars taïwanais. 1 ADR = 5 actions.</p>
+  </aside>
+</div>
+
+<figure class="fig" aria-labelledby="f4t">
+  <div class="fig-k">Infographie 3</div>
+  <div class="fig-t" id="f4t">Les 518 Md$ de calcul réservés par Anthropic : qui conçoit, qui fabrique</div>
+  <p class="fig-d">Engagements sur environ dix ans, d'après le projet de prospectus révélé par Reuters le 28/09/2026.</p>
+  <div class="stk-row"><span>Conçu par</span>
+    <div class="stk">
+      <div class="seg s1" style="flex:0 0 {{SM_W}}%" title="Puces sur mesure : {{SM_V}} Md$, {{SM_P}} %">Sur mesure · {{SM_V}} Md$ · {{SM_P}} %</div>
+      <div class="seg s2" style="flex:0 0 calc({{GPU_W}}% - 4px)" title="GPU NVIDIA : {{GPU_V}} Md$, {{GPU_P}} %">NVIDIA · {{GPU_P}} %</div>
+      <div class="seg s3" style="flex:1 1 auto" title="AMD : plus de 20 Md$, {{AMD_P}} %"></div>
+    </div></div>
+  <div class="stk-row"><span>Gravé par</span><div class="stk"><div class="seg fab" style="flex:1 1 auto" title="Toutes ces puces sont fabriquées par TSMC">TSMC · 100 %</div></div></div>
+  <div class="leg" style="margin-top:.7rem"><span><i class="sw s1"></i>Sur mesure : Broadcom 161 Md$, Google Cloud 111 Md$, Amazon 110 Md$</span><span><i class="sw s2"></i>GPU NVIDIA : xAI-SpaceX 84,5 Md$ (annulable), Microsoft 31,4 Md$</span><span><i class="sw" style="background:var(--mark-muted)"></i>AMD : plus de 20 Md$ ({{AMD_P}} %)</span></div>
+  <p class="fig-n">Les montants peuvent changer dans la version publique du prospectus. Source : Reuters, MarketBeat, TheStreet (28-29/09/2026).</p>
+</figure>
+
+<div class="prose">
+  <h3>Le prix et les risques</h3>
+  <p>TSMC est la plus chère des quatre selon notre méthode : 22,8 fois les bénéfices pour 18 % de croissance annuelle retenue, soit un PEG de 1,27. Notre hypothèse est volontairement sous la croissance de long terme attendue par Zacks (27 %), pour tenir compte de quatre freins.</p>
+  <ul class="puces">
+    <li><b>Taïwan.</b> Une crise dans le détroit toucherait TSMC, mais aussi NVIDIA, dont les puces sortent de ses usines, et une bonne partie du Nasdaq 100.</li>
+    <li><b>Les usines à l'étranger.</b> Produire en Arizona coûte plus cher. TSMC prévient que ses sites hors de Taïwan réduiront sa marge brute de 2 à 3 points, puis de 3 à 4 points. Son programme américain atteint 265 milliards de dollars.</li>
+    <li><b>Les droits de douane.</b> L'accord de janvier 2026 entre Washington et Taipei plafonne les droits à 15 % et exempte TSMC des taxes de 25 % sur les semi-conducteurs, à proportion de ses investissements aux États-Unis.</li>
+    <li><b>Le 2 nanomètres.</b> Sa montée en cadence pèse sur la marge du trimestre en cours : 65 à 67 %, contre 67,7 %.</li>
+  </ul>
+</div>
+<div class="sens" aria-label="Sensibilité de TSMC à la croissance retenue">
+  <div><span>Croissance 18 %</span><b>17,5 %</b></div><div><span>Croissance 20 %</span><b>18,5 %</b></div><div><span>Croissance 25 %</span><b>22,1 %</b></div>
+</div>
+<p class="tbl-note">Rendement annuel espéré de TSMC selon la croissance du BPA retenue pour 2027-2031.</p>
+<div class="tbl"><table>
+  <thead><tr><th>Scénario</th><th>BPA par an</th><th>P/E de sortie</th><th>Cours en 2030</th><th>Rendement par an</th></tr></thead>
+  <tbody>{{TSM_SCEN}}</tbody>
+</table></div>
+<p class="zone"><b>Zone d'achat (PEG long terme ≤ 1)</b> jusqu'à 361 $. L'ADR cote 457 $, 27 % au-dessus.</p>
+
+<h2><span class="h2-k">Les deux autres tiers</span>Nu et Rheinmetall ne bougent pas</h2>
+<div class="cols-2" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,20rem),1fr))">
+  <div class="prose">
+    <h3>Nu Holdings : la banque la moins chère du lot</h3>
+    <p>À 11,3 fois ses bénéfices pour une croissance attendue de 35 % en 2027, Nu a le PEG le plus bas de notre univers de 43 valeurs (0,51). Le 28 septembre, la rumeur d'un rachat de la banque britannique Monzo pour 8 à 10 milliards de livres a fait perdre 10 % au titre. Payé tout en actions, ce rachat réduirait le BPA 2030 de 13 %. Nu resterait un bon achat sous 12,5 $ environ ; au-dessus, on le remplacerait.</p>
+    <dl class="fiche" style="display:grid;grid-template-columns:minmax(0,1fr) auto;margin:0">
+      <dt>Rendement espéré</dt><dd>27,8 % par an</dd><dt>Cours 2030, base</dt><dd>36 $</dd><dt>Zone d'achat</dt><dd>jusqu'à 24 $ (12,35 $)</dd>
+    </dl>
+  </div>
+  <div class="prose">
+    <h3>Rheinmetall : l'arsenal soldé de moitié</h3>
+    <p>Le titre a perdu 52 % depuis son record de 2 008 € d'octobre 2025, pour des raisons d'exécution : premier trimestre manqué, frégate F126 annulée, carnet visé ramené à 100-120 milliards d'euros. À 20 fois ses bénéfices pour 39 % de croissance en 2027, son PEG (0,49) est le plus bas des grands de la défense européenne. Même à moitié de son objectif 2030, l'action vaudrait environ 1 000 € en 2030, son cours actuel. Son PDG en achète.</p>
+    <dl class="fiche" style="display:grid;grid-template-columns:minmax(0,1fr) auto;margin:0">
+      <dt>Rendement espéré</dt><dd>26,3 % par an</dd><dt>Cours 2030, base</dt><dd>≈ 2 290 € (522 $ l'ADR)</dd><dt>Zone d'achat</dt><dd>jusqu'à ≈ 1 040 € (957,65 €)</dd>
+    </dl>
+  </div>
+</div>
+
+<h2><span class="h2-k">Le modèle</span>Ce que disent les chiffres, scénario par scénario</h2>
+<figure class="fig" aria-labelledby="f2t">
+  <div class="fig-k">Infographie 4</div>
+  <div class="fig-t" id="f2t">Quatre valeurs, trois scénarios</div>
+  <p class="fig-d">Rendement annuel sur quatre ans : fourchette du scénario bear au scénario bull, scénario base et espérance pondérée.</p>
+  <div class="leg"><span><i class="sw line"></i>Du bear au bull</span><span><i class="sw dot"></i>Base</span><span><i class="sw dia"></i>Espéré</span></div>
+  <div class="rg">
+{{FIG2}}
+    <div class="rg-axis"><span></span><div class="rg-ticks">{{TICKS}}</div><span></span></div>
+  </div>
+  <p class="fig-n">Pondération 25 % bear, 50 % base, 25 % bull. Mêmes règles pour le portefeuille et l'indice. Source : modèle du Cahier PEG.</p>
+</figure>
+<div class="prose">
+  <p>Le portefeuille bat l'indice dans presque tous nos scénarios de rupture. Un krach de l'IA pèserait bien plus sur le Nasdaq 100, exposé à 38 %, que sur le portefeuille, exposé à 33 %. Le point faible reste le même qu'avec Broadcom, en plus marqué : si le Brésil et l'Ukraine tournent mal en même temps, le portefeuille tombe à 4,1 % par an, contre 10,3 % pour l'indice.</p>
+</div>
+<div class="tbl"><table>
+  <caption class="fig-k" style="text-align:left;padding-bottom:.4rem">Stress tests · rendement annuel sur quatre ans</caption>
+  <thead><tr><th>Scénario (valeurs visées en bear, le reste en base)</th><th>Portefeuille</th><th>Nasdaq 100</th><th>Écart</th></tr></thead>
+  <tbody>{{STRESS}}</tbody>
+</table></div>
+<div class="prose">
+  <p>L'avance dépend aussi de nos hypothèses. Avec des multiples figés, elle tombe de 14,2 à 6,2 points par an. Si l'on retire en plus 5 points de croissance à nos quatre valeurs, il reste 1,2 point. Dans la pire combinaison, avec en plus les bénéfices de la mémoire maintenus au pic dans l'indice, l'avance n'est plus que de 0,4 point. C'est 1,1 point de moins qu'avec Broadcom.</p>
+</div>
+<figure class="fig" aria-labelledby="f3t2">
+  <div class="fig-k">Infographie 5</div>
+  <div class="fig-t" id="f3t2">Le prix payé pour la croissance</div>
+  <p class="fig-d">P/E des 12 prochains mois et croissance annuelle du BPA retenue pour 2027-2031. Sous la ligne PEG 1, la croissance est payée moins d'une fois. Points pleins : le portefeuille ; cercles : candidats non retenus.</p>
+  <div class="fig-scroll">
+{{FIG3}}
+  </div>
+  <p class="fig-n">PEG long terme indiqué après chaque nom. Source : modèle du Cahier PEG, consensus Zacks au 29/09/2026.</p>
+</figure>
+
+<h2><span class="h2-k">Le dossier · Reddit (RDDT)</span>Reddit, la valeur que tout le monde utilise</h2>
+<p class="dek">Septième de notre classement, Reddit coche les cases de Lynch : une entreprise que l'on connaît, une croissance forte et un titre tombé de 45 %. Il n'entre pas dans le portefeuille, mais c'est le candidat le plus proche.</p>
+<div class="cols-2">
+  <div class="prose">
+    <h3>Une machine à publicité</h3>
+    <p>Reddit vit à 95 % de la publicité : 762 millions de dollars sur 805 au deuxième trimestre, en hausse de 64 %. Le reste vient surtout des licences de données vendues aux laboratoires d'IA, environ 60 millions de dollars par an avec Google et 70 millions avec OpenAI selon la presse. Le site compte 130,3 millions d'utilisateurs actifs par jour (+18 %) et plus d'un demi-milliard par semaine.</p>
+    <p>La rentabilité a suivi. Au deuxième trimestre, le résultat net a atteint 253 millions de dollars, 31 % du chiffre d'affaires, et l'EBITDA ajusté 43 %. Le groupe n'a aucune dette et 2,8 milliards de dollars de trésorerie. Pour le troisième trimestre, il vise 860 à 870 millions de dollars de chiffre d'affaires.</p>
+    <h3>Pourquoi le titre a chuté</h3>
+    <p>Le 22 juillet, la presse a révélé que Reddit envisageait de ne pas renouveler l'accord qui donne à Google l'accès à ses contenus pour l'IA : −9 %. Le 31 juillet, malgré une croissance de 61 %, le titre a encore perdu 10 à 12 %. Une phrase de la lettre aux actionnaires a suffi : les visites venues des moteurs de recherche ont été « heurtées » au cours du trimestre, et les utilisateurs américains ont stagné d'un trimestre à l'autre. Les réponses générées par l'IA de Google, affichées en haut des résultats, retiennent les internautes qui cliquaient auparavant vers Reddit.</p>
+  </div>
+  <aside class="fiche" aria-label="Fiche Reddit">
+    <h4>Fiche · Reddit</h4>
+    <dl>
+      <dt>Cours (29/09)</dt><dd>145,36 $</dd>
+      <dt>Capitalisation</dt><dd>28,0 Md$</dd>
+      <dt>P/E 12 mois / 2027</dt><dd>22,3 / 20,9</dd>
+      <dt>BPA 2025 → 2026e → 2027e</dt><dd>2,62 → 5,27 → 6,94 $</dd>
+      <dt>CA du T2 2026</dt><dd>805 M$ (+61 %)</dd>
+      <dt>dont publicité</dt><dd>762 M$ (+64 %)</dd>
+      <dt>Utilisateurs quotidiens</dt><dd>130,3 M (+18 %)</dd>
+      <dt>Marge nette / EBITDA aj. (T2)</dt><dd>31 % / 43 %</dd>
+      <dt>Cash-flow libre 12 mois</dt><dd>1,0 Md$</dd>
+      <dt>Trésorerie / dette</dt><dd>2,8 Md$ / 0</dd>
+      <dt>Repli vs plus haut 52 sem.</dt><dd>−45 % (263,50 $)</dd>
+      <dt>Bêta</dt><dd>2,0</dd>
+      <dt>Zacks (29/09)</dt><dd>Rank 2, Buy</dd>
+      <dt>Avis d'analyste Zacks</dt><dd>Neutral (avant : Outperform)</dd>
+      <dt>Prochains résultats</dt><dd>29/10/2026</dd>
+    </dl>
+  </aside>
+</div>
+
+<figure class="fig" aria-labelledby="frt">
+  <div class="fig-k">Infographie 6</div>
+  <div class="fig-t" id="frt">Reddit : un chiffre d'affaires qui doit doubler entre 2025 et 2027</div>
+  <p class="fig-d">Chiffre d'affaires trimestriel, en millions de dollars.</p>
+  <div class="leg"><span><i class="sw s1"></i>Publié</span><span><i class="sw est"></i>Estimation Zacks au 29/09/2026</span></div>
+{{RDDT_COLS}}
+  <p class="fig-n">Source : Zacks Investment Research. Le consensus attend 3,40 Md$ en 2026 (+54 %) et 4,51 Md$ en 2027 (+33 %).</p>
+</figure>
+
+<div class="prose">
+  <h3>L'IA, à la fois menace et monnaie d'échange</h3>
+  <figure class="quote"><p>« Il n'existe aucun grand modèle de langage au monde qui n'ait pas été largement entraîné sur les données de Reddit, y compris ceux de Google et d'OpenAI. »</p><cite>Steve Huffman, PDG de Reddit (« There is no LLM on Earth that wasn't significantly trained on Reddit's data, including Google and OpenAI with whom we have big partnerships. »)</cite></figure>
+  <p>Reddit veut faire payer cette dépendance. Steve Huffman estime que « toutes les variables ont changé » depuis la signature des premiers accords, et réclame un prix lié à l'usage plutôt qu'un forfait. Le groupe défend aussi ses données en justice : contre Anthropic depuis juin 2025, une affaire renvoyée devant un tribunal de l'État de Californie en mars 2026, et contre Perplexity et trois sociétés d'aspiration de données depuis octobre 2025.</p>
+  <p class="transp">Transparence : cette analyse a été produite avec un modèle d'IA d'Anthropic, partie adverse de Reddit dans l'une de ces procédures. Nous nous en tenons aux faits publiés et aux chiffres du modèle, appliqués selon les mêmes règles qu'aux autres valeurs.</p>
+  <h3>Ce que dit notre modèle</h3>
+  <p>À 22,3 fois ses bénéfices, avec une croissance retenue de 22 % par an (le consensus attend +32 % en 2027), Reddit affiche un PEG long terme de 1,01, juste à la limite de la zone d'achat. Son rendement espéré ressort à 22,1 % par an, mais avec un scénario bear à −11,7 %, plus dur que celui de TSMC.</p>
+</div>
+<div class="tbl"><table>
+  <thead><tr><th>Scénario</th><th>BPA par an</th><th>P/E de sortie</th><th>Cours en 2030</th><th>Rendement par an</th></tr></thead>
+  <tbody>{{RDDT_SCEN}}</tbody>
+</table></div>
+<div class="tbl"><table>
+  <caption class="fig-k" style="text-align:left;padding-bottom:.4rem">Et si Reddit entrait dans le portefeuille ?</caption>
+  <thead><tr><th>Composition</th><th>Espéré</th><th>Bear</th><th>Écart vs portefeuille</th></tr></thead>
+  <tbody>{{RDDT_VAR}}</tbody>
+</table></div>
+<div class="prose">
+  <p><b>Le verdict.</b> Sur le papier, Reddit ferait un peu mieux que TSMC. Nous ne l'intégrons pas pour un risque que le modèle ne mesure pas : sa dépendance au trafic de Google, qui est à la fois son premier apporteur de visiteurs, son client pour les données et son concurrent dans les réponses par IA. Le rendez-vous est fixé au 29 octobre. Si les visites venues de la recherche et les utilisateurs américains se stabilisent, et si l'accord avec Google est renouvelé à meilleur prix, Reddit pourra prendre la place de TSMC. Sous 115 $, soit un PEG de 0,8, il la mériterait même sans ces signaux.</p>
+</div>
+<p class="zone"><b>Zone d'achat (PEG long terme ≤ 1)</b> jusqu'à 143,50 $, le titre est à la limite (145,36 $). Marge de sécurité confortable sous 115 $.</p>
+
+<h2><span class="h2-k">La critique</span>Les questions qui fâchent</h2>
+<div class="prose">
+  <ol class="puces">
+    <li><b>NVIDIA et TSMC sont au-dessus de leur zone d'achat.</b> Selon notre méthode, il faudrait attendre 200 $ pour NVIDIA et 361 $ pour TSMC. Acheter maintenant, c'est payer la qualité et la visibilité plus cher que Lynch ne le ferait.</li>
+    <li><b>Le risque de financement circulaire n'a pas disparu.</b> Broadcom garantissait des dettes liées à Anthropic ; NVIDIA envisage de garantir des baux d'OpenAI.</li>
+    <li><b>La dépendance à Taïwan augmente.</b> NVIDIA et TSMC dépendent toutes deux des usines de l'île. Notre scénario de krach de l'IA, qui fait baisser toutes les valeurs du secteur à la fois, en donne l'ordre de grandeur : 18,5 % par an pour le portefeuille, 2,9 % pour l'indice.</li>
+    <li><b>Le portefeuille ressemble un peu plus à l'indice.</b> NVIDIA en est la première ligne. TSMC, cotée à New York hors Nasdaq, reste en revanche une vraie différence.</li>
+    <li><b>La marge de sécurité se réduit.</b> Dans la pire combinaison de nos hypothèses, l'avance sur l'indice tombe à 0,4 point par an, contre 1,5 point avec Broadcom.</li>
+  </ol>
+</div>
+<div class="encadre" style="margin-top:1.5rem">
+  <h4>Sur la liste d'attente</h4>
+  <div class="attente">
+    <div><b>Reddit</b><span>Remplace TSMC si le trafic se stabilise le 29/10, ou sous 115 $.</span></div>
+    <div><b>Adyen</b><span>19,1 % par an espérés, PEG de 1,0. Entrée sous 685 € environ.</span></div>
+    <div><b>Uber</b><span>Meilleur remplaçant de Nu sur les chiffres, sous 89 $.</span></div>
+    <div><b>Broadcom</b><span>Revient si l'introduction d'Anthropic réduit son risque de crédit, sous 358 $.</span></div>
+  </div>
+</div>
+
+<h2><span class="h2-k">Pratique</span>Le mode d'emploi</h2>
+<div class="plan">
+  <section>
+    <h4>Acheter</h4>
+    <ul>
+      <li><b>Nu</b> : un tiers, tout de suite. Le titre est deux fois sous sa zone d'achat.</li>
+      <li><b>Rheinmetall</b> : un tiers, sur Xetra en euros. Éligible au PEA.</li>
+      <li><b>NVIDIA et TSMC</b> : un sixième chacun, en deux fois. La moitié maintenant, le reste sur repli vers 200 $ et 361 $, ou après leurs résultats.</li>
+      <li>Nu, NVIDIA et TSMC se logent en compte-titres, avec un risque de change euro-dollar.</li>
+    </ul>
+  </section>
+  <section>
+    <h4>Le calendrier</h4>
+    <ul class="cal">
+      <li><b>04/10</b><span>Élection présidentielle au Brésil (second tour le 25/10)</span></li>
+      <li><b>15/10</b><span>Résultats du T3 de TSMC</span></li>
+      <li><b>29/10</b><span>Résultats de Reddit</span></li>
+      <li><b>05/11</b><span>Résultats de Rheinmetall</span></li>
+      <li><b>12/11</b><span>Résultats de Nu</span></li>
+      <li><b>18/11</b><span>Résultats de NVIDIA (date attendue)</span></li>
+      <li><b>25-27/11</b><span>Journée investisseurs de Rheinmetall</span></li>
+    </ul>
+  </section>
+  <section>
+    <h4>Quand vendre</h4>
+    <ul>
+      <li><b>Nu</b> : créances douteuses à 90 jours au-dessus de 8 %, ou rachat de Monzo surtout en actions avec un titre au-dessus de 12,5 $.</li>
+      <li><b>Rheinmetall</b> : carnet en baisse deux trimestres de suite, ou objectif 2030 ramené sous 30 Md€.</li>
+      <li><b>NVIDIA</b> : marge brute sous 70 % deux trimestres de suite, signe d'une concurrence qui mord.</li>
+      <li><b>TSMC</b> : marge brute sous 60 %, ou crise ouverte autour de Taïwan.</li>
+    </ul>
+  </section>
+</div>
+</article>
+
+<footer class="sources">
+  <h2>Méthode et sources</h2>
+  <p><b>Méthode.</b> PEG de Peter Lynch calculé sur le BPA non-GAAP du consensus Zacks, calendarisé, au 29/09/2026. Scénarios bear, base et bull pondérés 25/50/25 sur quatre ans, avec les mêmes règles pour le Nasdaq 100, reconstitué avec 31 valeurs (74 % du poids du QQQ). Les rendements sont des sorties de modèle fondées sur des hypothèses éditoriales, pas des prévisions. Code et hypothèses : dépôt elgateaux/bourse, dossier screens/2026-09-30_portefeuille-peg_nasdaq100.</p>
+  <div class="src-grid">
+    <div><h5>Données</h5><ul>
+      <li>Zacks Investment Research, 29/09/2026 : <a href="https://www.zacks.com/stock/quote/NVDA">NVDA</a>, <a href="https://www.zacks.com/stock/quote/TSM">TSM</a>, <a href="https://www.zacks.com/stock/quote/RDDT">RDDT</a>, <a href="https://www.zacks.com/stock/quote/NU">NU</a>, <a href="https://www.zacks.com/stock/quote/RNMBY">RNMBY</a></li>
+    </ul></div>
+    <div><h5>NVIDIA</h5><ul>
+      <li><a href="https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2027">Résultats du T2 de l'exercice 2027</a></li>
+      <li><a href="https://www.cnbc.com/2026/08/26/nvidia-nvda-earnings-report-q2-2027-live-updates.html">CNBC, 26/08/2026</a></li>
+      <li><a href="https://247wallst.com/cards/huang-s-fiscal-q2-message-shifts-the-demand-story-from-a-sin-nvda-quote-01m0zw3qyj2a5bdqweecppv4he">24/7 Wall St : Vera Rubin</a></li>
+      <li><a href="https://www.axios.com/2026/07/27/nvidia-openai-financing-ai-jensen-huang-ssi">Axios : garanties pour OpenAI</a></li>
+    </ul></div>
+    <div><h5>TSMC</h5><ul>
+      <li><a href="https://www.investing.com/news/transcripts/earnings-call-transcript-tsmc-lifts-2026-outlook-as-ai-demand-stays-hot-in-q2-2026-93CH-4794777">Transcription du T2 2026</a></li>
+      <li><a href="https://www.techtimes.com/articles/320696/20260716/tsmc-posts-record-quarter-ai-chip-demand-pushes-full-year-growth-outlook-past-40.htm">Tech Times : prévisions</a></li>
+      <li><a href="https://www.cnbc.com/2026/09/10/tsmc-august-revenue-chip-ai.html">CNBC : chiffre d'affaires d'août</a></li>
+      <li><a href="https://www.trendforce.com/news/2026/01/16/news-taiwan-u-s-trade-deal-cuts-tariffs-from-20-to-15-secures-250b-investment-with-tsmc-at-center/">TrendForce : accord douanier</a></li>
+      <li><a href="https://finance.biggo.com/news/ef6f02b9-93ae-4399-bb1f-01dccf0d9f23">BigGo : coût des usines étrangères</a></li>
+    </ul></div>
+    <div><h5>Reddit</h5><ul>
+      <li><a href="https://www.businesswire.com/news/home/20260730598707/en/Reddit-Reports-Second-Quarter-2026-Results">Résultats du T2 2026</a></li>
+      <li><a href="https://www.cnbc.com/2026/07/22/reddit-stock-google-ai-content-deal.html">CNBC : l'accord avec Google</a></li>
+      <li><a href="https://qz.com/reddit-shares-fall-search-traffic-us-user-growth-073126">Quartz : trafic de recherche</a></li>
+      <li><a href="https://www.searchenginejournal.com/reddit-ceo-llms-would-not-exist-without-reddit-data/575786/">Search Engine Journal : Steve Huffman</a></li>
+      <li><a href="https://news.bloomberglaw.com/ip-law/anthropic-unlikely-to-beat-reddit-scraping-suit-judge-hints">Bloomberg Law : Reddit contre Anthropic</a></li>
+    </ul></div>
+    <div><h5>Nu, Rheinmetall, Anthropic</h5><ul>
+      <li><a href="https://www.axios.com/2026/09/28/nu-monzo-acquisition-talks">Axios : Nu et Monzo</a></li>
+      <li><a href="https://www.investing.com/news/transcripts/earnings-call-transcript-rheinmetall-posts-strong-q2-2026-growth-shares-fall-57-93CH-4842893">Investing.com : Rheinmetall au T2</a></li>
+      <li><a href="https://wtvbam.com/2026/09/29/anthropics-518-billion-ai-buildout-hinges-largely-on-deals-that-cannot-be-canceled-filing-shows/">Reuters via WTVB : prospectus d'Anthropic</a></li>
+      <li>Analyses détaillées complètes : RAPPORT.md du dépôt</li>
+    </ul></div>
+  </div>
+  <p class="avert">Analyse quantitative et datée, publiée à titre d'information. Elle ne constitue pas un conseil en investissement personnalisé. Les performances modélisées ne préjugent pas des performances futures. Le Cahier PEG est un titre de fantaisie, sans lien avec une publication existante.</p>
+</footer>
+</div>

@@ -32,6 +32,12 @@ Construis le meilleur portefeuille de 3 valeurs pour battre [le Nasdaq 100] sur 
 
 Cite chaque source avec sa date. Présente les opinions d'analystes comme des opinions datées, jamais comme des faits.
 
+Recoupe chaque chiffre clé (consensus, BPA réalisé, cours) sur deux sources au moins, et écris l'écart quand il existe.
+
+Range chaque fait daté dans deux dossiers par valeur, avec des références numérotées (titre, éditeur, date, URL) :
+- **un dossier « histoire »** : histoire, huit ans de chiffres, Bourse, capital et dirigeants ;
+- **un « deep dive »** : résultats, consensus, moteurs, hypothèses, ours, règles de vente, calendrier, fiscalité.
+
 ## Étape 1 : méga-tendances et chaînes de valeur
 
 1. Identifie 5 à 8 méga-tendances pour les 3 à 5 prochaines années. Pour chacune, donne la taille du marché, sa croissance et surtout qui capte la valeur.
@@ -41,7 +47,10 @@ Cite chaque source avec sa date. Présente les opinions d'analystes comme des op
 ## Étape 2 : univers
 
 - Retiens les valeurs de l'indice qui représentent au moins [70 %] de son poids.
-- Ajoute 10 à 20 candidates hors indice : ADR, cotations étrangères, valeurs de l'investisseur, leaders des méga-tendances.
+- Ajoute des candidates hors indice, jusqu'à [environ 150] valeurs sur quatre continents :
+  - les goulots d'étranglement des méga-tendances ;
+  - des ADR et des cotations européennes, asiatiques et latino-américaines ;
+  - les valeurs de l'investisseur.
 - Pour chaque ADR, note le ratio de conversion et la cotation d'origine. Pour un PEA, c'est l'action européenne en euros qu'il faut acheter.
 
 ## Étape 3 : données et nettoyage
@@ -65,7 +74,7 @@ Contrôles obligatoires :
 - **BPA des 12 prochains mois (NTM)** à la date d'analyse : (12 − k)/12 × BPA de l'année civile N + k/12 × BPA de l'année civile N+1, où k est le nombre de mois écoulés dans l'année N. Au 30 septembre, cela donne 0,25 et 0,75.
 - **P/E NTM** = cours / BPA NTM. **P/E N+1** = cours / BPA N+1.
 - **PEG N+1** = P/E N+1 / min(croissance du BPA N+1 en %, 50). Le plafond neutralise les effets de base.
-- **Croissance de long terme retenue** (de N+1 à N+5), par scénario pessimiste, central et optimiste. C'est une hypothèse éditoriale, plus prudente que le consensus quand celui-ci extrapole un pic. Justifie-la en une ligne par valeur à partir de :
+- **Croissance de long terme retenue** (de N+1 à N+5), par scénario pessimiste, central et optimiste. C'est une hypothèse éditoriale, plus prudente que le consensus quand celui-ci extrapole un pic. Publie-la face au consensus, ligne par ligne, et justifie-la en une ligne par valeur à partir de :
   - le LTG du consensus ;
   - les objectifs de la direction ;
   - la croissance du marché ;
@@ -91,7 +100,7 @@ Les mêmes règles s'appliquent aux valeurs et à l'indice.
     - sinon, il est inchangé.
   - **Optimiste** : même règle avec la croissance optimiste. Sous g, le P/E remonte jusqu'à g (PEG de 1), avec au plus +50 %.
   - **Pessimiste** : le P/E est comprimé vers 1,5 × max(g, 5), avec une baisse comprise entre 20 % et 50 % du P/E actuel.
-  - **Plafond** : le P/E de sortie ne dépasse jamais le plus haut entre le P/E actuel et un plafond propre à la valeur. Par exemple 26 pour une valeur exposée à un risque géopolitique, 30 à 35 en général.
+  - **Plafond** : le P/E de sortie ne dépasse jamais le plus haut entre le P/E actuel et un plafond propre à la valeur. Par exemple 26 pour une valeur exposée à un risque géopolitique, 30 à 35 en général. Justifie chaque plafond en une ligne.
 - **Espérance** = moyenne pondérée des valeurs terminales. **Rendement annuel** = valeur terminale^(1/H) − 1.
 - **Indice.** Reconstitue-le ligne à ligne avec les mêmes règles, à partir des poids du QQQ renormalisés, pour comparer à armes égales.
 
@@ -111,12 +120,14 @@ Les mêmes règles s'appliquent aux valeurs et à l'indice.
    - P/E, croissance du BPA N+1, PEG long terme ;
    - nombre de valeurs du thème dominant ;
    - rendement espéré, rendements pessimiste, central et optimiste ;
-   - cas pessimiste : croissance réduite de 5 points et multiples figés.
-3. **Choix.** Combine un rendement espéré élevé, un pire cas défendable et trois moteurs indépendants (régions, clients et cycles différents).
+   - sensibilité : croissance réduite de 5 points et multiples figés. Ne l'appelle pas « pire cas » : elle est souvent meilleure que le scénario pessimiste, qui comprime les multiples.
+3. **Choix.** Combine un rendement espéré élevé, un rendement défendable si tout déçoit et trois moteurs indépendants (régions, clients et cycles différents).
    - Ne prends pas mécaniquement les trois meilleurs rendements.
    - Écarte et nomme explicitement les risques que le modèle mesure mal : dépendance à un client ou à une plateforme tierce, dette et dilution, volatilité extrême, doublon de thème avec une autre ligne.
-4. **Comparaison.** Mets le trio retenu face à au moins deux alternatives et à l'indice : P/E, croissance, PEG, part du thème dominant, bêta, rendements par scénario.
-5. **Coût de la concentration.** Compare avec la même stratégie à 4 ou 5 lignes : rendement espéré, pire cas, probabilité de finir sous l'indice.
+4. **Comparaison.** Mets le trio retenu face à au moins deux alternatives et à l'indice : P/E, croissance, PEG, part du thème dominant, bêta, rendements par scénario, valeur de 100 investis en fin d'horizon. Chaque indicateur est calculé de la même façon pour toutes les colonnes.
+   - Teste aussi des variantes nommées : chaque remplacement plausible d'une ligne, d'autres poids, une poche d'ETF de l'indice.
+   - Dis pourquoi chaque variante est écartée.
+5. **Coût de la concentration.** Compare avec la même stratégie à 4 ou 5 lignes : rendement espéré, rendement si tout déçoit, double choc, probabilité de finir sous l'indice.
 
 ## Étape 8 : risques et robustesse
 
@@ -137,66 +148,115 @@ Les mêmes règles s'appliquent aux valeurs et à l'indice.
 
 **Probabilités** (calcul simplifié) : chaque valeur tire son scénario indépendamment des autres, soit 3^3 = 27 combinaisons. Calcule la probabilité de finir sous l'indice en scénario central, puis celle de perdre de l'argent. Écris que les crises corrélées n'y sont pas représentées.
 
-## Étape 9 : analyses détaillées
+## Étape 9 : un chapitre par valeur
 
-Fais-en une pour chaque valeur retenue et pour le premier remplaçant.
+Écris-en un pour chaque valeur retenue, et un plus court pour le premier remplaçant. Le titre a la forme « Société : une accroche qui dit l'enjeu », par exemple « Uber : la place de marché que le robotaxi est censé tuer ». Compte quatre à six pages A4 par valeur, en huit parties, toujours dans cet ordre.
 
-- **Le métier** en deux phrases, les moteurs de croissance et la répartition du chiffre d'affaires.
-- **Les derniers résultats** : chiffres précis, croissance, marges, trésorerie.
-  - Ajoute les prévisions de la direction, les révisions des analystes sur 4 semaines et le Zacks Rank daté.
-- **Une ou deux citations du dirigeant**, en langue originale avec traduction et date.
-- **La position dans la chaîne de valeur** :
-  - les goulots d'étranglement ;
-  - les protections durables (logiciel, réseau, actifs physiques, coûts de changement) ;
-  - ce qui pourrait les éroder.
-- **Une fiche chiffrée** : cours, capitalisation, P/E NTM et N+1, BPA de N à N+1, PEG, dette ou trésorerie nette, prochaines publications.
-- **Un tableau des scénarios** : croissance, P/E de sortie, cours en fin d'horizon, rendement annuel.
-- **Les risques** classés par gravité et chiffrés quand c'est possible. Par exemple, la dilution d'une acquisition payée en numéraire ou en actions.
-- **La zone d'achat** (PEG de 1 et de 0,8) et des **règles de vente mesurables**. Par exemple : « marge brute sous X % deux trimestres de suite ».
+1. **D'où vient la société.** Cinq à sept paragraphes, chacun ouvert par une phrase-titre en gras :
+   - la fondation : date, lieu, fondateurs, l'intuition de départ ;
+   - la croissance et son financement ;
+   - l'introduction en Bourse et la chute : prix, date, plus bas, réponse de la direction ;
+   - comment elle a gagné : deux ou trois décisions et une citation datée du fondateur ;
+   - les concurrents d'hier et d'aujourd'hui, chiffrés ;
+   - le capital et le dirigeant : actionnaires et droits de vote, rémunération, achats et ventes d'actions, dividendes et rachats ;
+   - pour finir, la leçon de cette histoire en une phrase.
+2. **Huit ans de chiffres.**
+   - Un tableau des huit derniers exercices : chiffre d'affaires, croissance, marge opérationnelle, BPA (norme précisée), flux de trésorerie libre. Deux graphiques en barres : chiffre d'affaires et BPA.
+   - « Ce que disent les chiffres » : multiplication du chiffre d'affaires, trajectoire de la marge, nombre d'actions, flux de trésorerie.
+   - « La Bourse » : prix d'introduction, chutes de plus de 40 % (dates, cause, et ce que faisaient les bénéfices pendant ce temps), rendements par année civile, P/E de fin d'année face au P/E actuel.
+3. **Le métier aujourd'hui, et comment il gagne de l'argent.**
+   - Les sources de marge, séparées par niveau de risque.
+   - Deux ou trois chiffres qui rendent le modèle singulier.
+   - Le dernier trimestre (date du communiqué), les prévisions de la direction, les révisions des analystes sur 4 semaines et le Zacks Rank daté.
+   - La position dans la chaîne de valeur : goulots tenus, protections durables (logiciel, réseau, actifs physiques, coûts de changement), ce qui pourrait les éroder.
+   - Une citation de dirigeant, en langue originale avec traduction et date.
+4. **Les moteurs des quatre prochaines années, et leur prix.** Deux ou trois moteurs, chacun chiffré, et ce qu'ils coûtent : capex, dilution de marge, dette. Nomme ceux que les chiffres ne comptent pas.
+5. **Ce que le cours suppose, et ce qu'il faut croire.**
+   - La fiche chiffrée : cours, capitalisation, dette ou trésorerie nette, P/E NTM et N+1, croissance au consensus, PEG N+1.
+   - Ce que le prix suppose, en clair : « il faudrait croire que les bénéfices cessent de croître d'ici deux ans ».
+   - La croissance retenue face au consensus et le plafond de P/E de sortie, chacun avec sa raison.
+   - Le rendement espéré, le cours central en fin d'horizon, la zone d'achat (PEG de 1 et de 0,8). Si tu achètes au-dessus de la zone, dis-le et dis pourquoi.
+   - Le tableau des scénarios : croissance du BPA, P/E de sortie, BPA et cours en fin d'horizon, rendement annuel, et la ligne « Espéré (25/50/25) ».
+6. **Pourquoi nous y croyons.** Trois raisons, dans l'ordre. Si une concurrente a été écartée, explique « pourquoi X plutôt que Y ».
+7. **Le cas de l'ours.**
+   - Ses meilleurs arguments, chiffrés et datés, et l'objectif de cours des baissiers.
+   - Ta réponse.
+   - La probabilité que l'ours ait tort. C'est un jugement justifié, et il pèse sur le poids de la ligne.
+   - Ce qui te ferait changer d'avis, dans un sens ou dans l'autre.
+   - Les risques classés par gravité, chiffrés quand c'est possible, par exemple la dilution d'une acquisition payée en actions.
+8. **Règles de vente, calendrier, fiscalité.**
+   - Trois à six règles de vente mesurables, chacune avec un indicateur, un seuil et une durée. Par exemple : « marge brute sous X % deux trimestres de suite ».
+   - Les dates à surveiller.
+   - La cotation à acheter, l'éligibilité au PEA, le dividende et sa retenue à la source, l'exposition de change, la ligne à éviter (un ADR non sponsorisé, par exemple).
+   - Le remplaçant désigné si la ligne est vendue.
 
 ## Étape 10 : questions transverses, si elles se posent
 
 - **Rumeur d'acquisition.** Chiffre chaque montage (numéraire, actions, mixte) : son effet sur le BPA N+1 et de fin d'horizon, et sur le rendement du portefeuille.
 - **Rupture technologique.** Construis deux scénarios pour la valeur menacée, « marges comprimées » et « disruption ». Mesure leur effet sur le portefeuille et sur l'indice, puis dis qui gagne dans tous les cas : le fabricant, le testeur, le péage.
 - **Une cyclique « qui ne le serait plus ».** Donne un tableau du rendement selon le sort des bénéfices (−65 %, −50 %, −35 %, stables, +10 % par an) et selon le P/E de sortie.
-- **Poche d'ETF de l'indice ou fonds actif.** Calcule le coût en rendement espéré par tranche de 10 % et le gain dans le pire cas. Compare avec l'ajout d'une action décorrélée.
+- **Poche d'ETF de l'indice ou fonds actif.** Calcule le coût en rendement espéré par tranche de 10 %, et le gain dans le double choc et si tout déçoit. Compare avec l'ajout d'une action décorrélée.
 - **Fiscalité et change.** Précise l'enveloppe (PEA ou compte-titres), les valeurs éligibles et le risque de change.
 
-## Étape 11 : plan d'action
+## Étape 11 : mode d'emploi
 
 - **Comment acheter.**
-  - En une fois si le cours est dans la zone d'achat, en deux fois sinon (moitié maintenant, moitié sur repli ou après publication).
+  - En une fois si le cours est dans la zone d'achat, en deux fois sinon (moitié maintenant, moitié sur repli ou après publication). Précise les exceptions liées à un événement, une élection par exemple.
   - Indique la cotation à utiliser, par exemple Xetra en euros pour une valeur allemande.
 - **Calendrier** des catalyseurs sur 3 mois : publications, élections, introductions en Bourse, journées investisseurs.
-- **Règles de vente et de rééquilibrage** : une fois par an, ou dès qu'une ligne dépasse 45 %.
+- **Une règle de vente par ligne**, la plus parlante des règles de son chapitre.
+- **Rééquilibrage.**
+  - Une fois par an à date fixe, ou dès qu'une ligne dépasse 45 %.
+  - Vends la moitié d'une ligne dont le PEG dépasse 2.
+  - Renforce celle dont le PEG repasse sous 0,8 sans avoir déclenché sa règle de vente.
 - **Liste d'attente** : 4 à 6 valeurs, chacune avec son déclencheur (un prix ou un événement).
+- **Ce que nous n'achetons pas** : les valeurs écartées, rangées par famille (cycliques au sommet, belles entreprises à prix plein, piliers de l'indice), chacune avec la raison chiffrée et le prix auquel tu l'achèterais.
 
 ## Livrables
 
 1. **Dans la conversation**, la réponse commence par le verdict, puis donne les tableaux clés et ce qui a été écarté, avec la raison. Le verdict comprend :
    - les trois valeurs et leurs poids ;
    - le rendement espéré contre celui de l'indice ;
-   - le pire cas.
+   - le rendement si tout déçoit et celui du double choc.
 2. **Un script reproductible** en Python, avec la seule bibliothèque standard. Il comprend :
-   - les données brutes (CSV) ;
+   - les données brutes (CSV), dont les huit ans de chiffres de chaque valeur retenue ;
    - les hypothèses éditoriales (CSV, une justification par ligne) ;
    - les sorties : résultats par valeur, portefeuille, comparaison, stress tests, sensibilités, trios, variantes.
-3. **Un rapport complet** en Markdown : en bref, méthode, univers et classement, portefeuille, analyses détaillées, risques, critique, plan d'action, sources.
-4. **Un article de journal** en HTML autonome et sa version PDF A4 :
-   - thèmes clair et sombre, lisible sur mobile ;
-   - infographies : fourchettes de scénarios, barres comparatives, nuage P/E contre croissance ;
-   - un titre de journal fictif, avec un avertissement indiquant qu'il ne correspond à aucune publication existante.
+3. **Les dossiers de recherche** : pour chaque valeur retenue, un dossier « histoire » et un « deep dive », avec leurs références numérotées.
+4. **Un rapport complet** en Markdown : en bref, méthode, univers et classement, portefeuille, chapitres par valeur, risques, critique, mode d'emploi, sources.
+5. **Un article de journal**, l'enquête longue, en HTML autonome et sa version PDF A4. Son plan :
+   - la une : titre de journal fictif avec un avertissement indiquant qu'il ne correspond à aucune publication existante, titre qui énonce la thèse, sommaire numéroté, chapeau chiffré ;
+   - « En bref » : quatre puces (le pari, le rendement, le risque, ce que nous n'achetons pas), un tableau récapitulatif et les fourchettes de scénarios ;
+   - « Pourquoi ces trois-là » : contexte chiffré de l'indice, univers, nuage P/E contre croissance avec les droites PEG = 1 et 1,5, hypothèses face au consensus, rendement à multiples constants ;
+   - un chapitre par valeur (étape 9) ;
+   - « Le portefeuille face à l'indice et aux alternatives », puis « Les stress tests » ;
+   - « Ce que nous n'achetons pas, et à quel prix nous le ferions » ;
+   - « La critique : les questions qui fâchent », puis « Mode d'emploi » ;
+   - « Méthode et sources » : les mots à connaître, le calcul, l'origine et la date des chiffres, ce que l'article n'est pas, où sont les sources ;
+   - la forme : thèmes clair et sombre, lecture sur mobile, une légende de source sous chaque figure.
 
 ## Style
 
-- Français clair, phrases courtes, voix active, des chiffres partout, au format français (24,2 %, 1 234,5 $).
+- Français clair, phrases courtes, voix active, des chiffres partout, au format français (24,2 %, 1 234,5 $), tableaux compris.
 - Définis P/E, PEG, NTM et BPA non-GAAP à leur première apparition.
-- Ajoute une section « La critique : les questions qui fâchent ». Elle couvre la concentration, les valeurs achetées au-dessus de leur zone, les hypothèses discutables, les corrélations, le change et les erreurs de données possibles.
+- Donne des titres qui disent quelque chose, et cite les dirigeants en langue originale avec traduction, fonction et date.
+- La section « La critique : les questions qui fâchent » pose au moins huit questions numérotées :
+  - la concentration et les valeurs achetées au-dessus de leur zone ;
+  - le poids des hypothèses, mesuré avec 5 points de croissance en moins et des multiples figés ;
+  - les lignes corrélées (même capex, même pays) ;
+  - la conviction la plus fragile et sa probabilité ;
+  - le change, que le modèle ne compte pas ;
+  - la qualité inégale des données ;
+  - la fiscalité : PEA, compte-titres, retenues à la source ;
+  - ce que le portefeuille rate si la mode continue.
+- Dis ce que le modèle ne voit pas (crise géopolitique, krach général) au lieu de le noyer dans une moyenne.
 - Termine par l'avertissement : analyse quantitative et datée, qui ne constitue pas un conseil en investissement personnalisé.
 
 ## Contrôles avant de rendre
 
 - Le rendement espéré du portefeuille, recalculé à la main pour une ligne, correspond à la sortie du script.
 - Les chiffres de l'article et du rapport sont générés depuis les CSV, jamais recopiés à la main. Les arrondis sont identiques d'un document à l'autre.
+- Les rendements comparés (espéré, tout en pessimiste, double choc, sensibilités) sont calculés de la même façon pour toutes les colonnes, indice compris.
 - Toute donnée corrigée en cours de route est signalée dans les livrables.
-- Chaque source a sa date et son lien.
+- Chaque source a sa date et son lien, et les dossiers de recherche cités sont livrés avec l'article.
+- Le PDF n'a aucune table ni légende coupée, aucun titre orphelin en bas de page.
