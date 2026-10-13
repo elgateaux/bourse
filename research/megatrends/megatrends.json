@@ -1,0 +1,226 @@
+{
+  "date": "2026-10-13",
+  "megatendances": [
+    {
+      "id": "ia-calcul",
+      "nom": "L'usine à intelligence",
+      "marche": {
+        "taille": "700 Md$ d'investissements prévus en 2026 par Microsoft, Alphabet, Amazon et Meta, près du double de 2025",
+        "croissance": "",
+        "horizon": "2026",
+        "source": 1
+      },
+      "goulots": [],
+      "qui_capte_la_valeur": [
+        "NVDA",
+        "TSM"
+      ],
+      "risques": [],
+      "citations": [
+        {
+          "texte": "We have supply for 70% growth… Our demand is much higher than that.",
+          "traduction": "Nous avons l'offre pour 70 % de croissance… Notre demande est bien supérieure.",
+          "auteur": "Jensen Huang",
+          "fonction": "fondateur et PDG de NVIDIA",
+          "date": "2026-08-26",
+          "source": 3
+        },
+        {
+          "texte": "all the way to probably 2029, 2030",
+          "traduction": "jusqu'en 2029, 2030 probablement (à propos d'une demande d'IA « très forte »)",
+          "auteur": "C.C. Wei",
+          "fonction": "président et PDG de TSMC",
+          "date": "2026-07-16",
+          "source": 4
+        }
+      ],
+      "sources": [
+        {
+          "n": 1,
+          "titre": "Yahoo Finance : Hyperscalers hit $700 billion in 2026 AI spending plans",
+          "editeur": "Yahoo Finance",
+          "date": "2026",
+          "url": "https://finance.yahoo.com/sectors/technology/articles/hyperscalers-hit-700-billion-2026-111243744.html",
+          "consulte": "2026-10-13"
+        },
+        {
+          "n": 2,
+          "titre": "Om Malik : What I learned about hyperscalers' AI spend (30/04/2026)",
+          "editeur": "Om Malik",
+          "date": "2026",
+          "url": "https://om.co/2026/04/30/what-i-learned-about-hyperscalers-ai-spend/",
+          "consulte": "2026-10-13"
+        },
+        {
+          "n": 3,
+          "titre": "CNBC : NVIDIA earnings live updates (26/08/2026)",
+          "editeur": "CNBC",
+          "date": "2026-08-26",
+          "url": "https://www.cnbc.com/2026/08/26/nvidia-nvda-earnings-report-q2-2027-live-updates.html",
+          "consulte": "2026-10-13"
+        },
+        {
+          "n": 4,
+          "titre": "MarketBeat : TSMC Q2 earnings call highlights (16/07/2026)",
+          "editeur": "MarketBeat",
+          "date": "2026-07-16",
+          "url": "https://www.marketbeat.com/instant-alerts/taiwan-semiconductor-manufacturing-q2-earnings-call-highlights-2026-07-16/",
+          "consulte": "2026-10-13"
+        }
+      ]
+    },
+    {
+      "id": "banque-numerique",
+      "nom": "La banque dans la poche",
+      "marche": {
+        "taille": "139 M de clients au T2 2026, et plus d'un milliard de dollars de résultat net en un trimestre",
+        "croissance": "",
+        "horizon": "2026-08-13",
+        "source": 1
+      },
+      "goulots": [],
+      "qui_capte_la_valeur": [
+        "NU"
+      ],
+      "risques": [],
+      "citations": [
+        {
+          "texte": "For the first time, we generated more than $1 billion in net income.",
+          "traduction": "Pour la première fois, nous avons dégagé plus d'un milliard de dollars de résultat net.",
+          "auteur": "David Vélez",
+          "fonction": "fondateur et PDG de Nu Holdings",
+          "date": "2026-08-13",
+          "source": 3
+        }
+      ],
+      "sources": [
+        {
+          "n": 1,
+          "titre": "Nubank : Nu Holdings reports second quarter 2026 financial results",
+          "editeur": "Nubank",
+          "date": "2026-08-13",
+          "url": "https://international.nubank.com.br/company/nu-holdings-ltd-reports-second-quarter-2026-financial-results/",
+          "consulte": "2026-10-13"
+        },
+        {
+          "n": 2,
+          "titre": "KuCoin : Nu Holdings reports $1.06B net income in Q2 2026 with 139M customers",
+          "editeur": "KuCoin",
+          "date": "2026-08-13",
+          "url": "https://www.kucoin.com/news/flash/nu-holdings-reports-1-06b-net-income-in-q2-2026-with-139m-customers",
+          "consulte": "2026-10-13"
+        },
+        {
+          "n": 3,
+          "titre": "Investing.com : transcription du T2 2026 de Nubank",
+          "editeur": "Investing.com",
+          "date": "2026-08-13",
+          "url": "https://www.investing.com/news/transcripts/earnings-call-transcript-nubank-tops-1-billion-in-q2-2026-net-income-93CH-4859540",
+          "consulte": "2026-10-13"
+        }
+      ]
+    },
+    {
+      "id": "paiements",
+      "nom": "Les rails de l'argent",
+      "marche": {
+        "taille": "803,8 Md€ de paiements traités au S1 2026, en hausse de 24 % sur un an",
+        "croissance": "",
+        "horizon": "2026-08-13",
+        "source": 1
+      },
+      "goulots": [],
+      "qui_capte_la_valeur": [
+        "ADYEY"
+      ],
+      "risques": [],
+      "citations": [
+        {
+          "texte": "By expanding our role well beyond payments, we execute our long-term strategy and solve deeper structural complexity for our merchants.",
+          "traduction": "En allant bien au-delà du paiement, nous résolvons des problèmes plus profonds pour nos marchands.",
+          "auteur": "Adyen",
+          "fonction": "lettre aux actionnaires (co-PDG Pieter van der Does et Ingo Uytdehaage)",
+          "date": "2026-08-13",
+          "source": 3
+        }
+      ],
+      "sources": [
+        {
+          "n": 1,
+          "titre": "Finance Magnates : Adyen lifts 2026 revenue outlook as volume hits €804 billion",
+          "editeur": "Finance Magnates",
+          "date": "2026-08-13",
+          "url": "https://www.financemagnates.com/fintech/payments/adyen-lifts-2026-revenue-outlook-to-2123-as-volume-hits-804-billion/",
+          "consulte": "2026-10-13"
+        },
+        {
+          "n": 2,
+          "titre": "Financial IT : Adyen publishes H1 2026 financial results",
+          "editeur": "Financial IT",
+          "date": "2026-08-13",
+          "url": "https://financialit.net/news/infrastructure/adyen-publishes-h1-2026-financial-results",
+          "consulte": "2026-10-13"
+        },
+        {
+          "n": 3,
+          "titre": "Adyen : résultats du S1 2026",
+          "editeur": "Adyen",
+          "date": "2026-08-13",
+          "url": "https://www.adyen.com/press-and-media/adyen-publishes-h1-2026-financial-results-3wjne",
+          "consulte": "2026-10-13"
+        }
+      ]
+    },
+    {
+      "id": "donnees-humaines",
+      "nom": "Les données humaines",
+      "marche": {
+        "taille": "130,3 M d'utilisateurs actifs chaque jour au T2 2026 (+18 %), chiffre d'affaires en hausse de 61 %",
+        "croissance": "",
+        "horizon": "2026-07-30",
+        "source": 1
+      },
+      "goulots": [],
+      "qui_capte_la_valeur": [
+        "RDDT"
+      ],
+      "risques": [],
+      "citations": [
+        {
+          "texte": "would not exist as we know them",
+          "traduction": "n'existeraient pas tels que nous les connaissons (les grands modèles de langage sans les contenus de Reddit)",
+          "auteur": "Steve Huffman",
+          "fonction": "cofondateur et PDG de Reddit",
+          "date": "2026-05-25",
+          "source": 3
+        }
+      ],
+      "sources": [
+        {
+          "n": 1,
+          "titre": "Reddit : communiqué du T2 2026 (8-K déposé à la SEC)",
+          "editeur": "Reddit",
+          "date": "2026-07-30",
+          "url": "https://www.sec.gov/Archives/edgar/data/0001713445/000171344526000098/earningspressreleaseq226.htm",
+          "consulte": "2026-10-13"
+        },
+        {
+          "n": 2,
+          "titre": "Business Wire : Reddit reports second quarter 2026 results",
+          "editeur": "Business Wire",
+          "date": "2026-07-30",
+          "url": "https://www.businesswire.com/news/home/20260730598707/en/",
+          "consulte": "2026-10-13"
+        },
+        {
+          "n": 3,
+          "titre": "Search Engine Journal : Reddit CEO — LLMs would not exist without Reddit data",
+          "editeur": "Search Engine Journal",
+          "date": "2026-05-25",
+          "url": "https://www.searchenginejournal.com/reddit-ceo-llms-would-not-exist-without-reddit-data/575786/",
+          "consulte": "2026-10-13"
+        }
+      ]
+    }
+  ]
+}

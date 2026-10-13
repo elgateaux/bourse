@@ -1,0 +1,11 @@
+scenario,tcam_portefeuille,tcam_nasdaq100,ecart_pts
+"Krach du capex IA (valeurs IA en bear, le reste en base)",0.112382,0.030576,8.18
+Choc géopolitique sur Taïwan (TSM en bear),0.155931,0.106228,4.97
+NVIDIA perd du terrain face au sur-mesure (NVDA en bear),0.158438,0.077086,8.14
+Choc de crédit ou politique au Brésil (NU en bear),0.1511,0.106228,4.49
+Reddit perd le trafic de recherche (RDDT en bear),0.147462,0.106228,4.12
+Stripe comprime les commissions d'Adyen (ADYEY en bear),0.161155,0.106228,5.49
+Double choc fintech : NU et ADYEY en bear,0.110067,0.106228,0.38
+Tout en base,0.197319,0.106228,9.11
+Tout en bear,-0.094284,-0.11827,2.4
+Tout en bull,0.344569,0.238279,10.63

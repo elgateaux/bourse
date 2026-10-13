@@ -1,0 +1,36 @@
+ticker,nom,theme,fye,fy0_annee,prix,cap_musd,zacks_rank,eps_fy0,eps_f1,eps_f2,ltg,div_yield,beta,chg_ytd,chg_52s,high_52w,low_52w,objectif_moyen,source
+NVDA,NVIDIA,IA calcul,1,2026,226.32,5454312,1,4.77,9.2465,15.532,14,0.44,2.22,21.35,20.18,239.24,165.17,328.65,compare_stocks EDT
+TSM,TSMC,IA fonderie et equipement,12,2025,444.35,2304623.5,2,10.65,16.6,21.44,27.3,0.78,1.37,46.22,46.7,485.8,275.06,520.5,compare_stocks EDT
+NU,Nu Holdings,Fintech emergente,12,2025,16.01,77739.34,3,0.62,0.862,1.162,28.4,0,0.95,-4.36,6.17,18.76,11.6,18.01,compare_stocks EDT ; cours confirmé par get_zacks_metrics (16.01 le 12/10)
+RDDT,Reddit,Internet et IA applicative,12,2025,159.93,30769.97,2,2.62,5.2725,6.9358,41,0,2.05,-30.43,-21.48,258.93,121.84,213.06,compare_stocks EDT
+ADYEY,Adyen (ADR 1/100),Paiements,12,2025,10.21,32360.47,3,0.38,0.44,0.5325,16.9,0,2.36,-36.07,-39.98,17.57,9.01,19.82,compare_stocks EDT (ADR non sponsorisé ; 4 analystes)
+AAPL,Apple,Hyperscalers et plateformes,9,2025,340.97,4976177.5,3,7.46,8.856,9.5409,13.2,0.32,1.07,25.42,37.68,341.07,245.27,331.46,compare_stocks EDT
+MSFT,Microsoft,Hyperscalers et plateformes,6,2026,541.15,4018334.25,3,17.95,19.646,23.238,15.9,0.67,1.1,11.9,5.27,542.07,352.83,580.73,compare_stocks EDT
+AMZN,Amazon,Hyperscalers et plateformes,12,2025,259.53,2799372,2,7.17,13.015,10.579,16.1,0,1.45,12.44,17.93,284.02,198.79,329.72,compare_stocks EDT
+GOOGL,Alphabet,Hyperscalers et plateformes,12,2025,352.72,4313765.5,3,10.81,20.537,14.888,16.8,0.25,1.21,12.69,44.47,402.62,236.57,434.72,compare_stocks EDT
+META,Meta Platforms,Hyperscalers et plateformes,12,2025,742.96,1892695.25,3,23.49,31.376,34.393,20.5,0.28,1.19,12.55,3.81,777.59,525.72,804.18,compare_stocks EDT
+AVGO,Broadcom,IA calcul,10,2025,354.73,1693349.75,3,6.82,11.79,19.027,,0.73,1.46,2.49,-0.55,481.57,293.41,527.39,compare_stocks EDT
+COST,Costco,Autres Nasdaq 100,8,2026,959.44,425156,3,20.45,22.854,24.923,10.3,0.61,0.88,11.26,2.55,1094.32,850,1084.74,compare_stocks EDT
+MU,Micron Technology,IA memoire et stockage,8,2026,989.04,1119022.75,1,75.52,176.605,211.821,32.6,0.06,2.22,246.53,413.07,1213.56,181.6,1573.25,compare_stocks EDT (exercice 2026 publié le 30/09 : FY0 = 2026)
+NFLX,Netflix,Internet et IA applicative,12,2025,70.61,294015.78,4,2.53,3.5929,3.8192,19.7,0,1.62,-24.69,-42.08,124.14,67.06,94.58,compare_stocks EDT
+TSLA,Tesla,Mobilite et robotaxi,12,2025,378.03,1493047.5,4,1.66,1.6787,2.2507,22.3,0,1.92,-15.94,-13.28,489.88,298.32,408.06,compare_stocks EDT
+AMD,Advanced Micro Devices,IA calcul,12,2025,594.24,970081.94,3,4.17,7.5006,14.941,15,0,2.45,177.48,174.58,649.42,190.95,653.05,compare_stocks EDT
+ASML,ASML,IA fonderie et equipement,12,2025,1750.24,688340.88,4,27.95,43.7,58.047,50.9,0.42,1.77,63.6,77.75,1989.44,936.19,2424.86,compare_stocks EDT
+AMAT,Applied Materials,IA fonderie et equipement,10,2025,497.53,394838.53,1,9.42,12.788,18.299,28.1,0.43,1.6,93.6,126.69,723,209.95,649.88,compare_stocks EDT
+KLAC,KLA,IA fonderie et equipement,6,2026,190.12,248107.83,2,3.76,5.4379,6.6335,20.8,0.48,1.45,56.47,85.48,301.71,98.28,235.96,compare_stocks EDT
+LRCX,Lam Research,IA fonderie et equipement,6,2026,309.56,387390.94,2,5.81,9.3422,11.426,27,0.43,1.85,80.84,124.63,433.33,131.37,378.76,compare_stocks EDT
+AMGN,Amgen,Autres Nasdaq 100,12,2025,417.57,225751.72,3,21.84,22.939,24.519,6,2.41,0.41,27.58,42.81,444.12,290.13,401.27,compare_stocks EDT
+APP,AppLovin,Internet et IA applicative,12,2025,270.87,90646.91,4,10.04,15.679,20.154,30.5,0,2.56,-59.8,-54.1,733.6,268.22,501.9,compare_stocks EDT
+CSCO,Cisco,Autres Nasdaq 100,7,2026,115.34,454737.97,2,4.33,5.1127,5.591,10.9,1.46,0.99,49.73,70.97,130,67.46,133.48,compare_stocks EDT
+MELI,MercadoLibre,Fintech emergente,12,2025,1892.44,95940.66,3,39.4,38.132,55.233,37.3,0,1.31,-6.05,-13.03,2360.76,1546.81,2352,compare_stocks EDT
+PLTR,Palantir,Internet et IA applicative,12,2025,209,502239.19,3,0.75,1.6364,2.3108,55.5,0,1.6,17.58,17.94,209.05,107.27,207.07,compare_stocks EDT
+CEG,Constellation Energy,IA energie et refroidissement,12,2025,293.89,104127.41,2,9.39,12.185,13.253,14.9,0.58,1.12,-16.81,-22.85,403.95,236.5,341,compare_stocks EDT
+INTC,Intel,Autres Nasdaq 100,12,2025,101.35,511209.41,3,0.42,1.5,1.9674,9,0,2.22,174.66,172.3,140.94,33.62,115.1,compare_stocks EDT
+MRVL,Marvell Technology,IA calcul,1,2026,265.86,233132.63,3,2.84,4.2131,7.3113,11,0.09,2.26,212.85,197.42,316.43,73.73,337.42,compare_stocks EDT
+PANW,Palo Alto Networks,Autres Nasdaq 100,7,2026,403.83,330332.94,3,3.84,4.1785,4.9141,15,0,0.93,119.24,89.34,419.91,141.67,398.83,compare_stocks EDT
+TXN,Texas Instruments,Autres Nasdaq 100,12,2025,281.74,257298.39,3,5.45,8.4533,9.8446,21.1,2.02,1.35,62.4,60.89,332.28,153.33,326.48,compare_stocks EDT
+ALAB,Astera Labs,IA reseau et optique,12,2025,324.11,56228.25,3,1.84,3.975,6.2313,,0,3.68,94.82,62.44,483.02,100.27,424.94,compare_stocks EDT
+LITE,Lumentum,IA reseau et optique,6,2026,995.41,90167.08,3,8.67,21.395,35.081,,0,1.53,170.06,519.96,1133.4,149.61,1172.08,compare_stocks EDT
+SNDK,Sandisk,IA memoire et stockage,6,2026,1487.33,214960.19,2,70.88,213.311,252.801,48.2,0,5.23,526.56,1004.92,2335,116.91,2173.7,compare_stocks EDT
+WMT,Walmart,Autres Nasdaq 100,1,2026,113.08,897148,3,2.64,2.8738,3.217,9.1,0.88,0.58,1.5,10.73,134.2,100.61,128.78,compare_stocks EDT
+SPCX,SpaceX,Autres Nasdaq 100,12,2025,163.42,2154166.5,2,,0.07375,1.9353,20,0,,,,201.8,108.27,225.91,compare_stocks EDT (pas de BPA 2025 publié ; bêta et variations indisponibles)

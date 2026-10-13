@@ -1,0 +1,1103 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920, height=1080">
+<title>Cinq valeurs pour battre le Nasdaq 100 — 13/10/2026</title>
+<script src="vendor/gsap.min.js"></script>
+<style>
+@font-face { font-family: "GZ Archivo"; src: url("fonts/archivo-latin-wdth-normal.woff2") format("woff2");
+  font-weight: 100 900; font-stretch: 62% 125%; font-style: normal; }
+@font-face { font-family: "GZ Newsreader"; src: url("fonts/newsreader-latin-opsz-normal.woff2") format("woff2");
+  font-weight: 200 800; font-style: normal; }
+@font-face { font-family: "GZ Newsreader"; src: url("fonts/newsreader-latin-opsz-italic.woff2") format("woff2");
+  font-weight: 200 800; font-style: italic; }
+@font-face { font-family: "GZ Plex Mono"; src: url("fonts/ibm-plex-mono-latin-400-normal.woff2") format("woff2"); font-weight: 400; }
+@font-face { font-family: "GZ Plex Mono"; src: url("fonts/ibm-plex-mono-latin-500-normal.woff2") format("woff2"); font-weight: 500; }
+@font-face { font-family: "GZ Plex Mono"; src: url("fonts/ibm-plex-mono-latin-600-normal.woff2") format("woff2"); font-weight: 600; }
+:root { --ink:#07090d; --paper:#f2ede2; --muted:#a3abbb; --dim:#8d96a8; --line:rgba(242,237,226,.14);
+  --gold:#ffc94a; --ndx:#8da2c8; --spy:#c9ced8; --neg:#ff5a4f; --pos:#5be38f; }
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { width:1920px; height:1080px; overflow:hidden; background:var(--ink); }
+body { color:var(--paper); font-family:"GZ Archivo", sans-serif; font-stretch:100%; -webkit-font-smoothing:antialiased; }
+#root { position:relative; width:100%; height:100%; overflow:hidden; background:var(--ink); }
+.cond { font-family:"GZ Archivo", sans-serif; font-stretch:62%; font-weight:900; text-transform:uppercase; letter-spacing:-.005em; }
+.mono { font-family:"GZ Plex Mono", monospace; font-weight:500; letter-spacing:.02em; }
+.serif { font-family:"GZ Newsreader", serif; font-style:italic; font-weight:400; }
+.gold { color:var(--gold); }
+.neg { color:var(--neg); } .pos { color:var(--pos); }
+#bg, #grid, #grain, #fade, #hud { position:absolute; inset:0; }
+#bg { overflow:hidden; }
+.glow { position:absolute; border-radius:50%; filter:blur(120px); opacity:.20; }
+.glow.a { width:900px; height:900px; left:-250px; top:-300px; background:#3a5bd9; }
+.glow.b { width:800px; height:800px; left:1300px; top:500px; background:#ffb020; opacity:.13; }
+#grid { background-image:linear-gradient(rgba(242,237,226,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(242,237,226,.045) 1px, transparent 1px);
+  background-size:80px 80px; }
+#grain { opacity:.07; pointer-events:none; z-index:60;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' seed='7' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .55 0'/></filter><rect width='240' height='240' filter='url(%23n)'/></svg>"); }
+.vign { position:absolute; inset:0; background:radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,.55) 100%); }
+#hud { z-index:50; pointer-events:none; }
+.band { position:absolute; left:0; width:1920px; z-index:45; pointer-events:none; }
+.band.t { top:0; height:118px; background:linear-gradient(#07090d 72%, rgba(7,9,13,0)); }
+.band.b { bottom:0; height:96px; background:linear-gradient(rgba(7,9,13,0), #07090d 55%); }
+.hud-top { position:absolute; left:120px; right:120px; top:44px; height:40px; display:flex; align-items:center; justify-content:space-between;
+  font-family:"GZ Plex Mono", monospace; font-size:18px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); }
+.hud-top .mast { color:var(--paper); font-weight:600; }
+.hud-top .secs { position:relative; width:560px; height:26px; }
+.hud-top .sec { position:absolute; left:0; top:0; width:560px; text-align:center; color:var(--gold); opacity:0; }
+.hud-rule { position:absolute; left:120px; right:120px; top:96px; height:1px; background:var(--line); transform-origin:left center; }
+.hud-bot { position:absolute; left:120px; right:120px; bottom:30px; display:flex; justify-content:space-between;
+  font-family:"GZ Plex Mono", monospace; font-size:15px; color:var(--dim); letter-spacing:.04em; }
+#progress { position:absolute; left:0; bottom:0; height:5px; width:1920px; background:var(--gold); transform-origin:left center; }
+.scene { position:absolute; left:0; top:0; width:1920px; height:1080px; overflow:hidden; opacity:0; z-index:10; }
+#s1 { opacity:1; }
+.wipe { position:absolute; left:0; top:0; width:1920px; height:1080px; z-index:40; }
+#fade { background:#000; opacity:0; z-index:70; }
+.kicker { position:absolute; left:120px; top:150px; font-size:22px; text-transform:uppercase; letter-spacing:.18em; color:var(--muted); }
+.title { position:absolute; left:120px; top:136px; width:1680px; font-size:104px; line-height:.92; }
+.lede { position:absolute; left:120px; top:262px; width:1300px; font-size:31px; line-height:1.3; color:var(--muted); }
+.lede.short { width:900px; } .lede.wide { width:1680px; font-size:29px; }
+.foot { position:absolute; left:120px; top:960px; width:1680px; font-size:17px; color:var(--dim); letter-spacing:.02em; }
+/* s1 */
+.s1-title { position:absolute; left:112px; top:208px; width:1100px; font-size:178px; line-height:.86; }
+.s1-title .l { display:block; }
+.s1-title em { font-style:normal; color:var(--gold); }
+.s1-chips { position:absolute; left:120px; top:760px; display:flex; gap:18px; }
+.chip { display:inline-flex; align-items:center; gap:12px; padding:12px 22px 12px 18px; border:2px solid var(--c); border-radius:999px;
+  font-family:"GZ Plex Mono", monospace; font-weight:600; font-size:28px; letter-spacing:.06em; color:var(--paper); background:rgba(7,9,13,.6); }
+.chip i { display:block; width:14px; height:14px; border-radius:50%; background:var(--c); }
+.s1-hook { position:absolute; left:1240px; top:250px; width:560px; }
+.s1-hook .lab { font-size:20px; text-transform:uppercase; letter-spacing:.12em; color:var(--muted); }
+.s1-hook .big { font-size:210px; line-height:.95; margin-top:8px; font-variant-numeric:tabular-nums; }
+.s1-hook .vs { font-size:30px; line-height:1.3; margin-top:14px; }
+.s1-hook .sub { font-size:17px; color:var(--dim); margin-top:22px; line-height:1.5; }
+.tape { position:absolute; left:0; top:880px; width:1920px; height:60px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); overflow:hidden; }
+.tape-in { position:absolute; left:0; top:0; height:60px; display:flex; white-space:nowrap; }
+.tk { display:inline-block; padding:0 46px; line-height:58px; font-family:"GZ Plex Mono", monospace; font-size:24px; color:var(--muted); }
+.tk b { font-weight:600; } .tk em { font-style:normal; } .tk s { text-decoration:none; color:var(--dim); font-size:18px; }
+/* citations */
+.quote .ghost { position:absolute; right:-40px; top:120px; font-size:820px; line-height:.8; color:#12161e; white-space:nowrap; }
+.bigq { position:absolute; left:130px; top:150px; font-size:420px; line-height:1; color:var(--gold); font-style:normal; }
+.qwrap { position:absolute; left:250px; top:290px; width:1420px; display:flex; flex-direction:column; gap:34px; }
+.q-en { font-size:74px; line-height:1.1; color:var(--paper); }
+.q-en .w { display:inline-block; }
+.q-fr { font-size:34px; line-height:1.35; color:var(--muted); }
+.q-attr { display:flex; align-items:center; gap:22px; font-size:20px; color:var(--muted); }
+.q-attr b { color:var(--paper); font-weight:600; }
+.q-attr .rule { display:block; width:90px; height:3px; background:var(--gold); transform-origin:left center; }
+.q-ctx { font-size:17px; color:var(--dim); }
+/* s3 */
+.eq { position:absolute; left:120px; top:390px; width:1680px; display:flex; align-items:center; justify-content:center; gap:34px; }
+.tile { width:420px; height:240px; border:2px solid var(--line); border-radius:22px; padding:28px 32px; background:rgba(255,255,255,.025); }
+.tile .mono { font-size:19px; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); }
+.tile .tv { font-size:150px; line-height:1; margin-top:10px; font-variant-numeric:tabular-nums; }
+.tile.gold-b { border-color:var(--gold); }
+.op { font-size:120px; color:var(--dim); }
+.gauge { position:absolute; left:240px; top:730px; width:1440px; height:46px; display:flex; }
+.gz { position:relative; height:46px; display:flex; align-items:center; padding-left:16px; font-family:"GZ Plex Mono", monospace; font-size:17px; text-transform:uppercase; letter-spacing:.1em; }
+.gz.z1 { width:33.3333%; background:rgba(255,201,74,.22); color:var(--gold); border-radius:23px 0 0 23px; }
+.gz.z2 { width:16.6667%; background:rgba(242,237,226,.08); color:var(--muted); }
+.gz.z3 { width:50%; background:rgba(255,90,79,.14); color:#ff8a80; border-radius:0 23px 23px 0; }
+.gticks { position:absolute; left:0; top:58px; width:1440px; height:30px; }
+.gt { position:absolute; top:0; width:80px; margin-left:-40px; text-align:center; font-family:"GZ Plex Mono", monospace; font-size:18px; color:var(--dim); }
+.gmark { position:absolute; left:0; top:-74px; width:200px; margin-left:-100px; height:130px; display:flex; flex-direction:column; align-items:center; }
+.gmark span { font-size:18px; color:var(--gold); white-space:nowrap; }
+.gmark i { order:2; display:block; width:4px; height:96px; background:var(--gold); margin-top:6px; }
+.defs { position:absolute; left:240px; top:860px; width:1440px; font-size:19px; line-height:1.6; color:var(--muted); }
+.defs b { color:var(--paper); font-weight:600; }
+/* s4 */
+.roster { position:absolute; left:120px; top:290px; width:1680px; }
+.rrow { position:relative; height:116px; border-bottom:1px solid var(--line); display:flex; align-items:center; }
+.rbar { position:absolute; left:0; top:22px; width:10px; height:72px; background:var(--c); border-radius:5px; }
+.rsym { width:420px; padding-left:40px; font-size:104px; line-height:1; color:var(--c); }
+.rname { flex:1; font-size:44px; font-weight:700; }
+.rname small { display:block; font-size:26px; font-weight:400; color:var(--muted); margin-top:4px; }
+.rw { font-size:44px; color:var(--paper); }
+/* cartes */
+.card .halo { position:absolute; left:-200px; top:-160px; width:1100px; height:900px; border-radius:50%; background:var(--c); opacity:.10; filter:blur(140px); }
+.csym { position:absolute; left:112px; top:128px; width:820px; font-size:250px; line-height:.88; color:var(--c); white-space:nowrap; overflow:hidden; }
+.csym .ch { display:inline-block; }
+.cname { position:absolute; left:120px; top:372px; width:820px; font-size:58px; font-weight:800; line-height:1.05; }
+.cname small { display:block; font-size:34px; font-weight:400; color:var(--muted); margin-top:8px; }
+.cmeta { position:absolute; left:120px; top:500px; width:820px; font-size:20px; color:var(--muted); line-height:1.5; }
+.ctags { position:absolute; left:120px; top:560px; display:flex; gap:12px; }
+.tag { font-family:"GZ Plex Mono", monospace; font-size:19px; text-transform:uppercase; letter-spacing:.08em; padding:8px 16px; border:1px solid var(--c); border-radius:999px; color:var(--paper); }
+.cquote { position:absolute; left:120px; top:640px; width:790px; border-left:4px solid var(--c); padding-left:26px; }
+.cq-en { font-size:33px; line-height:1.22; color:var(--paper); }
+.cq-fr { font-size:22px; line-height:1.4; color:var(--muted); margin-top:12px; }
+.cq-a { font-size:16px; color:var(--dim); margin-top:12px; line-height:1.45; }
+.panel { position:absolute; left:980px; top:140px; width:820px; height:790px; border:1px solid var(--line); border-radius:22px; background:rgba(255,255,255,.03); }
+.ph { position:absolute; left:40px; top:30px; font-size:17px; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); }
+.bar { position:absolute; bottom:360px; width:150px; border-radius:10px 10px 0 0; transform-origin:bottom center; }
+.bar.b1 { left:70px; background:rgba(242,237,226,.22); }
+.bar.b2 { left:270px; background:var(--c); }
+.bv { position:absolute; width:230px; text-align:center; font-size:34px; font-weight:600; font-variant-numeric:tabular-nums; }
+.by { position:absolute; top:442px; width:150px; text-align:center; font-size:20px; color:var(--muted); }
+.growth { position:absolute; left:470px; top:150px; width:320px; }
+.growth .gv { font-size:132px; line-height:.9; color:var(--c); }
+.growth .mono { font-size:17px; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; margin-top:10px; }
+.tiles { position:absolute; left:40px; top:500px; width:740px; display:flex; gap:16px; }
+.st { flex:1; height:128px; border:1px solid var(--line); border-radius:16px; padding:16px 18px; }
+.st .mono { font-size:14px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); }
+.st .cond { font-size:66px; line-height:1; margin-top:10px; }
+.st small { font-size:26px; color:var(--muted); }
+.mini { position:absolute; left:40px; top:668px; width:740px; height:14px; border-radius:7px; background:rgba(242,237,226,.08); }
+.mini .mz { position:absolute; left:0; top:0; width:50%; height:14px; border-radius:7px 0 0 7px; background:rgba(255,201,74,.30); }
+.mini .mono { position:absolute; top:22px; font-size:15px; color:var(--dim); }
+.mini .m0 { left:0; } .mini .m1 { left:50%; margin-left:-24px; } .mini .m2 { right:0; }
+.mm { position:absolute; left:0; top:-14px; width:0; height:42px; }
+.mm i { position:absolute; left:-4px; top:0; width:8px; height:42px; border-radius:4px; background:var(--c); box-shadow:0 0 18px var(--c); }
+.pfoot { position:absolute; left:40px; top:716px; width:740px; font-size:16px; line-height:1.55; color:var(--muted); }
+/* s5 */
+.growth-list { position:absolute; left:120px; top:380px; width:1680px; }
+.grow { display:flex; align-items:center; height:62px; }
+.grow.agg:first-of-type { }
+.grow .gl { width:420px; font-size:30px; font-weight:600; }
+.grow.agg .gl { color:var(--c); }
+.gtrack { position:relative; width:1060px; height:34px; }
+.gb { position:absolute; left:0; top:0; height:34px; border-radius:0 8px 8px 0; background:var(--c); transform-origin:left center; display:block; }
+.grow.agg .gb { opacity:.9; }
+.gvv { width:180px; padding-left:22px; font-size:30px; font-weight:600; font-variant-numeric:tabular-nums; }
+#s5-r5 { margin-top:26px; border-top:1px solid var(--line); padding-top:0; }
+.callout { position:absolute; left:120px; top:900px; width:1680px; font-size:20px; color:var(--paper); }
+#s5 .foot { top:944px; }
+/* s6 */
+.dhead { position:absolute; left:120px; top:150px; width:1680px; height:130px; }
+.dh { position:absolute; top:0; width:700px; display:flex; flex-direction:column; gap:8px; }
+.dh .cond { font-size:96px; line-height:.9; }
+.dh .mono { font-size:18px; color:var(--muted); }
+.dh.l { left:0; } .dh.r { right:0; text-align:right; align-items:flex-end; }
+.dvs { position:absolute; left:790px; top:14px; width:100px; text-align:center; font-size:70px; color:var(--dim); }
+.dsplit { position:absolute; left:959px; top:300px; width:2px; height:600px; background:var(--line); transform-origin:top center; display:block; }
+.drows { position:absolute; left:120px; top:310px; width:1680px; }
+.drow { position:relative; height:116px; }
+.dl, .dr { position:absolute; top:6px; width:560px; font-size:100px; line-height:1; color:var(--muted); font-variant-numeric:tabular-nums; }
+.dl { left:0; text-align:right; } .dr { right:0; text-align:left; }
+.dl.win { color:var(--gold); } .dr.win { color:var(--ndx); }
+.dc { position:absolute; left:640px; top:40px; width:400px; text-align:center; font-size:17px; text-transform:uppercase; letter-spacing:.06em; color:var(--paper);
+  background:var(--ink); padding:6px 0; }
+/* s7 */
+.scatter { position:absolute; left:110px; top:262px; }
+.scatter .gridl { stroke:rgba(242,237,226,.07); stroke-width:1; }
+.scatter .ax { font-family:"GZ Plex Mono", monospace; font-size:19px; fill:#8f98aa; }
+.scatter .axt { font-family:"GZ Plex Mono", monospace; font-size:18px; fill:#9aa3b4; text-transform:uppercase; letter-spacing:.08em; }
+.pegl { stroke:#ffc94a; stroke-width:3; fill:none; }
+.pegl.dash { stroke:#9aa3b4; stroke-dasharray:10 10; stroke-width:2; }
+.pegt { font-family:"GZ Plex Mono", monospace; font-size:19px; fill:#ffc94a; }
+#s7-tl15 { fill:#9aa3b4; }
+.plab { font-family:"GZ Plex Mono", monospace; font-size:21px; font-weight:600; }
+.side { position:absolute; left:1380px; top:290px; width:420px; display:flex; flex-direction:column; gap:26px; }
+.side > .mono { font-size:19px; line-height:1.5; color:var(--muted); }
+.side .note { font-size:16px; color:var(--dim); }
+.sv { border-top:1px solid var(--line); padding-top:14px; display:flex; flex-direction:column; gap:4px; }
+.sv .mono { font-size:16px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); }
+.sv b { font-size:92px; line-height:1; }
+/* s9 */
+.mp { position:absolute; left:0; top:0; width:1920px; height:1080px; opacity:0; }
+#m1 { opacity:1; }
+.mghost { position:absolute; right:60px; top:150px; font-size:700px; line-height:.8; color:#12161e; }
+.mk { position:absolute; left:120px; top:150px; font-size:20px; text-transform:uppercase; letter-spacing:.16em; color:var(--c); }
+.mt { position:absolute; left:120px; top:186px; width:1680px; font-size:128px; line-height:.92; }
+.mt.small { top:136px; font-size:96px; }
+.ma { position:absolute; left:120px; top:318px; width:1400px; font-size:44px; color:var(--muted); }
+.mn { position:absolute; left:112px; top:400px; width:1300px; font-size:290px; line-height:1; color:var(--c); font-variant-numeric:tabular-nums; text-transform:none; }
+.ml { position:absolute; left:120px; top:700px; width:1300px; font-size:36px; line-height:1.3; }
+.mc { position:absolute; left:120px; top:812px; display:flex; align-items:center; gap:16px; }
+.mc > .mono { font-size:17px; text-transform:uppercase; letter-spacing:.12em; color:var(--muted); margin-right:8px; }
+.ms { position:absolute; left:120px; top:906px; width:1680px; font-size:15px; color:var(--dim); }
+.links path { fill:none; stroke-width:4; stroke-linecap:round; opacity:.9; }
+.nl { position:absolute; left:160px; width:480px; height:68px; display:flex; align-items:center; padding:0 26px; border:1px solid var(--line); border-radius:14px;
+  background:rgba(7,9,13,.85); font-size:30px; font-weight:700; }
+.nr { position:absolute; left:1320px; width:440px; height:68px; display:flex; align-items:center; gap:16px; padding:0 24px; border:2px solid var(--c); border-radius:999px;
+  background:rgba(7,9,13,.85); font-size:32px; font-weight:700; }
+.nr i { display:block; width:16px; height:16px; border-radius:50%; background:var(--c); }
+.m5-call { position:absolute; left:160px; top:880px; width:1600px; display:flex; align-items:center; gap:28px; }
+.m5-call b { font-size:96px; line-height:1; }
+.m5-call span { font-size:28px; line-height:1.35; }
+/* s10 */
+.zero { position:absolute; left:160px; top:640px; width:980px; height:2px; background:rgba(242,237,226,.35); transform-origin:left center; display:block; }
+.rb { position:absolute; width:110px; border-radius:6px 6px 0 0; transform-origin:bottom center; display:block; }
+.rb.neg { border-radius:0 0 6px 6px; transform-origin:top center; }
+.rv { position:absolute; width:150px; text-align:center; font-size:30px; font-weight:600; }
+.rn { position:absolute; width:150px; text-align:center; font-size:16px; color:var(--muted); }
+.rg { position:absolute; width:400px; font-size:44px; color:var(--paper); }
+.slist { position:absolute; left:1220px; top:390px; width:580px; }
+.slist .sh { font-size:17px; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); margin-bottom:18px; }
+.srow { display:flex; align-items:center; height:70px; border-bottom:1px solid var(--line); }
+.sn { width:150px; font-size:28px; font-weight:700; color:var(--c); }
+.strack { position:relative; width:300px; height:22px; }
+.strack::before { content:""; position:absolute; left:50%; top:-8px; width:1px; height:38px; background:rgba(242,237,226,.3); }
+.sb { position:absolute; top:0; height:22px; background:var(--c); display:block; }
+.sb.neg { transform-origin:right center; } .sb { transform-origin:left center; }
+.sv2 { width:130px; text-align:right; font-size:26px; font-weight:600; }
+.msg { position:absolute; left:120px; top:880px; width:1680px; font-size:38px; color:var(--paper); }
+#s10 .foot { top:950px; }
+/* s12 */
+.zline { position:absolute; top:340px; width:2px; height:250px; background:rgba(242,237,226,.25); display:block; }
+.aticks { position:absolute; left:0; top:596px; width:1920px; height:30px; }
+.at { position:absolute; width:80px; text-align:center; font-size:17px; color:var(--dim); }
+.rlab { position:absolute; left:120px; width:200px; font-size:42px; line-height:1; }
+.rng { position:absolute; height:26px; border-radius:13px; opacity:.85; transform-origin:left center; display:block; }
+.rdot { position:absolute; width:30px; height:30px; border-radius:50%; border:5px solid; background:var(--ink); display:block; }
+.rdia { position:absolute; width:26px; height:26px; transform:rotate(45deg); box-shadow:0 0 0 4px var(--ink); display:block; }
+.rtx { position:absolute; width:120px; text-align:center; font-size:20px; color:var(--muted); }
+.resp { position:absolute; width:280px; text-align:center; font-size:21px; font-weight:600; }
+.cent { position:absolute; left:120px; top:660px; width:1080px; display:flex; flex-wrap:wrap; column-gap:70px; }
+.cent > .mono { width:100%; font-size:20px; text-transform:uppercase; letter-spacing:.12em; color:var(--muted); margin-bottom:6px; }
+.cv { display:flex; flex-direction:column; }
+.cv b { font-size:200px; line-height:.95; font-variant-numeric:tabular-nums; }
+.cv .mono { font-size:18px; color:var(--muted); text-transform:uppercase; letter-spacing:.1em; }
+.schips { position:absolute; left:1240px; top:660px; width:560px; display:flex; flex-direction:column; gap:14px; }
+.sc { display:flex; align-items:center; gap:22px; border:1px solid var(--line); border-radius:16px; padding:10px 22px; }
+.sc b { font-size:52px; line-height:1; color:var(--gold); min-width:150px; }
+.sc span { font-size:21px; line-height:1.3; color:var(--paper); }
+#s12 .foot { top:960px; }
+/* s13 */
+.rgrid { position:absolute; left:120px; top:300px; width:1680px; display:grid; grid-template-columns:repeat(3, 1fr); gap:30px; }
+.rk { position:relative; height:290px; border:1px solid var(--line); border-radius:20px; padding:34px 32px; background:rgba(255,255,255,.025); overflow:hidden; }
+.rkl { position:absolute; left:0; top:0; width:100%; height:5px; background:var(--neg); transform-origin:left center; display:block; }
+.rk .mono { font-size:18px; color:var(--neg); }
+.rk b { display:block; font-size:42px; margin-top:10px; }
+.rk p { font-size:24px; line-height:1.35; color:var(--muted); margin-top:14px; }
+/* s15 */
+.title.fin { font-size:112px; width:1500px; }
+.recap { position:absolute; left:120px; top:420px; width:1680px; display:flex; gap:28px; }
+.rc { flex:1; border:1px solid var(--line); border-radius:20px; padding:26px 30px; }
+.rc .mono { font-size:17px; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); }
+.rc b { display:block; font-size:96px; line-height:1; margin-top:12px; }
+.rc small { display:block; font-size:26px; color:var(--ndx); margin-top:10px; }
+.disc { position:absolute; left:120px; top:690px; width:1680px; display:flex; flex-direction:column; gap:14px; font-size:27px; line-height:1.35; }
+.disc .mono { font-size:17px; color:var(--dim); }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-width="1920" data-height="1080" data-duration="194">
+  <div id="bg"><div class="glow a"></div><div class="glow b"></div><div id="grid"></div><div class="vign"></div></div>
+  
+<div class="scene" id="s1">
+  <div class="kicker mono" id="s1-kick">Enquête · méthode PEG de Peter Lynch · horizon 4 ans</div>
+  <h1 class="s1-title cond">
+    <span class="l" id="s1l1">Cinq valeurs</span>
+    <span class="l" id="s1l2">pour battre</span>
+    <span class="l" id="s1l3">le <em>Nasdaq 100</em></span>
+  </h1>
+  <div class="s1-chips"><span class="chip " style="--c:#76d672"><i></i>NVDA</span><span class="chip " style="--c:#ff6b5b"><i></i>TSM</span><span class="chip " style="--c:#b07cff"><i></i>NU</span><span class="chip " style="--c:#ff8a3d"><i></i>RDDT</span><span class="chip " style="--c:#3ddc97"><i></i>ADYEN</span></div>
+  <div class="s1-hook" id="s1-hook">
+    <div class="mono lab">Rendement espéré modélisé, par an</div>
+    <div class="cond big gold"><span class="num" id="s1-num" data-final="+19,1 %">+0,0 %</span></div>
+    <div class="vs">contre <b style="color:#8da2c8">+10,4 %</b> pour le Nasdaq 100 reconstitué</div>
+    <div class="mono sub">Moyenne de trois scénarios (25/50/25), du 13/10/2026 au même jour de 2030. Ce n'est pas une prévision.</div>
+  </div>
+  <div class="tape" id="s1-tape"><div class="tape-in" id="s1-tape-in"><span class="tk"><b style="color:#76d672">NVDA</b> 226,32 $ <em class="pos">+20,2 %</em> <s>12 mois</s></span><span class="tk"><b style="color:#ff6b5b">TSM</b> 444,35 $ <em class="pos">+46,7 %</em> <s>12 mois</s></span><span class="tk"><b style="color:#b07cff">NU</b> 16,01 $ <em class="pos">+6,2 %</em> <s>12 mois</s></span><span class="tk"><b style="color:#ff8a3d">RDDT</b> 159,93 $ <em class="neg">−21,5 %</em> <s>12 mois</s></span><span class="tk"><b style="color:#3ddc97">ADYEN</b> 10,21 $ <em class="neg">−40,0 %</em> <s>12 mois</s></span><span class="tk"><b style="color:#76d672">NVDA</b> 226,32 $ <em class="pos">+20,2 %</em> <s>12 mois</s></span><span class="tk"><b style="color:#ff6b5b">TSM</b> 444,35 $ <em class="pos">+46,7 %</em> <s>12 mois</s></span><span class="tk"><b style="color:#b07cff">NU</b> 16,01 $ <em class="pos">+6,2 %</em> <s>12 mois</s></span><span class="tk"><b style="color:#ff8a3d">RDDT</b> 159,93 $ <em class="neg">−21,5 %</em> <s>12 mois</s></span><span class="tk"><b style="color:#3ddc97">ADYEN</b> 10,21 $ <em class="neg">−40,0 %</em> <s>12 mois</s></span><span class="tk"><b style="color:#76d672">NVDA</b> 226,32 $ <em class="pos">+20,2 %</em> <s>12 mois</s></span><span class="tk"><b style="color:#ff6b5b">TSM</b> 444,35 $ <em class="pos">+46,7 %</em> <s>12 mois</s></span><span class="tk"><b style="color:#b07cff">NU</b> 16,01 $ <em class="pos">+6,2 %</em> <s>12 mois</s></span><span class="tk"><b style="color:#ff8a3d">RDDT</b> 159,93 $ <em class="neg">−21,5 %</em> <s>12 mois</s></span><span class="tk"><b style="color:#3ddc97">ADYEN</b> 10,21 $ <em class="neg">−40,0 %</em> <s>12 mois</s></span></div></div>
+</div>
+<div class="scene quote" id="s2">
+  <div class="ghost cond" aria-hidden="true" data-layout-allow-overflow data-layout-allow-overlap>PEG</div>
+  <div class="bigq serif" id="s2-q">“</div>
+  <div class="qwrap">
+    <blockquote class="q-en serif" id="s2-en"><span class="w">The</span> <span class="w">p/e</span> <span class="w">ratio</span> <span class="w">of</span> <span class="w">any</span> <span class="w">company</span> <span class="w">that&#x27;s</span> <span class="w">fairly</span> <span class="w">priced</span> <span class="w">will</span> <span class="w">equal</span> <span class="w">its</span> <span class="w">growth</span> <span class="w">rate.</span></blockquote>
+    <p class="q-fr" id="s2-fr">« Le P/E d&#x27;une société correctement valorisée est égal à son taux de croissance. »</p>
+    <div class="q-attr" id="s2-attr"><span class="rule" id="s2-rule"></span>
+      <span class="mono"><b>Peter Lynch</b> · gérant du fonds Magellan (Fidelity), 1977-1990 · livre One Up on Wall Street (chapitre sur les chiffres clés), 1989</span></div>
+    <div class="mono q-ctx" id="s2-ctx">Le critère de ce portefeuille : un PEG proche ou inférieur à 1.</div>
+  </div>
+</div>
+<div class="scene" id="s3">
+  <h2 class="title cond" id="s3-t">Le PEG : la croissance au juste prix</h2>
+  <p class="lede" id="s3-l">Peter Lynch divise le P/E par la croissance annuelle du bénéfice par action. Sous 1, la croissance est bon marché.</p>
+  <div class="eq">
+    <div class="tile" id="s3-a"><div class="mono">P/E 12 mois</div><div class="cond tv" id="s3-pe">20</div></div>
+    <div class="op cond" id="s3-o1">÷</div>
+    <div class="tile" id="s3-b"><div class="mono">Croissance du BPA, par an</div><div class="cond tv"><span id="s3-g">20</span> %</div></div>
+    <div class="op cond" id="s3-o2">=</div>
+    <div class="tile gold-b" id="s3-c"><div class="mono">PEG</div><div class="cond tv gold" id="s3-peg">1,0</div></div>
+  </div>
+  <div class="gauge" id="s3-gauge">
+    <div class="gz z1"><span>Aubaine</span></div><div class="gz z2"><span>Juste prix</span></div><div class="gz z3"><span>Cher</span></div>
+    <div class="gticks"><span class="gt" style="left:0.0000%">0</span><span class="gt" style="left:16.6667%">0,5</span><span class="gt" style="left:33.3333%">1</span><span class="gt" style="left:50.0000%">1,5</span><span class="gt" style="left:66.6667%">2</span><span class="gt" style="left:100.0000%">3</span></div>
+    <div class="gmark" id="s3-mark"><i></i><span class="mono" id="s3-mark-l">Exemple</span></div>
+  </div>
+  <div class="defs mono" id="s3-defs">
+    <div><b>P/E 12 mois</b> : cours ÷ bénéfice par action (BPA) attendu sur les 12 prochains mois.</div>
+    <div><b>BPA non-GAAP</b> : BPA ajusté des éléments exceptionnels, consensus Zacks du 13/10/2026. Exemple chiffré pédagogique.</div>
+  </div>
+</div>
+<div class="scene" id="s4">
+  <h2 class="title cond" id="s4-t">Cinq valeurs, cinq moteurs</h2>
+  <div class="roster">
+    <div class="rrow" id="s4-r0" style="--c:#76d672">
+      <i class="rbar"></i><span class="rsym cond">NVDA</span>
+      <span class="rname">NVIDIA<small>Le moteur de l&#x27;IA</small></span>
+      <span class="rw mono">20 %</span>
+    </div>
+    <div class="rrow" id="s4-r1" style="--c:#ff6b5b">
+      <i class="rbar"></i><span class="rsym cond">TSM</span>
+      <span class="rname">TSMC<small>Le péage de toutes les puces</small></span>
+      <span class="rw mono">20 %</span>
+    </div>
+    <div class="rrow" id="s4-r2" style="--c:#b07cff">
+      <i class="rbar"></i><span class="rsym cond">NU</span>
+      <span class="rname">Nu<small>La banque sans agences</small></span>
+      <span class="rw mono">20 %</span>
+    </div>
+    <div class="rrow" id="s4-r3" style="--c:#ff8a3d">
+      <i class="rbar"></i><span class="rsym cond">RDDT</span>
+      <span class="rname">Reddit<small>La mémoire humaine du web</small></span>
+      <span class="rw mono">20 %</span>
+    </div>
+    <div class="rrow" id="s4-r4" style="--c:#3ddc97">
+      <i class="rbar"></i><span class="rsym cond">ADYEN</span>
+      <span class="rname">Adyen<small>La tuyauterie des paiements</small></span>
+      <span class="rw mono">20 %</span>
+    </div></div>
+  <div class="foot mono" id="s4-f">Poids égaux (hyp.) : aucune pondération n'a été fixée. Cours du 12/10/2026, consensus Zacks du 13/10/2026.</div>
+</div>
+<div class="scene card" id="c1" style="--c:#76d672">
+  <div class="halo" id="c1-halo"></div>
+  <div class="csym cond" id="c1-sym"><span class="ch">N</span><span class="ch">V</span><span class="ch">D</span><span class="ch">A</span></div>
+  <div class="cname" id="c1-name">NVIDIA<small>Le moteur de l&#x27;IA</small></div>
+  <div class="cmeta mono" id="c1-meta">Cours 226,32 $ · 12 mois +20,2 % · Zacks Rank 1</div>
+  <div class="ctags" id="c1-tags"><span class="tag">Poids 20 %</span><span class="tag">Compte-titres</span></div>
+  <div class="cquote" id="c1-q">
+    <div class="serif cq-en">« We have supply for 70% growth… Our demand is much higher than that. »</div>
+    <div class="cq-fr">Nous avons l&#x27;offre pour 70 % de croissance… Notre demande est bien supérieure.</div>
+    <div class="mono cq-a">Jensen Huang, fondateur et PDG de NVIDIA · 26/08/2026</div>
+  </div>
+  <div class="panel" id="c1-panel">
+    <div class="mono ph">BPA non-GAAP · consensus Zacks · années civiles</div>
+    <div class="bar b1" id="c1-b1" style="height:159.6px"></div>
+    <div class="bar b2" id="c1-b2" style="height:270.0px"></div>
+    <div class="bv mono" id="c1-v1" style="top:218.4px;left:40px" data-final="8,87 $">0,00 $</div>
+    <div class="bv mono" id="c1-v2" style="top:108.0px;left:240px" data-final="15,01 $">0,00 $</div>
+    <div class="by mono" style="left:70px">2026</div><div class="by mono" style="left:270px">2027</div>
+    <div class="growth" id="c1-g"><div class="cond gv">+69 %</div><div class="mono">croissance du BPA en 2027</div></div>
+    <div class="tiles">
+      <div class="st" id="c1-t1"><div class="mono">P/E 12 mois</div><div class="cond">16,6</div></div>
+      <div class="st" id="c1-t2"><div class="mono">PEG long terme</div><div class="cond">1,10</div></div>
+      <div class="st" id="c1-t3"><div class="mono">Croissance retenue (hyp.)</div><div class="cond">15 %<small>/an</small></div></div>
+    </div>
+    <div class="mini" id="c1-mini"><div class="mz"></div><span class="mono m0">0</span><span class="mono m1">PEG 1</span><span class="mono m2">2</span>
+      <div class="mm" id="c1-mm"><i></i></div></div>
+    <div class="pfoot mono" id="c1-pf">Rendement espéré 18,2 %/an · pessimiste −15,5 % · optimiste +38,9 %<br>Zone d'achat de Lynch (PEG 1) : 204,90 $, cours +10 % par rapport à la zone</div>
+  </div>
+</div>
+<div class="scene card" id="c2" style="--c:#ff6b5b">
+  <div class="halo" id="c2-halo"></div>
+  <div class="csym cond" id="c2-sym"><span class="ch">T</span><span class="ch">S</span><span class="ch">M</span></div>
+  <div class="cname" id="c2-name">TSMC<small>Le péage de toutes les puces</small></div>
+  <div class="cmeta mono" id="c2-meta">Cours 444,35 $ · 12 mois +46,7 % · Zacks Rank 2</div>
+  <div class="ctags" id="c2-tags"><span class="tag">Poids 20 %</span><span class="tag">Compte-titres</span></div>
+  <div class="cquote" id="c2-q">
+    <div class="serif cq-en">« … all the way to probably 2029, 2030 … »</div>
+    <div class="cq-fr">jusqu&#x27;en 2029, 2030 probablement (à propos d&#x27;une demande d&#x27;IA « très forte »)</div>
+    <div class="mono cq-a">C.C. Wei, président et PDG de TSMC · 16/07/2026</div>
+  </div>
+  <div class="panel" id="c2-panel">
+    <div class="mono ph">BPA non-GAAP · consensus Zacks · années civiles</div>
+    <div class="bar b1" id="c2-b1" style="height:209.0px"></div>
+    <div class="bar b2" id="c2-b2" style="height:270.0px"></div>
+    <div class="bv mono" id="c2-v1" style="top:169.0px;left:40px" data-final="16,60 $">0,00 $</div>
+    <div class="bv mono" id="c2-v2" style="top:108.0px;left:240px" data-final="21,44 $">0,00 $</div>
+    <div class="by mono" style="left:70px">2026</div><div class="by mono" style="left:270px">2027</div>
+    <div class="growth" id="c2-g"><div class="cond gv">+29 %</div><div class="mono">croissance du BPA en 2027</div></div>
+    <div class="tiles">
+      <div class="st" id="c2-t1"><div class="mono">P/E 12 mois</div><div class="cond">21,8</div></div>
+      <div class="st" id="c2-t2"><div class="mono">PEG long terme</div><div class="cond">1,21</div></div>
+      <div class="st" id="c2-t3"><div class="mono">Croissance retenue (hyp.)</div><div class="cond">18 %<small>/an</small></div></div>
+    </div>
+    <div class="mini" id="c2-mini"><div class="mz"></div><span class="mono m0">0</span><span class="mono m1">PEG 1</span><span class="mono m2">2</span>
+      <div class="mm" id="c2-mm"><i></i></div></div>
+    <div class="pfoot mono" id="c2-pf">Rendement espéré 18,0 %/an · pessimiste −10,2 % · optimiste +32,7 %<br>Zone d'achat de Lynch (PEG 1) : 366,78 $, cours +21 % par rapport à la zone</div>
+  </div>
+</div>
+<div class="scene card" id="c3" style="--c:#b07cff">
+  <div class="halo" id="c3-halo"></div>
+  <div class="csym cond" id="c3-sym"><span class="ch">N</span><span class="ch">U</span></div>
+  <div class="cname" id="c3-name">Nu<small>La banque sans agences</small></div>
+  <div class="cmeta mono" id="c3-meta">Cours 16,01 $ · 12 mois +6,2 % · Zacks Rank 3</div>
+  <div class="ctags" id="c3-tags"><span class="tag">Poids 20 %</span><span class="tag">Compte-titres</span></div>
+  <div class="cquote" id="c3-q">
+    <div class="serif cq-en">« For the first time, we generated more than $1 billion in net income. »</div>
+    <div class="cq-fr">Pour la première fois, nous avons dégagé plus d&#x27;un milliard de dollars de résultat net.</div>
+    <div class="mono cq-a">David Vélez, fondateur et PDG de Nu Holdings · 13/08/2026</div>
+  </div>
+  <div class="panel" id="c3-panel">
+    <div class="mono ph">BPA non-GAAP · consensus Zacks · années civiles</div>
+    <div class="bar b1" id="c3-b1" style="height:200.3px"></div>
+    <div class="bar b2" id="c3-b2" style="height:270.0px"></div>
+    <div class="bv mono" id="c3-v1" style="top:177.7px;left:40px" data-final="0,86 $">0,00 $</div>
+    <div class="bv mono" id="c3-v2" style="top:108.0px;left:240px" data-final="1,16 $">0,00 $</div>
+    <div class="by mono" style="left:70px">2026</div><div class="by mono" style="left:270px">2027</div>
+    <div class="growth" id="c3-g"><div class="cond gv">+35 %</div><div class="mono">croissance du BPA en 2027</div></div>
+    <div class="tiles">
+      <div class="st" id="c3-t1"><div class="mono">P/E 12 mois</div><div class="cond">14,6</div></div>
+      <div class="st" id="c3-t2"><div class="mono">PEG long terme</div><div class="cond">0,66</div></div>
+      <div class="st" id="c3-t3"><div class="mono">Croissance retenue (hyp.)</div><div class="cond">22 %<small>/an</small></div></div>
+    </div>
+    <div class="mini" id="c3-mini"><div class="mz"></div><span class="mono m0">0</span><span class="mono m1">PEG 1</span><span class="mono m2">2</span>
+      <div class="mm" id="c3-mm"><i></i></div></div>
+    <div class="pfoot mono" id="c3-pf">Rendement espéré 19,9 %/an · pessimiste −6,1 % · optimiste +30,9 %<br>Zone d'achat de Lynch (PEG 1) : 24,11 $, cours −34 % par rapport à la zone</div>
+  </div>
+</div>
+<div class="scene card" id="c4" style="--c:#ff8a3d">
+  <div class="halo" id="c4-halo"></div>
+  <div class="csym cond" id="c4-sym"><span class="ch">R</span><span class="ch">D</span><span class="ch">D</span><span class="ch">T</span></div>
+  <div class="cname" id="c4-name">Reddit<small>La mémoire humaine du web</small></div>
+  <div class="cmeta mono" id="c4-meta">Cours 159,93 $ · 12 mois −21,5 % · Zacks Rank 2</div>
+  <div class="ctags" id="c4-tags"><span class="tag">Poids 20 %</span><span class="tag">Compte-titres</span></div>
+  <div class="cquote" id="c4-q">
+    <div class="serif cq-en">« … would not exist as we know them … »</div>
+    <div class="cq-fr">n&#x27;existeraient pas tels que nous les connaissons (les grands modèles de langage sans les contenus de Reddit)</div>
+    <div class="mono cq-a">Steve Huffman, cofondateur et PDG de Reddit · 25/05/2026</div>
+  </div>
+  <div class="panel" id="c4-panel">
+    <div class="mono ph">BPA non-GAAP · consensus Zacks · années civiles</div>
+    <div class="bar b1" id="c4-b1" style="height:205.3px"></div>
+    <div class="bar b2" id="c4-b2" style="height:270.0px"></div>
+    <div class="bv mono" id="c4-v1" style="top:172.7px;left:40px" data-final="5,27 $">0,00 $</div>
+    <div class="bv mono" id="c4-v2" style="top:108.0px;left:240px" data-final="6,94 $">0,00 $</div>
+    <div class="by mono" style="left:70px">2026</div><div class="by mono" style="left:270px">2027</div>
+    <div class="growth" id="c4-g"><div class="cond gv">+32 %</div><div class="mono">croissance du BPA en 2027</div></div>
+    <div class="tiles">
+      <div class="st" id="c4-t1"><div class="mono">P/E 12 mois</div><div class="cond">24,3</div></div>
+      <div class="st" id="c4-t2"><div class="mono">PEG long terme</div><div class="cond">1,11</div></div>
+      <div class="st" id="c4-t3"><div class="mono">Croissance retenue (hyp.)</div><div class="cond">22 %<small>/an</small></div></div>
+    </div>
+    <div class="mini" id="c4-mini"><div class="mz"></div><span class="mono m0">0</span><span class="mono m1">PEG 1</span><span class="mono m2">2</span>
+      <div class="mm" id="c4-mm"><i></i></div></div>
+    <div class="pfoot mono" id="c4-pf">Rendement espéré 20,9 %/an · pessimiste −11,7 % · optimiste +37,0 %<br>Zone d'achat de Lynch (PEG 1) : 144,55 $, cours +11 % par rapport à la zone</div>
+  </div>
+</div>
+<div class="scene card" id="c5" style="--c:#3ddc97">
+  <div class="halo" id="c5-halo"></div>
+  <div class="csym cond" id="c5-sym"><span class="ch">A</span><span class="ch">D</span><span class="ch">Y</span><span class="ch">E</span><span class="ch">N</span></div>
+  <div class="cname" id="c5-name">Adyen<small>La tuyauterie des paiements</small></div>
+  <div class="cmeta mono" id="c5-meta">Cours 10,21 $ · 12 mois −40,0 % · Zacks Rank 3 · calculs sur l&#x27;ADR ADYEY (1/100 d&#x27;action)</div>
+  <div class="ctags" id="c5-tags"><span class="tag">Poids 20 %</span><span class="tag">Éligible au PEA</span></div>
+  <div class="cquote" id="c5-q">
+    <div class="serif cq-en">« By expanding our role well beyond payments, we execute our long-term strategy and solve deeper structural complexity for our merchants. »</div>
+    <div class="cq-fr">En allant bien au-delà du paiement, nous résolvons des problèmes plus profonds pour nos marchands.</div>
+    <div class="mono cq-a">Adyen, lettre aux actionnaires (co-PDG Pieter van der Does et Ingo Uytdehaage) · 13/08/2026</div>
+  </div>
+  <div class="panel" id="c5-panel">
+    <div class="mono ph">BPA non-GAAP · consensus Zacks · années civiles</div>
+    <div class="bar b1" id="c5-b1" style="height:223.1px"></div>
+    <div class="bar b2" id="c5-b2" style="height:270.0px"></div>
+    <div class="bv mono" id="c5-v1" style="top:154.9px;left:40px" data-final="0,44 $">0,00 $</div>
+    <div class="bv mono" id="c5-v2" style="top:108.0px;left:240px" data-final="0,53 $">0,00 $</div>
+    <div class="by mono" style="left:70px">2026</div><div class="by mono" style="left:270px">2027</div>
+    <div class="growth" id="c5-g"><div class="cond gv">+21 %</div><div class="mono">croissance du BPA en 2027</div></div>
+    <div class="tiles">
+      <div class="st" id="c5-t1"><div class="mono">P/E 12 mois</div><div class="cond">19,9</div></div>
+      <div class="st" id="c5-t2"><div class="mono">PEG long terme</div><div class="cond">1,05</div></div>
+      <div class="st" id="c5-t3"><div class="mono">Croissance retenue (hyp.)</div><div class="cond">19 %<small>/an</small></div></div>
+    </div>
+    <div class="mini" id="c5-mini"><div class="mz"></div><span class="mono m0">0</span><span class="mono m1">PEG 1</span><span class="mono m2">2</span>
+      <div class="mm" id="c5-mm"><i></i></div></div>
+    <div class="pfoot mono" id="c5-pf">Rendement espéré 18,5 %/an · pessimiste −4,9 % · optimiste +32,3 %<br>Zone d'achat de Lynch (PEG 1) : 9,73 $, cours +5 % par rapport à la zone</div>
+  </div>
+</div>
+<div class="scene" id="s5">
+  <h2 class="title cond" id="s5-t">Des bénéfices qui accélèrent</h2>
+  <p class="lede" id="s5-l">Croissance du BPA non-GAAP attendue en 2027 par le consensus (années civiles). Celle de l'indice est gonflée par deux cycliques au sommet.</p>
+  <div class="growth-list">
+    <div class="grow " id="s5-r0" style="--c:#76d672">
+      <span class="gl">NVIDIA</span><span class="gtrack"><i class="gb" id="s5-b0" style="width:100.00%"></i></span>
+      <span class="gvv mono" id="s5-v0" data-final="+69 %" data-v="69.1360">+0 %</span>
+    </div>
+    <div class="grow " id="s5-r1" style="--c:#b07cff">
+      <span class="gl">Nu</span><span class="gtrack"><i class="gb" id="s5-b1" style="width:50.34%"></i></span>
+      <span class="gvv mono" id="s5-v1" data-final="+35 %" data-v="34.8028">+0 %</span>
+    </div>
+    <div class="grow " id="s5-r2" style="--c:#ff8a3d">
+      <span class="gl">Reddit</span><span class="gtrack"><i class="gb" id="s5-b2" style="width:45.63%"></i></span>
+      <span class="gvv mono" id="s5-v2" data-final="+32 %" data-v="31.5467">+0 %</span>
+    </div>
+    <div class="grow " id="s5-r3" style="--c:#ff6b5b">
+      <span class="gl">TSMC</span><span class="gtrack"><i class="gb" id="s5-b3" style="width:42.17%"></i></span>
+      <span class="gvv mono" id="s5-v3" data-final="+29 %" data-v="29.1566">+0 %</span>
+    </div>
+    <div class="grow " id="s5-r4" style="--c:#3ddc97">
+      <span class="gl">Adyen</span><span class="gtrack"><i class="gb" id="s5-b4" style="width:30.41%"></i></span>
+      <span class="gvv mono" id="s5-v4" data-final="+21 %" data-v="21.0227">+0 %</span>
+    </div>
+    <div class="grow agg" id="s5-r5" style="--c:#ffc94a">
+      <span class="gl">Portefeuille</span><span class="gtrack"><i class="gb" id="s5-b5" style="width:55.72%"></i></span>
+      <span class="gvv mono" id="s5-v5" data-final="+39 %" data-v="38.5194">+0 %</span>
+    </div>
+    <div class="grow agg" id="s5-r6" style="--c:#8da2c8">
+      <span class="gl">Nasdaq 100 reconstitué</span><span class="gtrack"><i class="gb" id="s5-b6" style="width:63.65%"></i></span>
+      <span class="gvv mono" id="s5-v6" data-final="+44 %" data-v="44.0052">+0 %</span>
+    </div>
+    <div class="grow agg" id="s5-r7" style="--c:#c9ced8">
+      <span class="gl">Nasdaq 100 hors mémoire</span><span class="gtrack"><i class="gb" id="s5-b7" style="width:47.29%"></i></span>
+      <span class="gvv mono" id="s5-v7" data-final="+33 %" data-v="32.6949">+0 %</span>
+    </div></div>
+  <div class="callout mono" id="s5-call">Micron et Sandisk, mémoire au pic du cycle : sans eux, la croissance du Nasdaq 100 tombe à +33 %.</div>
+  <div class="foot mono" id="s5-f">Moyennes pondérées par les bénéfices. Nasdaq 100 reconstitué : 31 valeurs, 74,2 % du poids du QQQ (composition du 30/09/2026).</div>
+</div>
+<div class="scene" id="s6">
+  <div class="dhead">
+    <div class="dh l" id="s6-hl"><span class="cond gold">Portefeuille</span><span class="mono">5 valeurs × 20 %</span></div>
+    <div class="dvs cond" id="s6-vs">vs</div>
+    <div class="dh r" id="s6-hr"><span class="cond" style="color:#8da2c8">Nasdaq 100</span><span class="mono">reconstitué : 31 valeurs, 74,2 % du poids</span></div>
+  </div>
+  <i class="dsplit" id="s6-split"></i>
+  <div class="drows">
+    <div class="drow" id="s6-r0">
+      <span class="dl cond win" id="s6-l0">18,8</span>
+      <span class="dc mono">P/E 12 mois</span>
+      <span class="dr cond " id="s6-x0">21,2</span>
+    </div>
+    <div class="drow" id="s6-r1">
+      <span class="dl cond " id="s6-l1">+39 %</span>
+      <span class="dc mono">Croissance du BPA 2027 (consensus)</span>
+      <span class="dr cond win" id="s6-x1">+44 %</span>
+    </div>
+    <div class="drow" id="s6-r2">
+      <span class="dl cond win" id="s6-l2">19,2 %</span>
+      <span class="dc mono">Croissance retenue 2027-2030 (hyp.)</span>
+      <span class="dr cond " id="s6-x2">6,7 %</span>
+    </div>
+    <div class="drow" id="s6-r3">
+      <span class="dl cond win" id="s6-l3">0,98</span>
+      <span class="dc mono">PEG long terme</span>
+      <span class="dr cond " id="s6-x3">3,15</span>
+    </div>
+    <div class="drow" id="s6-r4">
+      <span class="dl cond " id="s6-l4">1,79</span>
+      <span class="dc mono">Bêta (volatilité relative)</span>
+      <span class="dr cond win" id="s6-x4">1,60</span>
+    </div></div>
+  <div class="foot mono" id="s6-f">Hors mémoire, le Nasdaq 100 cote 27,5 fois ses bénéfices, pour un PEG long terme de 1,96. Le portefeuille est plus volatil : bêta de 1,79 contre 1,60.</div>
+</div>
+<div class="scene" id="s7">
+  <h2 class="title cond" id="s7-t">Le nuage de Lynch</h2>
+  <svg class="scatter" id="s7-svg" viewBox="0 0 1180 730" width="1180" height="730">
+    <text class="ax" x="102" y="638.0" text-anchor="end">0</text><line class="gridl" x1="120" y1="630.0" x2="1120" y2="630.0"/><text class="ax" x="102" y="451.3" text-anchor="end">10</text><line class="gridl" x1="120" y1="443.3" x2="1120" y2="443.3"/><text class="ax" x="102" y="264.7" text-anchor="end">20</text><line class="gridl" x1="120" y1="256.7" x2="1120" y2="256.7"/><text class="ax" x="102" y="78.0" text-anchor="end">30</text><line class="gridl" x1="120" y1="70.0" x2="1120" y2="70.0"/><text class="ax" x="120.0" y="666" text-anchor="middle">0 %</text><line class="gridl" x1="120.0" y1="630" x2="120.0" y2="70"/><text class="ax" x="286.7" y="666" text-anchor="middle">5 %</text><line class="gridl" x1="286.7" y1="630" x2="286.7" y2="70"/><text class="ax" x="453.3" y="666" text-anchor="middle">10 %</text><line class="gridl" x1="453.3" y1="630" x2="453.3" y2="70"/><text class="ax" x="620.0" y="666" text-anchor="middle">15 %</text><line class="gridl" x1="620.0" y1="630" x2="620.0" y2="70"/><text class="ax" x="786.7" y="666" text-anchor="middle">20 %</text><line class="gridl" x1="786.7" y1="630" x2="786.7" y2="70"/><text class="ax" x="953.3" y="666" text-anchor="middle">25 %</text><line class="gridl" x1="953.3" y1="630" x2="953.3" y2="70"/><text class="ax" x="1120.0" y="666" text-anchor="middle">30 %</text><line class="gridl" x1="1120.0" y1="630" x2="1120.0" y2="70"/>
+    <path id="s7-zone" d="M120.0,630.0 L1120.0,70.0 L1120.0,630.0 Z" fill="#ffc94a" fill-opacity="0.07"/>
+    <line class="pegl" id="s7-l1" x1="120.0" y1="630.0" x2="1120.0" y2="70.0"/>
+    <line class="pegl dash" id="s7-l15" x1="120.0" y1="630.0" x2="786.7" y2="70.0"/>
+    <text class="pegt" id="s7-tl1" x="1036.7" y="150.7" text-anchor="middle">PEG = 1</text>
+    <text class="pegt" id="s7-tl15" x="472.7" y="316.0" text-anchor="end">PEG = 1,5</text>
+    <text class="axt" x="620.0" y="704" text-anchor="middle">Croissance retenue du BPA, par an</text>
+    <text class="axt" x="50" y="350.0" text-anchor="middle" transform="rotate(-90 50 350.0)">P/E 12 mois</text>
+    <g transform="translate(620.0,320.7)"><g class="pt" id="s7-p0"><circle cx="0" cy="0" r="13" fill="#76d672"/></g></g><text class="plab" id="s7-t0" x="598.0" y="328.7" text-anchor="end" fill="#76d672">NVDA</text><g transform="translate(720.0,222.9)"><g class="pt" id="s7-p1"><circle cx="0" cy="0" r="13" fill="#ff6b5b"/></g></g><text class="plab" id="s7-t1" x="698.0" y="226.9" text-anchor="end" fill="#ff6b5b">TSM</text><g transform="translate(853.3,357.3)"><g class="pt" id="s7-p2"><circle cx="0" cy="0" r="13" fill="#b07cff"/></g></g><text class="plab" id="s7-t2" x="875.3" y="365.3" text-anchor="start" fill="#b07cff">NU</text><g transform="translate(853.3,175.6)"><g class="pt" id="s7-p3"><circle cx="0" cy="0" r="13" fill="#ff8a3d"/></g></g><text class="plab" id="s7-t3" x="875.3" y="183.6" text-anchor="start" fill="#ff8a3d">RDDT</text><g transform="translate(753.3,257.9)"><g class="pt" id="s7-p4"><circle cx="0" cy="0" r="13" fill="#3ddc97"/></g></g><text class="plab" id="s7-t4" x="777.3" y="247.9" text-anchor="start" fill="#3ddc97">ADYEN</text><g transform="translate(758.5,279.0)"><g class="pt" id="s7-p5"><path d="M0,-22 L6,-7 L22,-7 L9,3 L14,19 L0,9 L-14,19 L-9,3 L-22,-7 L-6,-7 Z" fill="#ffc94a"/></g></g><text class="plab" id="s7-t5" x="784.5" y="313.0" text-anchor="start" fill="#ffc94a">Portefeuille</text><g transform="translate(344.0,234.9)"><g class="pt" id="s7-p6"><path d="M0,-16 L16,0 L0,16 L-16,0 Z" fill="none" stroke="#8da2c8" stroke-width="4"/></g></g><text class="plab" id="s7-t6" x="318.0" y="242.9" text-anchor="end" fill="#8da2c8">Nasdaq 100</text><g transform="translate(587.3,116.7)"><g class="pt" id="s7-p7"><path d="M0,-16 L16,0 L0,16 L-16,0 Z" fill="none" stroke="#c9ced8" stroke-width="4"/></g></g><text class="plab" id="s7-t7" x="561.3" y="124.7" text-anchor="end" fill="#c9ced8">Nasdaq 100 hors mémoire</text>
+  </svg>
+  <div class="side" id="s7-side">
+    <div class="mono" id="s7-l">P/E 12 mois contre croissance annuelle du BPA retenue pour 2027-2030 (hyp.). Sous la droite PEG = 1, la croissance est payée moins d'une fois son taux.</div>
+    <div class="sv" id="s7-s1"><span class="mono">PEG long terme · portefeuille</span><b class="cond gold">0,98</b></div>
+    <div class="sv" id="s7-s2"><span class="mono">Nasdaq 100 reconstitué</span><b class="cond" style="color:#8da2c8">3,15</b></div>
+    <div class="sv" id="s7-s3"><span class="mono">Nasdaq 100 hors mémoire</span><b class="cond" style="color:#c9ced8">1,96</b></div>
+    <div class="mono note">Micron et Sandisk, cycliques, sont modélisés à part : leurs bénéfices de 2030 retombent, ce qui écrase la croissance de l'indice.</div>
+  </div>
+</div>
+<div class="scene quote" id="s8">
+  <div class="ghost cond" aria-hidden="true" data-layout-allow-overflow data-layout-allow-overlap>PRIX</div>
+  <div class="bigq serif" id="s8-q">“</div>
+  <div class="qwrap">
+    <blockquote class="q-en serif" id="s8-en"><span class="w">It&#x27;s</span> <span class="w">far</span> <span class="w">better</span> <span class="w">to</span> <span class="w">buy</span> <span class="w">a</span> <span class="w">wonderful</span> <span class="w">company</span> <span class="w">at</span> <span class="w">a</span> <span class="w">fair</span> <span class="w">price</span> <span class="w">than</span> <span class="w">a</span> <span class="w">fair</span> <span class="w">company</span> <span class="w">at</span> <span class="w">a</span> <span class="w">wonderful</span> <span class="w">price.</span></blockquote>
+    <p class="q-fr" id="s8-fr">« Il vaut bien mieux acheter une entreprise merveilleuse à un prix correct qu&#x27;une entreprise correcte à un prix merveilleux. »</p>
+    <div class="q-attr" id="s8-attr"><span class="rule" id="s8-rule"></span>
+      <span class="mono"><b>Warren Buffett</b> · PDG de Berkshire Hathaway · lettre aux actionnaires de Berkshire Hathaway sur l&#x27;exercice 1989, 1989</span></div>
+    <div class="mono q-ctx" id="s8-ctx">Cinq entreprises de qualité, achetées à un prix correct plutôt qu&#x27;au rabais.</div>
+  </div>
+</div><div class="scene" id="s9">
+  <div class="mp" id="m1" style="--c:#76d672">
+    <div class="mghost cond" aria-hidden="true" data-layout-allow-overlap>01</div>
+    <div class="mono mk" id="m1-k">Méga-tendance 01 / 04</div>
+    <div class="mt cond" id="m1-t">L&#x27;usine à intelligence</div>
+    <div class="ma serif" id="m1-a">Le calcul et la gravure des puces d&#x27;IA</div>
+    <div class="mn cond" id="m1-n" data-final="700 Md$" data-v="700.0" data-u="Md$">0</div>
+    <div class="ml" id="m1-l">d&#x27;investissements prévus en 2026 par Microsoft, Alphabet, Amazon et Meta, près du double de 2025</div>
+    <div class="mc" id="m1-c"><span class="mono">Qui capte la valeur</span><span class="chip " style="--c:#76d672"><i></i>NVDA</span><span class="chip " style="--c:#ff6b5b"><i></i>TSM</span></div>
+    <div class="ms mono" id="m1-s">Sources : Yahoo Finance : Hyperscalers hit $700 billion in 2026 AI spending plans · Om Malik : What I learned about hyperscalers&#x27; AI spend (30/04/2026)</div>
+  </div>
+  <div class="mp" id="m2" style="--c:#b07cff">
+    <div class="mghost cond" aria-hidden="true" data-layout-allow-overlap>02</div>
+    <div class="mono mk" id="m2-k">Méga-tendance 02 / 04</div>
+    <div class="mt cond" id="m2-t">La banque dans la poche</div>
+    <div class="ma serif" id="m2-a">Les non-bancarisés d&#x27;Amérique latine passent au mobile</div>
+    <div class="mn cond" id="m2-n" data-final="139 M" data-v="139.0" data-u="M">0</div>
+    <div class="ml" id="m2-l">de clients au T2 2026, et plus d&#x27;un milliard de dollars de résultat net en un trimestre</div>
+    <div class="mc" id="m2-c"><span class="mono">Qui capte la valeur</span><span class="chip " style="--c:#b07cff"><i></i>NU</span></div>
+    <div class="ms mono" id="m2-s">Sources : Nubank : Nu Holdings reports second quarter 2026 financial results · KuCoin : Nu Holdings reports $1.06B net income in Q2 2026 with 139M customers</div>
+  </div>
+  <div class="mp" id="m3" style="--c:#3ddc97">
+    <div class="mghost cond" aria-hidden="true" data-layout-allow-overlap>03</div>
+    <div class="mono mk" id="m3-k">Méga-tendance 03 / 04</div>
+    <div class="mt cond" id="m3-t">Les rails de l&#x27;argent</div>
+    <div class="ma serif" id="m3-a">Le paiement unifié des géants du commerce</div>
+    <div class="mn cond" id="m3-n" data-final="803,8 Md€" data-v="803.8" data-u="Md€">0</div>
+    <div class="ml" id="m3-l">de paiements traités au S1 2026, en hausse de 24 % sur un an</div>
+    <div class="mc" id="m3-c"><span class="mono">Qui capte la valeur</span><span class="chip " style="--c:#3ddc97"><i></i>ADYEN</span></div>
+    <div class="ms mono" id="m3-s">Sources : Finance Magnates : Adyen lifts 2026 revenue outlook as volume hits €804 billion · Financial IT : Adyen publishes H1 2026 financial results</div>
+  </div>
+  <div class="mp" id="m4" style="--c:#ff8a3d">
+    <div class="mghost cond" aria-hidden="true" data-layout-allow-overlap>04</div>
+    <div class="mono mk" id="m4-k">Méga-tendance 04 / 04</div>
+    <div class="mt cond" id="m4-t">Les données humaines</div>
+    <div class="ma serif" id="m4-a">Le carburant que l&#x27;IA ne sait pas fabriquer</div>
+    <div class="mn cond" id="m4-n" data-final="130,3 M" data-v="130.3" data-u="M">0</div>
+    <div class="ml" id="m4-l">d&#x27;utilisateurs actifs chaque jour au T2 2026 (+18 %), chiffre d&#x27;affaires en hausse de 61 %</div>
+    <div class="mc" id="m4-c"><span class="mono">Qui capte la valeur</span><span class="chip " style="--c:#ff8a3d"><i></i>RDDT</span></div>
+    <div class="ms mono" id="m4-s">Sources : Reddit : communiqué du T2 2026 (8-K déposé à la SEC) · Business Wire : Reddit reports second quarter 2026 results</div>
+  </div>
+  <div class="mp" id="m5">
+    <div class="mt cond small" id="m5-t">Quatre tendances, cinq moteurs</div>
+    <svg class="links" viewBox="0 0 1920 1080" width="1920" height="1080"><path class="link" id="m5-p0" d="M640,330 C900,330 1060,290 1320,290" stroke="#76d672"/><path class="link" id="m5-p1" d="M640,330 C900,330 1060,410 1320,410" stroke="#ff6b5b"/><path class="link" id="m5-p2" d="M640,470 C900,470 1060,530 1320,530" stroke="#b07cff"/><path class="link" id="m5-p3" d="M640,610 C900,610 1060,650 1320,650" stroke="#3ddc97"/><path class="link" id="m5-p4" d="M640,750 C900,750 1060,770 1320,770" stroke="#ff8a3d"/></svg>
+    <div class="nl" id="m5-l0" style="top:296px">L&#x27;usine à intelligence</div><div class="nl" id="m5-l1" style="top:436px">La banque dans la poche</div><div class="nl" id="m5-l2" style="top:576px">Les rails de l&#x27;argent</div><div class="nl" id="m5-l3" style="top:716px">Les données humaines</div><div class="nr" id="m5-r0" style="top:256px;--c:#76d672"><i></i>NVIDIA</div><div class="nr" id="m5-r1" style="top:376px;--c:#ff6b5b"><i></i>TSMC</div><div class="nr" id="m5-r2" style="top:496px;--c:#b07cff"><i></i>Nu</div><div class="nr" id="m5-r3" style="top:616px;--c:#3ddc97"><i></i>Adyen</div><div class="nr" id="m5-r4" style="top:736px;--c:#ff8a3d"><i></i>Reddit</div>
+    <div class="m5-call" id="m5-call"><b class="cond gold">40 %</b><span>du portefeuille (NVIDIA et TSMC) dépend du même moteur : les investissements dans l'IA. Les trois autres lignes ont des moteurs indépendants.</span></div>
+  </div></div>
+<div class="scene" id="s10">
+  <h2 class="title cond" id="s10-t">Le rétroviseur : l'indice a gagné</h2>
+  <p class="lede wide" id="s10-l">Performances en dollars, poids égaux sans rééquilibrage : les cinq valeurs n'ont pas suivi le Nasdaq 100.</p>
+  <i class="zero" id="s10-z"></i>
+  <i class="rb " id="s10-b0" style="left:200px;top:616.8px;height:23.2px;background:#ffc94a"></i><span class="rv mono" id="s10-v0" style="left:180px;top:564.8px;color:#ffc94a">+2,3 %</span><span class="rn mono" style="left:180px;top:702px">Portefeuille</span><i class="rb " id="s10-b1" style="left:335px;top:404.8px;height:235.2px;background:#8da2c8"></i><span class="rv mono" id="s10-v1" style="left:315px;top:352.8px;color:#8da2c8">+23,5 %</span><span class="rn mono" style="left:315px;top:702px">Nasdaq 100</span><i class="rb " id="s10-b2" style="left:470px;top:468.7px;height:171.3px;background:#c9ced8"></i><span class="rv mono" id="s10-v2" style="left:450px;top:416.7px;color:#c9ced8">+17,1 %</span><span class="rn mono" style="left:450px;top:702px">S&amp;P 500</span><span class="rg cond" style="left:200px;top:744px">12 mois</span><i class="rb neg" id="s10-b3" style="left:700px;top:640.0px;height:6.6px;background:#ffc94a"></i><span class="rv mono" id="s10-v3" style="left:680px;top:656.6px;color:#ffc94a">−0,7 %</span><span class="rn mono" style="left:680px;top:702px">Portefeuille</span><i class="rb " id="s10-b4" style="left:835px;top:413.3px;height:226.7px;background:#8da2c8"></i><span class="rv mono" id="s10-v4" style="left:815px;top:361.3px;color:#8da2c8">+22,7 %</span><span class="rn mono" style="left:815px;top:702px">Nasdaq 100</span><i class="rb " id="s10-b5" style="left:970px;top:490.1px;height:149.9px;background:#c9ced8"></i><span class="rv mono" id="s10-v5" style="left:950px;top:438.1px;color:#c9ced8">+15,0 %</span><span class="rn mono" style="left:950px;top:702px">S&amp;P 500</span><span class="rg cond" style="left:700px;top:744px">Depuis janvier</span>
+  <div class="slist" id="s10-list"><div class="mono sh">Sur 12 mois, valeur par valeur</div>
+    <div class="srow" id="s10-s0" style="--c:#ff6b5b"><span class="sn">TSMC</span>
+      <span class="strack"><i class="sb " id="s10-sb0" style="width:140.1px;left:50%"></i></span>
+      <span class="sv2 mono pos">+46,7 %</span></div>
+    <div class="srow" id="s10-s1" style="--c:#76d672"><span class="sn">NVIDIA</span>
+      <span class="strack"><i class="sb " id="s10-sb1" style="width:60.5px;left:50%"></i></span>
+      <span class="sv2 mono pos">+20,2 %</span></div>
+    <div class="srow" id="s10-s2" style="--c:#b07cff"><span class="sn">Nu</span>
+      <span class="strack"><i class="sb " id="s10-sb2" style="width:18.5px;left:50%"></i></span>
+      <span class="sv2 mono pos">+6,2 %</span></div>
+    <div class="srow" id="s10-s3" style="--c:#ff8a3d"><span class="sn">Reddit</span>
+      <span class="strack"><i class="sb neg" id="s10-sb3" style="width:64.4px;right:50%"></i></span>
+      <span class="sv2 mono neg">−21,5 %</span></div>
+    <div class="srow" id="s10-s4" style="--c:#3ddc97"><span class="sn">Adyen</span>
+      <span class="strack"><i class="sb neg" id="s10-sb4" style="width:119.9px;right:50%"></i></span>
+      <span class="sv2 mono neg">−40,0 %</span></div></div>
+  <div class="msg serif" id="s10-m">Le prix d'aujourd'hui intègre ces chutes. C'est là que naît l'écart de PEG.</div>
+  <div class="foot mono" id="s10-f">Sources : Zacks Investment Research, variations au 13/10/2026 (QQQ et SPY : performance sur un an et depuis le 1er janvier).</div>
+</div>
+<div class="scene quote" id="s11">
+  <div class="ghost cond" aria-hidden="true" data-layout-allow-overflow data-layout-allow-overlap>TEMPS</div>
+  <div class="bigq serif" id="s11-q">“</div>
+  <div class="qwrap">
+    <blockquote class="q-en serif" id="s11-en"><span class="w">Far</span> <span class="w">more</span> <span class="w">money</span> <span class="w">has</span> <span class="w">been</span> <span class="w">lost</span> <span class="w">by</span> <span class="w">investors</span> <span class="w">preparing</span> <span class="w">for</span> <span class="w">corrections</span> <span class="w">than</span> <span class="w">has</span> <span class="w">been</span> <span class="w">lost</span> <span class="w">in</span> <span class="w">corrections</span> <span class="w">themselves.</span></blockquote>
+    <p class="q-fr" id="s11-fr">« Les investisseurs ont perdu bien plus d&#x27;argent à se préparer aux corrections que dans les corrections elles-mêmes. »</p>
+    <div class="q-attr" id="s11-attr"><span class="rule" id="s11-rule"></span>
+      <span class="mono"><b>Peter Lynch</b> · gérant du fonds Magellan (Fidelity), 1977-1990 · citée par le Wall Street Journal (selon Validea), non datée</span></div>
+    <div class="mono q-ctx" id="s11-ctx">Le portefeuille peut rester derrière l&#x27;indice un ou deux ans : c&#x27;est le prix de la méthode.</div>
+  </div>
+</div>
+<div class="scene" id="s12">
+  <h2 class="title cond" id="s12-t">Quatre ans, trois scénarios</h2>
+  <p class="lede wide" id="s12-l">Rendement annuel jusqu'en 2030 : pessimiste, central, optimiste (25/50/25), dividendes réinvestis, mêmes règles pour l'indice.</p>
+  <i class="zline" id="s12-z" style="left:711.8px"></i>
+  <div class="aticks" id="s12-ax"><span class="at mono" style="left:417.3px">−10 %</span><span class="at mono" style="left:671.8px">0 %</span><span class="at mono" style="left:926.4px">+10 %</span><span class="at mono" style="left:1180.9px">+20 %</span><span class="at mono" style="left:1435.5px">+30 %</span><span class="at mono" style="left:1690.0px">+40 %</span></div>
+  
+    <div class="rlab cond" style="top:386px;color:#ffc94a">Portefeuille</div>
+    <i class="rng" id="s12-r0" style="left:471.8px;width:1117.1px;top:397px;background:#ffc94a"></i>
+    <i class="rdot" id="s12-d0" style="left:1199.1px;top:395px;border-color:#ffc94a"></i>
+    <i class="rdia" id="s12-e0" style="left:1185.3px;top:397px;background:#ffc94a"></i>
+    <span class="rtx mono" id="s12-x0a" style="left:411.8px;top:436px">−9,4 %</span>
+    <span class="rtx mono" id="s12-x0b" style="left:1154.1px;top:436px">+19,7 %</span>
+    <span class="rtx mono" id="s12-x0c" style="left:1528.9px;top:436px">+34,5 %</span>
+    <span class="resp mono" id="s12-y0" style="left:1058.3px;top:346px;color:#ffc94a">espéré +19,1 %/an</span>
+    <div class="rlab cond" style="top:516px;color:#8da2c8">Nasdaq 100</div>
+    <i class="rng" id="s12-r1" style="left:410.8px;width:907.6px;top:527px;background:#8da2c8"></i>
+    <i class="rdot" id="s12-d1" style="left:967.2px;top:525px;border-color:#8da2c8"></i>
+    <i class="rdia" id="s12-e1" style="left:964.6px;top:527px;background:#8da2c8"></i>
+    <span class="rtx mono" id="s12-x1a" style="left:350.8px;top:566px">−11,8 %</span>
+    <span class="rtx mono" id="s12-x1b" style="left:922.2px;top:566px">+10,6 %</span>
+    <span class="rtx mono" id="s12-x1c" style="left:1258.3px;top:566px">+23,8 %</span>
+    <span class="resp mono" id="s12-y1" style="left:837.6px;top:476px;color:#8da2c8">espéré +10,4 %/an</span>
+  <div class="cent" id="s12-cent">
+    <div class="mono">100 € investis deviennent, en espérance</div>
+    <div class="cv"><b class="cond gold" id="s12-c1" data-final="201 €" data-v="201.2892">100 €</b><span class="mono">portefeuille</span></div>
+    <div class="cv"><b class="cond" id="s12-c2" style="color:#8da2c8" data-final="149 €" data-v="148.7654">100 €</b><span class="mono">Nasdaq 100</span></div>
+  </div>
+  <div class="schips">
+    <div class="sc" id="s12-k1"><b class="cond">12 %</b><span>de probabilité de finir sous l'indice central</span></div>
+    <div class="sc" id="s12-k2"><b class="cond">1,1 %</b><span>de probabilité de perdre de l'argent</span></div>
+    <div class="sc" id="s12-k3"><b class="cond">+11,2 %</b><span>par an si l'IA s'effondre, contre +3,1 % pour l'indice</span></div>
+  </div>
+  <div class="foot mono" id="s12-f">Scénarios du modèle, pas des prévisions. Les probabilités supposent des scénarios indépendants : les crises corrélées n'y sont pas.</div>
+</div>
+<div class="scene" id="s13">
+  <h2 class="title cond" id="s13-t">Ce que le modèle ne voit pas</h2>
+  <div class="rgrid">
+    <div class="rk" id="s13-k0"><i class="rkl" id="s13-kl0"></i><span class="mono">01</span><b>Taïwan</b><p>Une crise autour de l&#x27;île frapperait TSMC et NVIDIA en même temps.</p></div>
+    <div class="rk" id="s13-k1"><i class="rkl" id="s13-kl1"></i><span class="mono">02</span><b>Le dollar</b><p>80 % du portefeuille est coté en dollars : une baisse de 10 % du dollar coûte environ 8 % en euros.</p></div>
+    <div class="rk" id="s13-k2"><i class="rkl" id="s13-kl2"></i><span class="mono">03</span><b>La volatilité</b><p>Bêta pondéré de 1,79 contre 1,60 pour l&#x27;indice : des baisses de 30 à 50 % sont possibles sur une ligne.</p></div>
+    <div class="rk" id="s13-k3"><i class="rkl" id="s13-kl3"></i><span class="mono">04</span><b>Reddit</b><p>Trafic venu de la recherche Google et licences de données d&#x27;IA à renégocier en 2027.</p></div>
+    <div class="rk" id="s13-k4"><i class="rkl" id="s13-kl4"></i><span class="mono">05</span><b>Nu</b><p>Crédit au Brésil et élections : un choc ramène sa ligne à −6,1 %/an dans le scénario pessimiste.</p></div>
+    <div class="rk" id="s13-k5"><i class="rkl" id="s13-kl5"></i><span class="mono">06</span><b>Adyen</b><p>Commissions sous pression face à Stripe, nouveau directeur financier en 2027.</p></div></div>
+</div>
+<div class="scene quote" id="s14">
+  <div class="ghost cond" aria-hidden="true" data-layout-allow-overflow data-layout-allow-overlap>SAVOIR</div>
+  <div class="bigq serif" id="s14-q">“</div>
+  <div class="qwrap">
+    <blockquote class="q-en serif" id="s14-en"><span class="w">Know</span> <span class="w">what</span> <span class="w">you</span> <span class="w">own,</span> <span class="w">and</span> <span class="w">know</span> <span class="w">why</span> <span class="w">you</span> <span class="w">own</span> <span class="w">it.</span></blockquote>
+    <p class="q-fr" id="s14-fr">« Sachez ce que vous possédez, et pourquoi vous le possédez. »</p>
+    <div class="q-attr" id="s14-attr"><span class="rule" id="s14-rule"></span>
+      <span class="mono"><b>Peter Lynch</b> · gérant du fonds Magellan (Fidelity), 1977-1990 · discours au National Press Club (selon Novel Investor) ; attribuée aussi à One Up on Wall Street, 1994</span></div>
+    <div class="mono q-ctx" id="s14-ctx">Chaque ligne a sa raison d&#x27;être et sa règle de vente.</div>
+  </div>
+</div>
+<div class="scene" id="s15">
+  <h2 class="title cond fin" id="s15-t">Cinq valeurs, un critère : la croissance au juste prix</h2>
+  <div class="recap">
+    <div class="rc" id="s15-c1"><span class="mono">PEG long terme</span><b class="cond gold">0,98</b><small>contre 3,15 pour le Nasdaq 100</small></div>
+    <div class="rc" id="s15-c2"><span class="mono">Rendement espéré, par an</span><b class="cond gold">+19,1 %</b><small>contre +10,4 % pour le Nasdaq 100</small></div>
+    <div class="rc" id="s15-c3"><span class="mono">12 derniers mois</span><b class="cond gold">+2,3 %</b><small>contre +23,5 % pour le Nasdaq 100</small></div>
+  </div>
+  <div class="disc" id="s15-d">
+    <p><b>Analyse quantitative et datée, qui ne constitue pas un conseil en investissement personnalisé.</b></p>
+    <p>« La Gazette du PEG » est un titre fictif : il ne correspond à aucune publication existante.</p>
+    <p class="mono">Sources : consensus et cours Zacks Investment Research (13/10/2026, cours du 12/10/2026) · communiqués des sociétés · presse citée dans le dossier. Calculs : calcul.py, dépôt elgateaux/bourse, screens/2026-10-13_video-portefeuille_hyperframes.</p>
+  </div>
+</div>
+  <div class="wipe" id="w0" style="background:#76d672"></div>
+  <div class="wipe" id="w1" style="background:#ff6b5b"></div>
+  <div class="wipe" id="w2" style="background:#b07cff"></div>
+  <div class="wipe" id="w3" style="background:#ff8a3d"></div>
+  <div class="wipe" id="w4" style="background:#07090d"></div>
+  <div class="band t"></div><div class="band b"></div>
+  <div id="hud">
+    <div class="hud-top"><span class="mast">La Gazette du PEG*</span><span class="secs"><span class="sec" id="sec0">01 · Le pari</span><span class="sec" id="sec1">02 · La méthode</span><span class="sec" id="sec2">03 · Les cinq valeurs</span><span class="sec" id="sec3">04 · Les bénéfices</span><span class="sec" id="sec4">05 · Face à l&#x27;indice</span><span class="sec" id="sec5">06 · Les méga-tendances</span><span class="sec" id="sec6">07 · Le rétroviseur</span><span class="sec" id="sec7">08 · Les scénarios</span><span class="sec" id="sec8">09 · Les risques</span><span class="sec" id="sec9">10 · À retenir</span></span><span>13/10/2026 · cours du 12/10/2026</span></div>
+    <i class="hud-rule"></i>
+    <div class="hud-bot"><span>* Titre fictif : il ne correspond à aucune publication existante.</span><span>Analyse quantitative et datée, pas un conseil en investissement personnalisé.</span></div>
+    <i id="progress"></i>
+  </div>
+  <div id="grain"></div>
+  <div id="fade"></div>
+  <audio id="bgm" src="audio/bande_son.mp3" data-start="0" data-duration="194" data-track-index="10" data-volume="0.9"></audio>
+</div>
+<script>
+const D = {"date_analyse": "13/10/2026", "date_cours": "12/10/2026", "horizon": 4, "valeurs": [{"ticker": "NVDA", "symbole": "NVDA", "nom": "NVIDIA", "theme": "Le moteur de l'IA", "couleur": "#76d672", "poids": "20 %", "prix": "226,32 $", "bpa26": "8,87", "bpa27": "15,01", "bpa26_v": 8.873458333333332, "bpa27_v": 15.008208333333332, "g27": "+69 %", "g27_v": 69.13595319374728, "pe": "16,6", "pe_v": 16.567685486846358, "peg27": "0,30", "peg_lt": "1,10", "peg_lt_v": 1.104512365789757, "g_lt": "15 %", "g_lt_v": 15.0, "esperance": "18,2 %", "esperance_v": 0.18154597769883463, "bear": "−15,5 %", "bull": "+38,9 %", "chg_52s": "+20,2 %", "chg_52s_v": 20.18, "zacks_rank": "1", "zone": "204,90 $", "ecart_zone": "+10 %", "pea": "non", "cotation": "NVIDIA, Nasdaq (USD)", "citation": {"texte": "We have supply for 70% growth… Our demand is much higher than that.", "traduction": "Nous avons l'offre pour 70 % de croissance… Notre demande est bien supérieure.", "auteur": "Jensen Huang", "fonction": "fondateur et PDG de NVIDIA", "date": "2026-08-26", "occasion": "conférence de résultats du T2 de l'exercice 2027"}}, {"ticker": "TSM", "symbole": "TSM", "nom": "TSMC", "theme": "Le péage de toutes les puces", "couleur": "#ff6b5b", "poids": "20 %", "prix": "444,35 $", "bpa26": "16,60", "bpa27": "21,44", "bpa26_v": 16.6, "bpa27_v": 21.44, "g27": "+29 %", "g27_v": 29.156626506024086, "pe": "21,8", "pe_v": 21.806885744805207, "peg27": "0,71", "peg_lt": "1,21", "peg_lt_v": 1.2114936524891782, "g_lt": "18 %", "g_lt_v": 18.0, "esperance": "18,0 %", "esperance_v": 0.17984761059574783, "bear": "−10,2 %", "bull": "+32,7 %", "chg_52s": "+46,7 %", "chg_52s_v": 46.7, "zacks_rank": "2", "zone": "366,78 $", "ecart_zone": "+21 %", "pea": "non", "cotation": "TSMC, ADR NYSE (USD) ou 2330 Taïwan", "citation": {"texte": "all the way to probably 2029, 2030", "traduction": "jusqu'en 2029, 2030 probablement (à propos d'une demande d'IA « très forte »)", "auteur": "C.C. Wei", "fonction": "président et PDG de TSMC", "date": "2026-07-16", "occasion": "conférence de résultats du T2 2026"}}, {"ticker": "NU", "symbole": "NU", "nom": "Nu", "theme": "La banque sans agences", "couleur": "#b07cff", "poids": "20 %", "prix": "16,01 $", "bpa26": "0,86", "bpa27": "1,16", "bpa26_v": 0.862, "bpa27_v": 1.162, "g27": "+35 %", "g27_v": 34.80278422273781, "pe": "14,6", "pe_v": 14.60651487277864, "peg27": "0,40", "peg_lt": "0,66", "peg_lt_v": 0.6639324942172109, "g_lt": "22 %", "g_lt_v": 22.0, "esperance": "19,9 %", "esperance_v": 0.198788662295579, "bear": "−6,1 %", "bull": "+30,9 %", "chg_52s": "+6,2 %", "chg_52s_v": 6.17, "zacks_rank": "3", "zone": "24,11 $", "ecart_zone": "−34 %", "pea": "non", "cotation": "Nu Holdings, NYSE (USD)", "citation": {"texte": "For the first time, we generated more than $1 billion in net income.", "traduction": "Pour la première fois, nous avons dégagé plus d'un milliard de dollars de résultat net.", "auteur": "David Vélez", "fonction": "fondateur et PDG de Nu Holdings", "date": "2026-08-13", "occasion": "conférence de résultats du T2 2026"}}, {"ticker": "RDDT", "symbole": "RDDT", "nom": "Reddit", "theme": "La mémoire humaine du web", "couleur": "#ff8a3d", "poids": "20 %", "prix": "159,93 $", "bpa26": "5,27", "bpa27": "6,94", "bpa26_v": 5.2725, "bpa27_v": 6.9358, "g27": "+32 %", "g27_v": 31.546704599336195, "pe": "24,3", "pe_v": 24.34116105215967, "peg27": "0,73", "peg_lt": "1,11", "peg_lt_v": 1.1064164114618031, "g_lt": "22 %", "g_lt_v": 22.0, "esperance": "20,9 %", "esperance_v": 0.20944056480610773, "bear": "−11,7 %", "bull": "+37,0 %", "chg_52s": "−21,5 %", "chg_52s_v": -21.48, "zacks_rank": "2", "zone": "144,55 $", "ecart_zone": "+11 %", "pea": "non", "cotation": "Reddit, NYSE (USD)", "citation": {"texte": "would not exist as we know them", "traduction": "n'existeraient pas tels que nous les connaissons (les grands modèles de langage sans les contenus de Reddit)", "auteur": "Steve Huffman", "fonction": "cofondateur et PDG de Reddit", "date": "2026-05-25", "occasion": "entretien au Most Innovative Companies Summit de Fast Company, rapporté par Search Engine Journal"}}, {"ticker": "ADYEY", "symbole": "ADYEN", "nom": "Adyen", "theme": "La tuyauterie des paiements", "couleur": "#3ddc97", "poids": "20 %", "prix": "10,21 $", "bpa26": "0,44", "bpa27": "0,53", "bpa26_v": 0.44, "bpa27_v": 0.5325, "g27": "+21 %", "g27_v": 21.02272727272727, "pe": "19,9", "pe_v": 19.93453073006455, "peg27": "0,91", "peg_lt": "1,05", "peg_lt_v": 1.0491858278981343, "g_lt": "19 %", "g_lt_v": 19.0, "esperance": "18,5 %", "esperance_v": 0.18515177743120592, "bear": "−4,9 %", "bull": "+32,3 %", "chg_52s": "−40,0 %", "chg_52s_v": -39.98, "zacks_rank": "3", "zone": "9,73 $", "ecart_zone": "+5 %", "pea": "oui (action néerlandaise)", "cotation": "Adyen, Euronext Amsterdam (EUR) ; éviter l'ADR non sponsorisé ADYEY", "citation": {"texte": "By expanding our role well beyond payments, we execute our long-term strategy and solve deeper structural complexity for our merchants.", "traduction": "En allant bien au-delà du paiement, nous résolvons des problèmes plus profonds pour nos marchands.", "auteur": "Adyen", "fonction": "lettre aux actionnaires (co-PDG Pieter van der Does et Ingo Uytdehaage)", "date": "2026-08-13", "occasion": "lettre aux actionnaires du S1 2026"}}], "portefeuille": {"pe": "18,8", "pe_v": 18.802292274722994, "g27": "+39 %", "g27_v": 38.51942139507034, "peg27": "0,49", "peg27_v": 0.4881249923740881, "g_lt": "19,2 %", "g_lt_v": 19.155475806453875, "peg_lt": "0,98", "peg_lt_v": 0.9815622678705853, "beta": "1,79", "part_ia": "40 %", "bear": "−9,4 %", "bear_v": -0.09428360311889183, "base": "+19,7 %", "base_v": 0.19731912055723777, "bull": "+34,5 %", "bull_v": 0.3445687145297387, "esperance": "+19,1 %", "esperance_v": 0.1911189067626924, "cent": "201", "cent_v": 201.2891997212991}, "nasdaq": {"pe": "21,2", "pe_v": 21.164181610851, "g27": "+44 %", "g27_v": 44.005174414876294, "peg27": "0,48", "peg27_v": 0.48094756792274596, "g_lt": "6,7 %", "g_lt_v": 6.718840250951491, "peg_lt": "3,15", "peg_lt_v": 3.1499754154526634, "beta": "1,60", "part_ia": "38 %", "bear": "−11,8 %", "bear_v": -0.1182704622808034, "base": "+10,6 %", "base_v": 0.10622775777872029, "bull": "+23,8 %", "bull_v": 0.2382788781756091, "esperance": "+10,4 %", "esperance_v": 0.10439772990490837, "cent": "149", "cent_v": 148.76542972231184}, "nasdaq_hm": {"pe": "27,5", "pe_v": 27.499045187993588, "g27": "+33 %", "g27_v": 32.69494222712784, "peg27": "0,84", "peg27_v": 0.8410794855351332, "g_lt": "14,0 %", "g_lt_v": 14.018630256478474, "peg_lt": "1,96", "peg_lt_v": 1.9616071388490588, "beta": "1,49", "part_ia": "32 %", "bear": "−12,5 %", "bear_v": -0.12519263008711556, "base": "+11,0 %", "base_v": 0.10989815706086348, "bull": "+24,1 %", "bull_v": 0.24061546788353616, "esperance": "+10,6 %", "esperance_v": 0.10620220464209518, "cent": "150", "cent_v": 149.74008616624894}, "ndx_lignes": 31, "ndx_couverture": "74,2 %", "p_sous_indice": "12 %", "p_perte": "1,1 %", "stress": [{"nom": "Krach du capex IA (valeurs IA en bear, le reste en base)", "ptf": "+11,2 %", "ptf_v": 0.11238179092055578, "ndx": "+3,1 %", "ndx_v": 0.030576071875460187}, {"nom": "Choc géopolitique sur Taïwan (TSM en bear)", "ptf": "+15,6 %", "ptf_v": 0.15593121514324282, "ndx": "+10,6 %", "ndx_v": 0.10622775777872029}, {"nom": "NVIDIA perd du terrain face au sur-mesure (NVDA en bear)", "ptf": "+15,8 %", "ptf_v": 0.15843773449182041, "ndx": "+7,7 %", "ndx_v": 0.07708635972941602}, {"nom": "Choc de crédit ou politique au Brésil (NU en bear)", "ptf": "+15,1 %", "ptf_v": 0.15109996414962912, "ndx": "+10,6 %", "ndx_v": 0.10622775777872029}, {"nom": "Reddit perd le trafic de recherche (RDDT en bear)", "ptf": "+14,7 %", "ptf_v": 0.1474616878912942, "ndx": "+10,6 %", "ndx_v": 0.10622775777872029}, {"nom": "Stripe comprime les commissions d'Adyen (ADYEY en bear)", "ptf": "+16,1 %", "ptf_v": 0.16115456854806331, "ndx": "+10,6 %", "ndx_v": 0.10622775777872029}, {"nom": "Double choc fintech : NU et ADYEY en bear", "ptf": "+11,0 %", "ptf_v": 0.11006654859365739, "ndx": "+10,6 %", "ndx_v": 0.10622775777872029}, {"nom": "Tout en base", "ptf": "+19,7 %", "ptf_v": 0.19731912055723777, "ndx": "+10,6 %", "ndx_v": 0.10622775777872029}, {"nom": "Tout en bear", "ptf": "−9,4 %", "ptf_v": -0.09428360311889183, "ndx": "−11,8 %", "ndx_v": -0.1182704622808034}, {"nom": "Tout en bull", "ptf": "+34,5 %", "ptf_v": 0.3445687145297387, "ndx": "+23,8 %", "ndx_v": 0.2382788781756091}], "retro": {"1an": {"ptf": "+2,3 %", "ptf_v": 2.3180000000000023, "qqq": "+23,5 %", "qqq_v": 23.5241, "spy": "+17,1 %", "spy_v": 17.1334}, "ytd": {"ptf": "−0,7 %", "ptf_v": -0.6580000000000006, "qqq": "+22,7 %", "qqq_v": 22.669, "spy": "+15,0 %", "spy_v": 14.9929}}, "megatendances": [{"id": "ia-calcul", "titre": "L'usine à intelligence", "accroche": "Le calcul et la gravure des puces d'IA", "valeurs": ["NVIDIA", "TSMC"], "chiffre": "700", "unite": "Md$", "libelle": "d'investissements prévus en 2026 par Microsoft, Alphabet, Amazon et Meta, près du double de 2025", "date": "2026", "source_titre": "Yahoo Finance : Hyperscalers hit $700 billion in 2026 AI spending plans", "source_url": "https://finance.yahoo.com/sectors/technology/articles/hyperscalers-hit-700-billion-2026-111243744.html", "source2_titre": "Om Malik : What I learned about hyperscalers' AI spend (30/04/2026)", "source2_url": "https://om.co/2026/04/30/what-i-learned-about-hyperscalers-ai-spend/", "chiffre_txt": "700 Md$", "chiffre_v": 700.0}, {"id": "banque-numerique", "titre": "La banque dans la poche", "accroche": "Les non-bancarisés d'Amérique latine passent au mobile", "valeurs": ["Nu"], "chiffre": "139", "unite": "M", "libelle": "de clients au T2 2026, et plus d'un milliard de dollars de résultat net en un trimestre", "date": "2026-08-13", "source_titre": "Nubank : Nu Holdings reports second quarter 2026 financial results", "source_url": "https://international.nubank.com.br/company/nu-holdings-ltd-reports-second-quarter-2026-financial-results/", "source2_titre": "KuCoin : Nu Holdings reports $1.06B net income in Q2 2026 with 139M customers", "source2_url": "https://www.kucoin.com/news/flash/nu-holdings-reports-1-06b-net-income-in-q2-2026-with-139m-customers", "chiffre_txt": "139 M", "chiffre_v": 139.0}, {"id": "paiements", "titre": "Les rails de l'argent", "accroche": "Le paiement unifié des géants du commerce", "valeurs": ["Adyen"], "chiffre": "803.8", "unite": "Md€", "libelle": "de paiements traités au S1 2026, en hausse de 24 % sur un an", "date": "2026-08-13", "source_titre": "Finance Magnates : Adyen lifts 2026 revenue outlook as volume hits €804 billion", "source_url": "https://www.financemagnates.com/fintech/payments/adyen-lifts-2026-revenue-outlook-to-2123-as-volume-hits-804-billion/", "source2_titre": "Financial IT : Adyen publishes H1 2026 financial results", "source2_url": "https://financialit.net/news/infrastructure/adyen-publishes-h1-2026-financial-results", "chiffre_txt": "803,8 Md€", "chiffre_v": 803.8}, {"id": "donnees-humaines", "titre": "Les données humaines", "accroche": "Le carburant que l'IA ne sait pas fabriquer", "valeurs": ["Reddit"], "chiffre": "130.3", "unite": "M", "libelle": "d'utilisateurs actifs chaque jour au T2 2026 (+18 %), chiffre d'affaires en hausse de 61 %", "date": "2026-07-30", "source_titre": "Reddit : communiqué du T2 2026 (8-K déposé à la SEC)", "source_url": "https://www.sec.gov/Archives/edgar/data/0001713445/000171344526000098/earningspressreleaseq226.htm", "source2_titre": "Business Wire : Reddit reports second quarter 2026 results", "source2_url": "https://www.businesswire.com/news/home/20260730598707/en/", "chiffre_txt": "130,3 M", "chiffre_v": 130.3}], "citations": {"lynch_peg": {"auteur": "Peter Lynch", "fonction": "gérant du fonds Magellan (Fidelity), 1977-1990", "texte_original": "The p/e ratio of any company that's fairly priced will equal its growth rate.", "traduction": "Le P/E d'une société correctement valorisée est égal à son taux de croissance.", "date": "1989", "occasion": "livre One Up on Wall Street (chapitre sur les chiffres clés)"}, "lynch_know": {"auteur": "Peter Lynch", "fonction": "gérant du fonds Magellan (Fidelity), 1977-1990", "texte_original": "Know what you own, and know why you own it.", "traduction": "Sachez ce que vous possédez, et pourquoi vous le possédez.", "date": "1994", "occasion": "discours au National Press Club (selon Novel Investor) ; attribuée aussi à One Up on Wall Street"}, "lynch_corrections": {"auteur": "Peter Lynch", "fonction": "gérant du fonds Magellan (Fidelity), 1977-1990", "texte_original": "Far more money has been lost by investors preparing for corrections than has been lost in corrections themselves.", "traduction": "Les investisseurs ont perdu bien plus d'argent à se préparer aux corrections que dans les corrections elles-mêmes.", "date": "non datée", "occasion": "citée par le Wall Street Journal (selon Validea)"}, "buffett_wonderful": {"auteur": "Warren Buffett", "fonction": "PDG de Berkshire Hathaway", "texte_original": "It's far better to buy a wonderful company at a fair price than a fair company at a wonderful price.", "traduction": "Il vaut bien mieux acheter une entreprise merveilleuse à un prix correct qu'une entreprise correcte à un prix merveilleux.", "date": "1989", "occasion": "lettre aux actionnaires de Berkshire Hathaway sur l'exercice 1989"}, "huang": {"auteur": "Jensen Huang", "fonction": "fondateur et PDG de NVIDIA", "texte_original": "We have supply for 70% growth… Our demand is much higher than that.", "traduction": "Nous avons l'offre pour 70 % de croissance… Notre demande est bien supérieure.", "date": "2026-08-26", "occasion": "conférence de résultats du T2 de l'exercice 2027"}, "wei": {"auteur": "C.C. Wei", "fonction": "président et PDG de TSMC", "texte_original": "all the way to probably 2029, 2030", "traduction": "jusqu'en 2029, 2030 probablement (à propos d'une demande d'IA « très forte »)", "date": "2026-07-16", "occasion": "conférence de résultats du T2 2026"}, "velez": {"auteur": "David Vélez", "fonction": "fondateur et PDG de Nu Holdings", "texte_original": "For the first time, we generated more than $1 billion in net income.", "traduction": "Pour la première fois, nous avons dégagé plus d'un milliard de dollars de résultat net.", "date": "2026-08-13", "occasion": "conférence de résultats du T2 2026"}, "adyen": {"auteur": "Adyen", "fonction": "lettre aux actionnaires (co-PDG Pieter van der Does et Ingo Uytdehaage)", "texte_original": "By expanding our role well beyond payments, we execute our long-term strategy and solve deeper structural complexity for our merchants.", "traduction": "En allant bien au-delà du paiement, nous résolvons des problèmes plus profonds pour nos marchands.", "date": "2026-08-13", "occasion": "lettre aux actionnaires du S1 2026"}, "huffman": {"auteur": "Steve Huffman", "fonction": "cofondateur et PDG de Reddit", "texte_original": "would not exist as we know them", "traduction": "n'existeraient pas tels que nous les connaissons (les grands modèles de langage sans les contenus de Reddit)", "date": "2026-05-25", "occasion": "entretien au Most Innovative Companies Summit de Fast Company, rapporté par Search Engine Journal"}}, "part_ia_ptf": "40 %", "part_usd": "80 %", "effet_dollar_10": "−8 %"};
+const SC = [["s1", 0.0, null], ["s2", 8.6, "blur"], ["s3", 15.6, "push"], ["s4", 26.6, "blocks"], ["c1", 30.6, "push"], ["c2", 39.2, "push"], ["c3", 47.8, "push"], ["c4", 56.4, "push"], ["c5", 65.0, "push"], ["s5", 73.6, "blocks"], ["s6", 83.6, "push"], ["s7", 95.6, "vpush"], ["s8", 107.6, "blur"], ["s9", 113.6, "blocks"], ["s10", 139.6, "blocks"], ["s11", 150.6, "blur"], ["s12", 156.6, "blocks"], ["s13", 171.6, "push"], ["s14", 181.6, "blur"], ["s15", 187.6, "blur"]];
+const TOTAL = 194.0;
+const MEGA_T = [0.0, 5.5, 11.0, 16.5, 22.0];
+const SECTIONS = [[0.0, "01 · Le pari"], [8.6, "02 · La méthode"], [26.6, "03 · Les cinq valeurs"], [73.6, "04 · Les bénéfices"], [83.6, "05 · Face à l'indice"], [113.6, "06 · Les méga-tendances"], [139.6, "07 · Le rétroviseur"], [156.6, "08 · Les scénarios"], [171.6, "09 · Les risques"], [181.6, "10 · À retenir"]];
+const tl = gsap.timeline({ paused: true });
+const $ = (s) => document.querySelector(s);
+const $$ = (s) => Array.from(document.querySelectorAll(s));
+const NB = " ";
+const start = Object.fromEntries(SC.map((s) => [s[0], s[1]]));
+
+function fr(v, d, signe) {
+  let s = Math.abs(v).toFixed(d);
+  let [i, f] = s.split(".");
+  i = i.replace(/\B(?=(\d{3})+(?!\d))/g, NB);
+  s = f ? i + "," + f : i;
+  if (v < 0 && Number(Math.abs(v).toFixed(d)) !== 0) return "−" + s;
+  return signe ? "+" + s : s;
+}
+// Compteur : le texte final est celui écrit par Python (data-final), à l'identique.
+function count(sel, from, to, dec, t, dur, opt) {
+  opt = opt || {};
+  const el = $(sel);
+  const fin = el.getAttribute("data-final");
+  const o = { v: from };
+  tl.to(o, { v: to, duration: dur, ease: opt.ease || "power3.out",
+    onUpdate: function () {
+      el.textContent = this.progress() >= 1 ? fin : (opt.pre || "") + fr(o.v, dec, opt.signe) + (opt.suf || "");
+    } }, t);
+}
+const IN = (sel, from, t, dur, ease, extra) =>
+  tl.fromTo(sel, Object.assign({ opacity: 0 }, from), Object.assign({ opacity: 1, x: 0, y: 0, duration: dur, ease: ease }, extra || {}), t);
+
+// ---------------- fond, bandeau, progression ----------------
+tl.fromTo("#bg", { opacity: 0 }, { opacity: 1, duration: 1.2, ease: "sine.out" }, 0);
+tl.fromTo("#grid", { backgroundPosition: "0px 0px" }, { backgroundPosition: "-160px -320px", duration: TOTAL, ease: "none" }, 0);
+tl.to(".glow.a", { x: 520, y: 260, duration: TOTAL / 2, ease: "sine.inOut", yoyo: true, repeat: 1 }, 0);
+tl.to(".glow.b", { x: -640, y: -380, duration: TOTAL / 2, ease: "sine.inOut", yoyo: true, repeat: 1 }, 0);
+tl.fromTo("#progress", { scaleX: 0 }, { scaleX: 1, duration: TOTAL, ease: "none" }, 0);
+tl.fromTo(".hud-top", { opacity: 0, y: -16 }, { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, 0.25);
+tl.fromTo(".hud-rule", { scaleX: 0 }, { scaleX: 1, duration: 1.1, ease: "expo.inOut" }, 0.3);
+tl.fromTo(".hud-bot", { opacity: 0 }, { opacity: 1, duration: 0.8, ease: "sine.out" }, 0.9);
+SECTIONS.forEach((s, i) => {
+  const el = "#sec" + i;
+  tl.fromTo(el, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" }, s[0] + (i ? 0.35 : 0.5));
+  if (i + 1 < SECTIONS.length) tl.to(el, { opacity: 0, y: -12, duration: 0.3, ease: "power2.in" }, SECTIONS[i + 1][0]);
+});
+tl.set("#fade", { opacity: 0 }, 0);
+tl.to("#fade", { opacity: 1, duration: 1.0, ease: "power1.in" }, TOTAL - 1.0);
+
+// ---------------- transitions ----------------
+const WIPES = ["#w0", "#w1", "#w2", "#w3", "#w4"];
+tl.set(WIPES, { x: -1920 }, 0);
+function trans(type, oldS, newS, T) {
+  const o = "#" + oldS, n = "#" + newS;
+  if (type === "push") {
+    tl.to(o, { x: -1920, duration: 0.75, ease: "power3.inOut" }, T);
+    tl.fromTo(n, { x: 1920, opacity: 1 }, { x: 0, opacity: 1, duration: 0.75, ease: "power3.inOut" }, T);
+    tl.set(o, { opacity: 0 }, T + 0.76);
+  } else if (type === "vpush") {
+    tl.to(o, { y: -1080, duration: 0.75, ease: "power3.inOut" }, T);
+    tl.fromTo(n, { y: 1080, opacity: 1 }, { y: 0, opacity: 1, duration: 0.75, ease: "power3.inOut" }, T);
+    tl.set(o, { opacity: 0 }, T + 0.76);
+  } else if (type === "blocks") {
+    WIPES.forEach((w, i) => {
+      tl.set(w, { x: -1920 }, T - 0.01);
+      tl.to(w, { x: 0, duration: 0.32, ease: "power3.inOut" }, T + i * 0.045);
+      tl.to(w, { x: 1920, duration: 0.32, ease: "power3.inOut" }, T + 0.42 + i * 0.045);
+    });
+    tl.set(o, { opacity: 0 }, T + 0.38);
+    tl.set(n, { opacity: 1 }, T + 0.38);
+  } else if (type === "blur") {
+    tl.to(o, { filter: "blur(16px)", scale: 1.05, opacity: 0, duration: 0.7, ease: "power2.inOut" }, T);
+    tl.fromTo(n, { filter: "blur(16px)", scale: 0.96, opacity: 0 },
+      { filter: "blur(0px)", scale: 1, opacity: 1, duration: 0.85, ease: "power2.out" }, T + 0.2);
+  }
+}
+for (let i = 1; i < SC.length; i++) trans(SC[i][2], SC[i - 1][0], SC[i][0], SC[i][1]);
+
+// ---------------- scènes ----------------
+function quote(id, t) {
+  tl.fromTo("#" + id + "-q", { opacity: 0, scale: 0.6, rotation: -8 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.7, ease: "back.out(1.8)" }, t + 0.25);
+  tl.fromTo("#" + id + " .q-en .w", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out", stagger: 0.07 }, t + 0.5);
+  const n = $$("#" + id + " .q-en .w").length;
+  const t2 = t + 0.6 + n * 0.07;
+  IN("#" + id + "-fr", { y: 18 }, t2 + 0.25, 0.7, "power2.out");
+  tl.fromTo("#" + id + "-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "expo.out" }, t2 + 0.6);
+  IN("#" + id + "-attr", { x: -30 }, t2 + 0.65, 0.6, "power3.out");
+  IN("#" + id + "-ctx", {}, t2 + 1.0, 0.6, "sine.out");
+  tl.fromTo("#" + id + " .ghost", { x: 60 }, { x: -60, duration: 6.5, ease: "none" }, t);
+}
+
+// S1 — intro
+(function () {
+  IN("#s1-kick", { x: -40 }, 0.6, 0.6, "power3.out");
+  tl.fromTo("#s1l1", { opacity: 0, scale: 1.35, filter: "blur(14px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.55, ease: "expo.out", transformOrigin: "left center" }, 0.9);
+  IN("#s1l2", { x: -160 }, 1.45, 0.45, "power4.out");
+  tl.fromTo("#s1l3", { opacity: 0, y: 90, rotation: -3 }, { opacity: 1, y: 0, rotation: 0, duration: 0.6, ease: "back.out(1.6)", transformOrigin: "left bottom" }, 2.0);
+  tl.fromTo(".s1-chips .chip", { opacity: 0, y: 40, scale: 0.8 }, { opacity: 1, y: 0, scale: 1, duration: 0.55, ease: "back.out(2.2)", stagger: 0.09 }, 2.9);
+  IN("#s1-hook .lab", { y: 14 }, 3.6, 0.5, "power2.out");
+  tl.fromTo("#s1-hook .big", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "none" }, 3.8);
+  count("#s1-num", 0, D.portefeuille.esperance_v * 100, 1, 3.8, 1.6, { suf: NB + "%", signe: true, ease: "power2.out" });
+  tl.fromTo("#s1-num", { scale: 0.55 }, { scale: 1, duration: 1.6, ease: "power2.out", transformOrigin: "left bottom" }, 3.8);
+  IN("#s1-hook .vs", { y: 16 }, 5.2, 0.6, "power3.out");
+  IN("#s1-hook .sub", {}, 5.8, 0.8, "sine.out");
+  tl.fromTo("#s1-tape", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "sine.out" }, 3.2);
+  const w = $("#s1-tape-in").scrollWidth / 3;
+  tl.fromTo("#s1-tape-in", { x: 0 }, { x: -w, duration: 9, ease: "none" }, 0);
+})();
+
+// S2, S8, S11, S14 — citations
+quote("s2", start.s2); quote("s8", start.s8); quote("s11", start.s11); quote("s14", start.s14);
+
+// S3 — le PEG
+(function () {
+  const t = start.s3;
+  IN("#s3-t", { y: 40 }, t + 0.5, 0.6, "expo.out");
+  IN("#s3-l", { y: 20 }, t + 0.9, 0.6, "power2.out");
+  tl.fromTo(["#s3-a", "#s3-b", "#s3-c"], { opacity: 0, y: 60, rotationX: -40 }, { opacity: 1, y: 0, rotationX: 0, duration: 0.7, ease: "power3.out", stagger: 0.18, transformPerspective: 900 }, t + 1.4);
+  tl.fromTo(["#s3-o1", "#s3-o2"], { opacity: 0, scale: 0.3 }, { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(2.5)", stagger: 0.18 }, t + 1.7);
+  tl.fromTo("#s3-gauge", { opacity: 0, scaleX: 0.6 }, { opacity: 1, scaleX: 1, duration: 0.8, ease: "expo.out", transformOrigin: "left center" }, t + 2.6);
+  tl.fromTo("#s3-mark", { opacity: 0, x: 0 }, { opacity: 1, x: 1440 / 3, duration: 1.2, ease: "power3.out" }, t + 3.1);
+  // la croissance double : 20 % -> 40 %, le PEG tombe de 1,0 à 0,5
+  const g = { v: 20 };
+  tl.to(g, { v: 40, duration: 1.4, ease: "power2.inOut", onUpdate: function () {
+    $("#s3-g").textContent = fr(g.v, 0);
+    $("#s3-peg").textContent = fr(20 / g.v, 1);
+  } }, t + 5.3);
+  tl.to("#s3-b", { borderColor: "#ffc94a", duration: 0.4, ease: "sine.out" }, t + 5.3);
+  tl.to("#s3-mark", { x: 1440 * 0.5 / 3, duration: 1.4, ease: "power2.inOut" }, t + 5.3);
+  tl.fromTo("#s3-c", { boxShadow: "0 0 0px rgba(255,201,74,0)" }, { boxShadow: "0 0 60px rgba(255,201,74,.45)", duration: 0.6, ease: "sine.inOut", yoyo: true, repeat: 1 }, t + 6.6);
+  IN("#s3-defs", { y: 16 }, t + 7.4, 0.7, "power2.out");
+})();
+
+// S4 — les cinq
+(function () {
+  const t = start.s4;
+  IN("#s4-t", { x: -60 }, t + 0.5, 0.6, "expo.out");
+  tl.fromTo(".rrow", { opacity: 0, x: 260 }, { opacity: 1, x: 0, duration: 0.6, ease: "power4.out", stagger: 0.12 }, t + 0.8);
+  tl.fromTo(".rbar", { scaleY: 0 }, { scaleY: 1, duration: 0.5, ease: "back.out(2)", stagger: 0.12, transformOrigin: "center bottom" }, t + 1.1);
+  IN("#s4-f", {}, t + 2.2, 0.6, "sine.out");
+})();
+
+// Cartes valeur par valeur
+D.valeurs.forEach((v, k) => {
+  const id = "c" + (k + 1), t = start[id];
+  tl.fromTo("#" + id + " .ch", { opacity: 0, y: 140 }, { opacity: 1, y: 0, duration: 0.7, ease: "expo.out", stagger: 0.06 }, t + 0.45);
+  IN("#" + id + "-name", { x: -40 }, t + 0.8, 0.55, "power3.out");
+  IN("#" + id + "-meta", {}, t + 1.1, 0.5, "sine.out");
+  tl.fromTo("#" + id + " .tag", { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(2)", stagger: 0.08 }, t + 1.3);
+  tl.fromTo("#" + id + "-panel", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, t + 0.7);
+  tl.fromTo("#" + id + "-b1", { scaleY: 0 }, { scaleY: 1, duration: 0.8, ease: "power3.out" }, t + 1.2);
+  tl.fromTo("#" + id + "-b2", { scaleY: 0 }, { scaleY: 1, duration: 1.0, ease: "power4.out" }, t + 1.5);
+  IN("#" + id + "-v1", {}, t + 1.2, 0.3, "none");
+  IN("#" + id + "-v2", {}, t + 1.5, 0.3, "none");
+  count("#" + id + "-v1", 0, v.bpa26_v, 2, t + 1.2, 0.8, { suf: NB + "$" });
+  count("#" + id + "-v2", 0, v.bpa27_v, 2, t + 1.5, 1.0, { suf: NB + "$" });
+  tl.fromTo("#" + id + "-g", { opacity: 0, scale: 0.4, rotation: -6 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.6, ease: "back.out(2.4)", transformOrigin: "left center" }, t + 2.4);
+  tl.fromTo("#" + id + " .st", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out", stagger: 0.12 }, t + 2.8);
+  IN("#" + id + "-mini", {}, t + 3.3, 0.4, "sine.out");
+  tl.fromTo("#" + id + "-mm", { x: 0 }, { x: Math.min(v.peg_lt_v, 2) / 2 * 740, duration: 1.0, ease: "power3.out" }, t + 3.4);
+  IN("#" + id + "-pf", {}, t + 4.0, 0.6, "sine.out");
+  tl.fromTo("#" + id + "-q", { opacity: 0, clipPath: "inset(0 100% 0 0)" }, { opacity: 1, clipPath: "inset(0 0% 0 0)", duration: 1.0, ease: "power2.inOut" }, t + 3.0);
+  tl.fromTo("#" + id + "-halo", { scale: 0.8, opacity: 0.04 }, { scale: 1.1, opacity: 0.14, duration: 7.5, ease: "sine.inOut" }, t);
+});
+
+// S5 — croissance des bénéfices
+(function () {
+  const t = start.s5;
+  IN("#s5-t", { y: 40 }, t + 0.5, 0.6, "expo.out");
+  IN("#s5-l", { y: 16 }, t + 0.8, 0.6, "power2.out");
+  $$(".grow").forEach((r, i) => {
+    const ti = t + 1.3 + i * 0.22 + (i >= 5 ? 0.5 : 0);
+    IN("#s5-r" + i, { x: -30 }, ti, 0.4, "power3.out");
+    tl.fromTo("#s5-b" + i, { scaleX: 0 }, { scaleX: 1, duration: 0.9, ease: i >= 5 ? "power4.out" : "power3.out" }, ti + 0.1);
+    const el = $("#s5-v" + i);
+    count("#s5-v" + i, 0, parseFloat(el.getAttribute("data-v")), 0, ti + 0.1, 0.9, { suf: NB + "%", signe: true });
+  });
+  tl.fromTo("#s5-call", { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.6, ease: "power3.out" }, t + 5.3);
+  IN("#s5-f", {}, t + 5.9, 0.6, "sine.out");
+})();
+
+// S6 — duel
+(function () {
+  const t = start.s6;
+  IN("#s6-hl", { x: -80 }, t + 0.5, 0.6, "expo.out");
+  IN("#s6-hr", { x: 80 }, t + 0.6, 0.6, "expo.out");
+  tl.fromTo("#s6-vs", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: 0.5, ease: "power4.out" }, t + 0.9);
+  tl.fromTo("#s6-split", { scaleY: 0 }, { scaleY: 1, duration: 1.0, ease: "expo.inOut" }, t + 1.0);
+  $$(".drow").forEach((r, i) => {
+    const ti = t + 1.6 + i * 1.5;
+    IN("#s6-r" + i + " .dc", {}, ti, 0.4, "sine.out");
+    IN("#s6-l" + i, { x: -60 }, ti + 0.15, 0.55, "power4.out");
+    IN("#s6-x" + i, { x: 60 }, ti + 0.25, 0.55, "power4.out");
+    tl.fromTo("#s6-r" + i + " .win", { textShadow: "0 0 0px rgba(255,201,74,0)" }, { textShadow: "0 0 34px rgba(255,201,74,.55)", duration: 0.5, ease: "sine.inOut", yoyo: true, repeat: 1 }, ti + 0.8);
+  });
+  IN("#s6-f", { y: 14 }, t + 9.4, 0.7, "power2.out");
+})();
+
+// S7 — nuage de Lynch
+(function () {
+  const t = start.s7;
+  IN("#s7-t", { y: 40 }, t + 0.5, 0.6, "expo.out");
+  tl.fromTo("#s7-svg .gridl", { opacity: 0 }, { opacity: 1, duration: 0.8, ease: "sine.out", stagger: 0.03 }, t + 0.9);
+  tl.fromTo("#s7-svg .ax, #s7-svg .axt", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "sine.out" }, t + 1.0);
+  ["#s7-l1", "#s7-l15"].forEach((s, i) => {
+    const len = $(s).getTotalLength();
+    tl.fromTo(s, { strokeDasharray: i ? "10 10" : len + " " + len, strokeDashoffset: i ? 0 : len, opacity: i ? 0 : 1 },
+      { strokeDashoffset: 0, opacity: 1, duration: 1.2, ease: "power2.inOut" }, t + 1.4 + i * 0.4);
+  });
+  IN("#s7-zone", {}, t + 2.2, 0.8, "sine.out");
+  IN("#s7-tl1", {}, t + 2.4, 0.5, "sine.out");
+  IN("#s7-tl15", {}, t + 2.6, 0.5, "sine.out");
+  for (let i = 0; i < 8; i++) {
+    const ti = t + (i < 5 ? 3.0 + i * 0.25 : 4.8 + (i - 5) * 0.7);
+    tl.fromTo("#s7-p" + i, { opacity: 0, scale: 0, svgOrigin: "0 0" },
+      { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(3)", svgOrigin: "0 0" }, ti);
+    IN("#s7-t" + i, {}, ti + 0.2, 0.4, "sine.out");
+  }
+  tl.fromTo("#s7-p5", { filter: "drop-shadow(0 0 0px #ffc94a)" }, { filter: "drop-shadow(0 0 18px #ffc94a)", duration: 0.6, yoyo: true, repeat: 3, ease: "sine.inOut" }, t + 5.4);
+  IN("#s7-l", { x: 30 }, t + 1.0, 0.6, "power2.out");
+  tl.fromTo(["#s7-s1", "#s7-s2", "#s7-s3"], { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.55, ease: "power3.out", stagger: 0.35 }, t + 6.4);
+  IN("#s7-side .note", {}, t + 8.0, 0.6, "sine.out");
+})();
+
+// S9 — méga-tendances
+(function () {
+  const t0 = start.s9;
+  for (let i = 1; i <= 4; i++) {
+    const t = t0 + MEGA_T[i - 1];
+    if (i > 1) {
+      tl.to("#m" + (i - 1), { y: -1080, duration: 0.7, ease: "power3.inOut" }, t);
+      tl.fromTo("#m" + i, { y: 1080, opacity: 1 }, { y: 0, opacity: 1, duration: 0.7, ease: "power3.inOut" }, t);
+      tl.set("#m" + (i - 1), { opacity: 0 }, t + 0.71);
+    }
+    IN("#m" + i + "-k", { x: -30 }, t + 0.45, 0.5, "power3.out");
+    tl.fromTo("#m" + i + "-t", { opacity: 0, y: 70, skewY: 4 }, { opacity: 1, y: 0, skewY: 0, duration: 0.65, ease: "expo.out" }, t + 0.55);
+    IN("#m" + i + "-a", { y: 20 }, t + 0.9, 0.6, "power2.out");
+    const el = $("#m" + i + "-n");
+    const val = parseFloat(el.getAttribute("data-v"));
+    const dec = Math.round(val) === val ? 0 : 1;
+    IN("#m" + i + "-n", {}, t + 1.2, 0.3, "none");
+    count("#m" + i + "-n", 0, val, dec, t + 1.2, 1.5, { suf: NB + el.getAttribute("data-u"), ease: "power2.out" });
+    tl.fromTo("#m" + i + "-n", { scale: 0.7 }, { scale: 1, duration: 1.5, ease: "power2.out", transformOrigin: "left center" }, t + 1.2);
+    IN("#m" + i + "-l", { y: 16 }, t + 2.4, 0.6, "power2.out");
+    tl.fromTo("#m" + i + "-c .chip", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(2.5)", stagger: 0.12 }, t + 2.9);
+    IN("#m" + i + "-c > .mono", {}, t + 2.8, 0.4, "sine.out");
+    IN("#m" + i + "-s", {}, t + 3.2, 0.6, "sine.out");
+    tl.fromTo("#m" + i + " .mghost", { y: 60 }, { y: -40, duration: 5.5, ease: "none" }, t);
+  }
+  const t = t0 + MEGA_T[4];
+  tl.to("#m4", { y: -1080, duration: 0.7, ease: "power3.inOut" }, t);
+  tl.fromTo("#m5", { y: 1080, opacity: 1 }, { y: 0, opacity: 1, duration: 0.7, ease: "power3.inOut" }, t);
+  tl.set("#m4", { opacity: 0 }, t + 0.71);
+  IN("#m5-t", { y: 30 }, t + 0.5, 0.5, "expo.out");
+  tl.fromTo(".nl", { opacity: 0, x: -50 }, { opacity: 1, x: 0, duration: 0.45, ease: "power3.out", stagger: 0.1 }, t + 0.7);
+  tl.fromTo(".nr", { opacity: 0, x: 50 }, { opacity: 1, x: 0, duration: 0.45, ease: "power3.out", stagger: 0.1 }, t + 0.8);
+  $$(".links path").forEach((p, i) => {
+    const len = p.getTotalLength();
+    tl.fromTo(p, { strokeDasharray: len + " " + len, strokeDashoffset: len }, { strokeDashoffset: 0, duration: 0.9, ease: "power2.inOut" }, t + 1.3 + i * 0.12);
+  });
+  tl.fromTo("#m5-call", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.6, ease: "back.out(1.6)" }, t + 2.4);
+  tl.fromTo("#m5-p0, #m5-p1", { strokeWidth: 4 }, { strokeWidth: 9, duration: 0.5, ease: "sine.inOut", yoyo: true, repeat: 1 }, t + 2.6);
+})();
+
+// S10 — rétroviseur
+(function () {
+  const t = start.s10;
+  IN("#s10-t", { y: 40 }, t + 0.5, 0.6, "expo.out");
+  IN("#s10-l", { y: 16 }, t + 0.8, 0.6, "power2.out");
+  tl.fromTo("#s10-z", { scaleX: 0 }, { scaleX: 1, duration: 0.8, ease: "expo.inOut" }, t + 1.0);
+  $$(".rb").forEach((b, i) => {
+    const ti = t + 1.4 + (i % 3) * 0.18 + Math.floor(i / 3) * 1.2;
+    tl.fromTo(b, { scaleY: 0 }, { scaleY: 1, duration: 0.8, ease: "power4.out" }, ti);
+    IN("#s10-v" + i, { y: 10 }, ti + 0.5, 0.4, "power2.out");
+  });
+  tl.fromTo(".rn, .rg", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "sine.out", stagger: 0.05 }, t + 1.5);
+  IN("#s10-list .sh", {}, t + 4.0, 0.5, "sine.out");
+  $$(".srow").forEach((r, i) => {
+    IN("#s10-s" + i, { x: 30 }, t + 4.2 + i * 0.2, 0.45, "power3.out");
+    tl.fromTo("#s10-sb" + i, { scaleX: 0 }, { scaleX: 1, duration: 0.7, ease: "power3.out" }, t + 4.35 + i * 0.2);
+  });
+  IN("#s10-m", { y: 20 }, t + 6.6, 0.8, "power2.out");
+  IN("#s10-f", {}, t + 7.4, 0.6, "sine.out");
+})();
+
+// S12 — scénarios
+(function () {
+  const t = start.s12;
+  IN("#s12-t", { y: 40 }, t + 0.5, 0.6, "expo.out");
+  IN("#s12-l", { y: 16 }, t + 0.8, 0.6, "power2.out");
+  tl.fromTo("#s12-z", { scaleY: 0 }, { scaleY: 1, duration: 0.6, ease: "expo.out", transformOrigin: "top center" }, t + 1.2);
+  IN("#s12-ax", {}, t + 1.3, 0.6, "sine.out");
+  tl.fromTo(".rlab", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.5, ease: "power3.out", stagger: 0.3 }, t + 1.4);
+  [0, 1].forEach((i) => {
+    const ti = t + 1.8 + i * 1.2;
+    tl.fromTo("#s12-r" + i, { scaleX: 0 }, { scaleX: 1, duration: 0.9, ease: "power3.inOut" }, ti);
+    tl.fromTo("#s12-d" + i, { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(3)" }, ti + 0.7);
+    tl.fromTo("#s12-e" + i, { opacity: 0, scale: 0, rotation: 45 }, { opacity: 1, scale: 1, rotation: 45, duration: 0.45, ease: "back.out(3)" }, ti + 0.9);
+    tl.fromTo(["#s12-x" + i + "a", "#s12-x" + i + "b", "#s12-x" + i + "c"], { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out", stagger: 0.08 }, ti + 0.8);
+    IN("#s12-y" + i, { y: 12 }, ti + 1.0, 0.45, "power3.out");
+  });
+  IN("#s12-cent > .mono", {}, t + 4.6, 0.5, "sine.out");
+  tl.fromTo("#s12-cent .cv", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out", stagger: 0.25 }, t + 4.8);
+  count("#s12-c1", 100, parseFloat($("#s12-c1").getAttribute("data-v")), 0, t + 5.0, 2.2, { suf: NB + "€", ease: "power2.inOut" });
+  count("#s12-c2", 100, parseFloat($("#s12-c2").getAttribute("data-v")), 0, t + 5.25, 2.2, { suf: NB + "€", ease: "power2.inOut" });
+  tl.fromTo(".sc", { opacity: 0, x: 50 }, { opacity: 1, x: 0, duration: 0.55, ease: "power4.out", stagger: 0.45 }, t + 7.6);
+  IN("#s12-f", {}, t + 9.4, 0.6, "sine.out");
+})();
+
+// S13 — risques
+(function () {
+  const t = start.s13;
+  IN("#s13-t", { y: 40 }, t + 0.5, 0.6, "expo.out");
+  for (let i = 0; i < 6; i++) {
+    const ti = t + 1.0 + i * 0.55;
+    tl.fromTo("#s13-k" + i, { opacity: 0, y: 50, rotationX: -25 }, { opacity: 1, y: 0, rotationX: 0, duration: 0.6, ease: "power3.out", transformPerspective: 1000 }, ti);
+    tl.fromTo("#s13-kl" + i, { scaleX: 0 }, { scaleX: 1, duration: 0.7, ease: "expo.inOut" }, ti + 0.2);
+  }
+})();
+
+// S15 — fin
+(function () {
+  const t = start.s15;
+  IN("#s15-t", { y: 40 }, t + 0.5, 0.7, "expo.out");
+  tl.fromTo(".rc", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.55, ease: "back.out(1.6)", stagger: 0.2 }, t + 1.1);
+  IN("#s15-d", { y: 20 }, t + 2.2, 0.8, "power2.out");
+})();
+
+window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

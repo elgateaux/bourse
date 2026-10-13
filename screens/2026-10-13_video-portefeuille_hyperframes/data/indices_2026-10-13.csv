@@ -1,0 +1,3 @@
+ticker,indice,cours,perf_ytd_pct,perf_1an_pct,rendement_div_pct,beta_sp500,source
+QQQ,Nasdaq 100,750.84,22.669,23.5241,0.41,1.22,"Zacks get_zacks_metrics QQQ (13/10/2026) : feed_last, peer1_ytd_pct_change, performance_1y"
+SPY,S&P 500,778.64,14.9929,17.1334,0.97,1,"Zacks get_zacks_metrics SPY (13/10/2026) : feed_last, peer1_ytd_pct_change, performance_1y"

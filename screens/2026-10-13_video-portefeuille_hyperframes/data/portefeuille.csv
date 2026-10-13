@@ -1,0 +1,6 @@
+ticker,poids,cotation_a_acheter,pea,justification
+NVDA,0.20,"NVIDIA, Nasdaq (USD)",non,"hyp. : poids égaux, faute de pondération fixée par l'investisseur"
+TSM,0.20,"TSMC, ADR NYSE (USD) ou 2330 Taïwan",non,"hyp. : poids égaux"
+NU,0.20,"Nu Holdings, NYSE (USD)",non,"hyp. : poids égaux"
+RDDT,0.20,"Reddit, NYSE (USD)",non,"hyp. : poids égaux"
+ADYEY,0.20,"Adyen, Euronext Amsterdam (EUR) ; éviter l'ADR non sponsorisé ADYEY",oui (action néerlandaise),"hyp. : poids égaux ; calculs sur l'ADR ADYEY (1/100 d'action), seul coté en dollars chez Zacks"
