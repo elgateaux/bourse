@@ -1,0 +1,44 @@
+id,valeur,unite,usage,justification
+calc_capital,10000,€,"calculatrice, valeur par défaut",hyp. pédagogique : un premier capital courant
+calc_versement,300,€ par mois,"calculatrice, valeur par défaut",hyp. pédagogique : effort d'épargne régulier
+calc_duree,20,ans,"calculatrice, valeur par défaut","hyp. : au-delà des 5 ans du PEA et des 8 ans de l'assurance-vie, pour montrer leur avantage"
+calc_rendement,8,% par an,"calculatrice, valeur par défaut","hyp. prudente : sous le rendement espéré central du Nasdaq 100 reconstitué (10,4 %/an) et du portefeuille (19,1 %/an) calculés le 13/10/2026"
+calc_frais,0.5,% par an,"calculatrice, valeur par défaut",hyp. : bas de la fourchette des frais de gestion d'une assurance-vie en ligne (fiscalite.csv)
+calc_inflation,2,% par an,"calculatrice, valeur par défaut",hyp. : cible de moyen terme de la Banque centrale européenne
+ex_bpa_depart,10,$,exemple cours = BPA × P/E,exemple pédagogique
+ex_pe_depart,20,x,exemple cours = BPA × P/E,exemple pédagogique
+ex_bpa_arrivee,20,$,exemple cours = BPA × P/E,exemple pédagogique : BPA doublé
+ex_pe_arrivee,15,x,exemple cours = BPA × P/E,exemple pédagogique : P/E qui se dégonfle
+ex_annees,5,ans,exemple cours = BPA × P/E,exemple pédagogique
+garp_croissance_min,12,% par an,grille GARP,hyp. : près du double de la croissance de long terme retenue pour le Nasdaq 100 reconstitué
+garp_peg_max,1.5,x,grille GARP,règle d'éligibilité de la méthode (prompts/portefeuille-peg-3-valeurs.md)
+garp_rentabilite_min,15,%,"grille GARP (ROIC, ou ROE pour une banque)","hyp. : seuil usuel d'une entreprise de qualité, au-dessus du coût de ses capitaux"
+garp_marge_nette_min,10,%,grille GARP,hyp. : une marge à deux chiffres signale un pouvoir de fixation des prix
+garp_dilution_max,2,% par an,grille GARP,"hyp. : au-delà, la rémunération en actions ronge le BPA"
+garp_rank_max,3,rang,grille GARP,"hyp. : on évite les rangs Zacks 4 et 5, signe de révisions en baisse"
+garp_tresorerie_nette_min,0,M$,grille GARP,hyp. : trésorerie supérieure à la dette ; non applicable à une banque
+zone_peg,1,x,zone d'achat,règle de la méthode : cours pour lequel le PEG de long terme vaut 1
+zone_peg_forte,0.8,x,zone d'achat,règle de la méthode : zone de forte sécurité
+vente_peg,2,x,rééquilibrage,règle de la méthode : vendre la moitié d'une ligne dont le PEG dépasse 2
+renfort_peg,0.8,x,rééquilibrage,"règle de la méthode : renforcer une ligne dont le PEG repasse sous 0,8"
+frais_capital,10000,€,impact des frais,hyp. pédagogique
+frais_versement,300,€ par mois,impact des frais,hyp. pédagogique
+frais_duree,30,ans,impact des frais,hyp. : une carrière d'épargnant
+frais_rendement,8,% par an,impact des frais,même hypothèse que la calculatrice
+frais_niveau_bas,0.2,% par an,impact des frais,hyp. : ordre de grandeur d'un ETF indiciel ou d'actions en direct conservées longtemps
+frais_niveau_moyen,1,% par an,impact des frais,hyp. : haut de la fourchette d'une assurance-vie bancaire (fiscalite.csv)
+frais_niveau_haut,2,% par an,impact des frais,"exemple de John Bogle (Frontline, 2012)"
+bogle_rendement,7,% par an,exemple de Bogle,paramètre cité par Frontline (PBS)
+bogle_frais,2,% par an,exemple de Bogle,paramètre cité par Frontline (PBS)
+bogle_duree,50,ans,exemple de Bogle,paramètre cité par Frontline (PBS)
+temps_versement,200,€ par mois,le temps plutôt que le timing,hyp. pédagogique
+temps_age_tot,25,ans,le temps plutôt que le timing,hyp. pédagogique
+temps_age_tard,35,ans,le temps plutôt que le timing,hyp. pédagogique
+temps_age_fin,65,ans,le temps plutôt que le timing,hyp. pédagogique
+plus_value_exemple,10000,€,comparaison fiscale,exemple pédagogique
+dca_montant,6000,€,DCA contre investissement en une fois,exemple pédagogique
+dca_mois,6,mois,DCA contre investissement en une fois,exemple pédagogique : 1 000 € par mois pendant 6 mois
+noyau_min,50,% du portefeuille,noyau et satellites,"hyp. : tant qu'on n'a pas d'historique personnel de surperformance (79 % des gérants battus en 2025, SPIVA), l'indice reste majoritaire"
+noyau_max,80,% du portefeuille,noyau et satellites,"hyp. : au-delà, la part en stock picking devient trop petite pour justifier le travail d'analyse"
+etf_frais_bas,0.07,% par an,frais courants d'un ETF,bas de la fourchette des ETF indiciels (data/etf.csv)
+etf_frais_haut,0.38,% par an,frais courants d'un ETF,haut de la fourchette des ETF indiciels courants (data/etf.csv)

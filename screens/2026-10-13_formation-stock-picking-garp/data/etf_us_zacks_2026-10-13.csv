@@ -1,0 +1,5 @@
+ticker,nom,indice,emetteur,creation,encours_musd,nombre_lignes,frais_pct,rendement_dividende_pct,poids_10_premieres_pct,perf_1an_pct,source
+QQQ,Invesco QQQ,Nasdaq-100,Invesco,1999-03-10,502687.38,106,0.18,0.41,46.83,23.5241,"Zacks get_zacks_metrics (dernière séance 12/10/2026, servi le 13/10/2026)"
+SPY,State Street SPDR S&P 500 ETF Trust,S&P 500,State Street Investment Management,1993-01-29,822851.1792,505,0.09,0.97,38.003445,17.1334,"Zacks get_zacks_metrics (dernière séance 12/10/2026, servi le 13/10/2026)"
+VOO,Vanguard S&P 500 ETF,S&P 500,Vanguard,,1054455.543,,0.03,1.04,37.78,,"Zacks get_zacks_metrics (dernière séance 12/10/2026, servi le 13/10/2026) (pair de SPY)"
+IVV,iShares Core S&P 500 ETF,S&P 500,BlackRock iShares,,898660.5145,,0.03,1.07,37.93,,"Zacks get_zacks_metrics (dernière séance 12/10/2026, servi le 13/10/2026) (pair de SPY)"

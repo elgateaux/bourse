@@ -1,0 +1,2658 @@
+{
+ "date": "13/10/2026",
+ "date_cours": "12/10/2026",
+ "params": {
+  "pfu": 0.314,
+  "ps": 0.18600000000000003,
+  "ps_av": 0.172,
+  "ir_pfu": 0.128,
+  "av_taux_reduit": 0.075,
+  "av_seuil": 150000.0,
+  "av_abat_seul": 4600.0,
+  "av_abat_couple": 9200.0,
+  "pea_duree": 5.0,
+  "av_duree": 8.0,
+  "pea_plafond": 150000.0
+ },
+ "defauts": {
+  "capital": 10000.0,
+  "mensuel": 300.0,
+  "annees": 20.0,
+  "rendement": 0.08,
+  "frais": 0.005,
+  "inflation": 0.02
+ },
+ "hyp": {
+  "calc_capital": 10000.0,
+  "calc_versement": 300.0,
+  "calc_duree": 20.0,
+  "calc_rendement": 8.0,
+  "calc_frais": 0.5,
+  "calc_inflation": 2.0,
+  "ex_bpa_depart": 10.0,
+  "ex_pe_depart": 20.0,
+  "ex_bpa_arrivee": 20.0,
+  "ex_pe_arrivee": 15.0,
+  "ex_annees": 5.0,
+  "garp_croissance_min": 12.0,
+  "garp_peg_max": 1.5,
+  "garp_rentabilite_min": 15.0,
+  "garp_marge_nette_min": 10.0,
+  "garp_dilution_max": 2.0,
+  "garp_rank_max": 3.0,
+  "garp_tresorerie_nette_min": 0.0,
+  "zone_peg": 1.0,
+  "zone_peg_forte": 0.8,
+  "vente_peg": 2.0,
+  "renfort_peg": 0.8,
+  "frais_capital": 10000.0,
+  "frais_versement": 300.0,
+  "frais_duree": 30.0,
+  "frais_rendement": 8.0,
+  "frais_niveau_bas": 0.2,
+  "frais_niveau_moyen": 1.0,
+  "frais_niveau_haut": 2.0,
+  "bogle_rendement": 7.0,
+  "bogle_frais": 2.0,
+  "bogle_duree": 50.0,
+  "temps_versement": 200.0,
+  "temps_age_tot": 25.0,
+  "temps_age_tard": 35.0,
+  "temps_age_fin": 65.0,
+  "plus_value_exemple": 10000.0,
+  "dca_montant": 6000.0,
+  "dca_mois": 6.0,
+  "noyau_min": 50.0,
+  "noyau_max": 80.0,
+  "etf_frais_bas": 0.07,
+  "etf_frais_haut": 0.38
+ },
+ "fisc": {
+  "pfu_ir": {
+   "valeur": "12.8",
+   "unite": "%",
+   "precision": "inchangée en 2026",
+   "parametre": "Prélèvement forfaitaire unique : part impôt sur le revenu",
+   "s1": [
+    "GPS Patrimoine : flat tax à 31,4 % en 2026",
+    "https://www.gps-patrimoine.fr/flat-tax-2026-hausse-31-4-pourcent/"
+   ],
+   "s2": [
+    "Goodvest : flat tax 2026",
+    "https://www.goodvest.fr/blog/strategie-investissement/flat-tax-2026"
+   ]
+  },
+  "ps_2026": {
+   "valeur": "18.6",
+   "unite": "%",
+   "precision": "CSG portée de 9,2 % à 10,6 % au 01/01/2026 (LFSS 2026)",
+   "parametre": "Prélèvements sociaux sur les revenus du capital (CTO et PEA)",
+   "s1": [
+    "GPS Patrimoine",
+    "https://www.gps-patrimoine.fr/flat-tax-2026-hausse-31-4-pourcent/"
+   ],
+   "s2": [
+    "Bourse Direct : fiscalité du PEA en 2026",
+    "https://www.boursedirect.fr/fr/actualites/categorie/la-finance-et-moi/fiscalite-du-pea-tout-comprendre-sur-les-avantages-fiscaux-en-2026-bourse-direct-8cd1708ab5ea749476b98cafe1913d4a4f15ada7"
+   ]
+  },
+  "ps_av": {
+   "valeur": "17.2",
+   "unite": "%",
+   "precision": "l'assurance-vie est exclue de la hausse de CSG de 2026",
+   "parametre": "Prélèvements sociaux sur l'assurance-vie",
+   "s1": [
+    "Nalo : l'assurance-vie épargnée par les hausses d'impôts en 2026",
+    "https://blog.nalo.fr/assurance-vie-csg/"
+   ],
+   "s2": [
+    "Linxea : la flat tax en assurance-vie",
+    "https://www.linxea.com/tout-savoir-sur/assurance-vie/flat-tax/"
+   ]
+  },
+  "pfu_total": {
+   "valeur": "31.4",
+   "unite": "%",
+   "precision": "12,8 % d'impôt + 18,6 % de prélèvements sociaux",
+   "parametre": "Flat tax (PFU) sur un compte-titres",
+   "s1": [
+    "GPS Patrimoine",
+    "https://www.gps-patrimoine.fr/flat-tax-2026-hausse-31-4-pourcent/"
+   ],
+   "s2": [
+    "Maxcompta : flat tax 31,4 % (PEA, CTO, ETF, dividendes)",
+    "https://www.maxcompta.com/blogs/actualites/flat-tax-2026-pea-compte-titres-etf-dividendes"
+   ]
+  },
+  "pea_plafond": {
+   "valeur": "150000",
+   "unite": "€",
+   "precision": "225 000 € cumulés avec un PEA-PME ; les gains peuvent dépasser le plafond",
+   "parametre": "Plafond des versements du PEA",
+   "s1": [
+    "Finary : fiscalité du PEA",
+    "https://finary.com/fr/blog/epargne/plans/pea/fiscalite-pea"
+   ],
+   "s2": [
+    "Bourse Direct : fiscalité du PEA en 2026",
+    "https://www.boursedirect.fr/fr/actualites/categorie/la-finance-et-moi/fiscalite-du-pea-tout-comprendre-sur-les-avantages-fiscaux-en-2026-bourse-direct-8cd1708ab5ea749476b98cafe1913d4a4f15ada7"
+   ]
+  },
+  "pea_duree": {
+   "valeur": "5",
+   "unite": "ans",
+   "precision": "avant 5 ans, un retrait clôture le plan (sauf exceptions) et les gains subissent la flat tax",
+   "parametre": "Durée au-delà de laquelle les gains du PEA sont exonérés d'impôt sur le revenu",
+   "s1": [
+    "Finary",
+    "https://finary.com/fr/blog/epargne/plans/pea/fiscalite-pea"
+   ],
+   "s2": [
+    "Investimieux : fiscalité PEA",
+    "https://investimieux.com/pea-fiscalite/"
+   ]
+  },
+  "pea_eligibilite": {
+   "valeur": "0",
+   "unite": "",
+   "precision": "sociétés ayant leur siège dans l'UE ou l'EEE, soumises à l'impôt sur les sociétés ; fonds investis à 75 % au moins en actions européennes",
+   "parametre": "Titres éligibles au PEA",
+   "s1": [
+    "Ministère de l'Économie : le PEA (12/2025)",
+    "https://www.economie.gouv.fr/node/65106"
+   ],
+   "s2": [
+    "Legifiscal : le PEA",
+    "https://legifiscal.fr/placements/epargne/bourse-pea/le-pea-fonctionnement-et-fiscalite.html?pdf=1"
+   ]
+  },
+  "pea_frais_ordre": {
+   "valeur": "0.5",
+   "unite": "%",
+   "precision": "1,2 % par les autres canaux (décret n° 2020-95)",
+   "parametre": "Frais de transaction maximum sur un PEA (ordre en ligne)",
+   "s1": [
+    "AMF : plafonnement des frais de transaction sur un PEA",
+    "https://www.amf-france.org/fr/le-mediateur/journal-de-bord-du-mediateur/dossiers-du-mois/plafonnement-des-frais-de-transaction-sur-un-pea-le-canal-de-transmission-dun-ordre-ne-suffit-pas"
+   ],
+   "s2": [
+    "Moneyvox : frais du PEA plafonnés en juillet 2020",
+    "https://www.moneyvox.fr/bourse/actualites/78089/pea-les-frais-de-garde-de-transaction-et-de-transfert-plafonnes-en-juillet-2020"
+   ]
+  },
+  "pea_garde": {
+   "valeur": "0.4",
+   "unite": "% par an",
+   "precision": "plus 5 € par ligne au maximum",
+   "parametre": "Droits de garde maximum sur un PEA",
+   "s1": [
+    "Moneyvox",
+    "https://www.moneyvox.fr/bourse/actualites/78089/pea-les-frais-de-garde-de-transaction-et-de-transfert-plafonnes-en-juillet-2020"
+   ],
+   "s2": [
+    "Boursorama : les frais sur les PEA désormais plafonnés",
+    "https://www.boursorama.com/epargne/placements-boursiers/actualites-amp/les-frais-sur-les-pea-et-pea-pme-seront-desormais-plafonnes-0ec7766045d0b50a7f090603903cf158"
+   ]
+  },
+  "pea_ouverture": {
+   "valeur": "10",
+   "unite": "€",
+   "precision": "transfert ou clôture : 15 € par ligne et 150 € au maximum",
+   "parametre": "Frais d'ouverture maximum d'un PEA",
+   "s1": [
+    "Moneyvox",
+    "https://www.moneyvox.fr/bourse/actualites/78089/pea-les-frais-de-garde-de-transaction-et-de-transfert-plafonnes-en-juillet-2020"
+   ],
+   "s2": [
+    "Selexium : PEA les frais désormais plafonnés",
+    "https://www.selexium.com/actualites/pea-les-frais-desormais-plafonnes"
+   ]
+  },
+  "av_duree": {
+   "valeur": "8",
+   "unite": "ans",
+   "precision": "avant 8 ans : 12,8 % + 17,2 % = 30 %",
+   "parametre": "Durée au-delà de laquelle l'assurance-vie bénéficie de l'abattement et du taux réduit",
+   "s1": [
+    "Ramify : fiscalité de l'assurance-vie en 2026",
+    "https://www.ramify.fr/assurance-vie/fiscalite"
+   ],
+   "s2": [
+    "Selectra : fiscalité de l'assurance-vie",
+    "https://selectra.info/finance/guides/assurance-vie/fiscalite"
+   ]
+  },
+  "av_abattement_seul": {
+   "valeur": "4600",
+   "unite": "€",
+   "precision": "s'applique à l'impôt sur le revenu seulement",
+   "parametre": "Abattement annuel sur les gains retirés après 8 ans (personne seule)",
+   "s1": [
+    "Nalo : abattement de 4 600 €",
+    "https://blog.nalo.fr/abattement-de-4600-assurance-vie"
+   ],
+   "s2": [
+    "Ramify",
+    "https://www.ramify.fr/assurance-vie/fiscalite"
+   ]
+  },
+  "av_abattement_couple": {
+   "valeur": "9200",
+   "unite": "€",
+   "precision": "imposition commune",
+   "parametre": "Abattement annuel sur les gains retirés après 8 ans (couple)",
+   "s1": [
+    "Nalo",
+    "https://blog.nalo.fr/abattement-de-4600-assurance-vie"
+   ],
+   "s2": [
+    "Ramify",
+    "https://www.ramify.fr/assurance-vie/fiscalite"
+   ]
+  },
+  "av_taux_reduit": {
+   "valeur": "7.5",
+   "unite": "%",
+   "precision": "12,8 % pour la part liée aux primes au-delà de 150 000 € par personne",
+   "parametre": "Impôt sur les gains après 8 ans (primes jusqu'à 150 000 €)",
+   "s1": [
+    "Selectra",
+    "https://selectra.info/finance/guides/assurance-vie/fiscalite"
+   ],
+   "s2": [
+    "Groupama : fiche stratégie rachat",
+    "https://lecerclegestionpatrimoine.groupama.fr/accueil/documents/fiche-strategie-rachat-contrat-assurance-vie-capitalisation.pdf"
+   ]
+  },
+  "av_seuil_primes": {
+   "valeur": "150000",
+   "unite": "€",
+   "precision": "par personne, tous contrats confondus",
+   "parametre": "Seuil de primes pour le taux de 7,5 %",
+   "s1": [
+    "Selectra",
+    "https://selectra.info/finance/guides/assurance-vie/fiscalite"
+   ],
+   "s2": [
+    "Bourse Inside : assurance-vie au bout de 8 ans",
+    "https://bourseinside.fr/patrimoine/assurance-vie-au-bout-de-8-ans-ce-double-avantage-fiscal-meconnu-peut-faire-chuter-votre-impot-a-condition-de-respecter-ces-deux-seuils-cles/"
+   ]
+  },
+  "av_transmission": {
+   "valeur": "152500",
+   "unite": "€",
+   "precision": "puis 20 % jusqu'à 700 000 €, 31,25 % au-delà ; après 70 ans : 30 500 € tous bénéficiaires confondus",
+   "parametre": "Abattement de transmission par bénéficiaire (primes versées avant 70 ans)",
+   "s1": [
+    "Nalo : abattement de 152 500 €",
+    "https://blog.nalo.fr/abattement-152-500-assurance-vie/"
+   ],
+   "s2": [
+    "Meilleurtaux : abattement assurance-vie",
+    "https://placement.meilleurtaux.com/assurance-vie/fiscalité-assurance-vie/abattement-assurance-vie.html"
+   ]
+  },
+  "av_frais_gestion": {
+   "valeur": "0.5",
+   "unite": "% par an",
+   "precision": "0,5 à 0,75 % en ligne ; 0,8 à 1 % dans les contrats bancaires",
+   "parametre": "Frais de gestion annuels sur les unités de compte d'un contrat en ligne",
+   "s1": [
+    "Goodvest : comparatif des frais d'assurance-vie",
+    "https://www.goodvest.fr/blog/assurance-vie/comparatif-frais-assurance-vie"
+   ],
+   "s2": [
+    "Invesse : frais d'assurance-vie 2026",
+    "https://invesse.fr/epargne/frais-assurance-vie-guide-complet-2026/"
+   ]
+  },
+  "cto_moins_values": {
+   "valeur": "10",
+   "unite": "ans",
+   "precision": "imputables sur les plus-values de même nature",
+   "parametre": "Report des moins-values d'un compte-titres",
+   "s1": [
+    "Cleerly : fiscalité du compte-titres",
+    "https://cleerly.fr/bourse/compte-titres/fiscalite"
+   ],
+   "s2": [
+    "Bourse Direct : fiscalité du compte-titres",
+    "https://www.boursedirect.fr/fr/actualites/categorie/la-finance-et-moi/fiscalite-du-compte-titres-comment-declarer-flat-tax-dividendes-et-plus-values-bourse-direct-190a6f38512254f72b151543ba059d576d1c7df3"
+   ]
+  },
+  "cto_bareme": {
+   "valeur": "40",
+   "unite": "%",
+   "precision": "option globale pour tous les revenus mobiliers de l'année ; prélèvements sociaux sur 100 %",
+   "parametre": "Abattement sur les dividendes en cas d'option pour le barème progressif",
+   "s1": [
+    "LCL : fiscalité des dividendes sur un compte-titres",
+    "https://www.lcl.fr/mag/fiscalite/bourse-fiscalite-des-dividendes-sur-un-compte-titres"
+   ],
+   "s2": [
+    "Auguste Patrimoine : PFU ou barème",
+    "https://www.auguste-patrimoine.fr/blog/dividendes-faut-il-etre-impose-au-pfu-ou-au-bareme"
+   ]
+  },
+  "ttf": {
+   "valeur": "0.4",
+   "unite": "%",
+   "precision": "depuis le 01/04/2025 ; ne s'applique ni aux ventes ni aux actions étrangères",
+   "parametre": "Taxe sur les transactions financières (achats d'actions françaises > 1 Md€ de capitalisation)",
+   "s1": [
+    "Moneyvox : taxe sur les transactions financières",
+    "https://www.moneyvox.fr/bourse/taxe-transactions-financieres.php"
+   ],
+   "s2": [
+    "Legifiscal : taxe sur les transactions financières",
+    "https://www.legifiscal.fr/patrimoine-placements/taxe-transactions-financieres.html"
+   ]
+  },
+  "us_retenue": {
+   "valeur": "15",
+   "unite": "%",
+   "precision": "30 % sans W-8BEN ; crédit d'impôt imputable sur l'impôt français (formulaire 2047)",
+   "parametre": "Retenue à la source sur les dividendes américains avec formulaire W-8BEN",
+   "s1": [
+    "Rotek : convention fiscale France-USA",
+    "https://rotek.fr/?p=43924"
+   ],
+   "s2": [
+    "ABC Bourse : la fiscalité des valeurs américaines",
+    "https://www.abcbourse.com/apprendre/5_fiscalite_us.html"
+   ]
+  },
+  "change_frais": {
+   "valeur": "0.25",
+   "unite": "%",
+   "precision": "de l'ordre de 0,2 à 0,5 % selon le courtier (avril 2026)",
+   "parametre": "Frais de change des courtiers sur les actions en dollars",
+   "s1": [
+    "Signal Alpha : meilleur CTO 2026",
+    "https://signal-alpha.fr/comparatif-choix-du-cto/"
+   ],
+   "s2": [
+    "Goliaths : frais de courtage en bourse",
+    "https://goliaths.io/post/frais-de-courtage-bourse"
+   ]
+  },
+  "etf_synthetiques": {
+   "valeur": "75",
+   "unite": "% d'actions européennes",
+   "precision": "exposition au Nasdaq 100 ou au S&P 500 par un contrat d'échange ; éligibilité future à surveiller",
+   "parametre": "ETF éligibles au PEA sur des indices non européens (réplication synthétique)",
+   "s1": [
+    "Finary : ETF PEA",
+    "https://finary.com/investir-en-bourse/etfs/etf-pea"
+   ],
+   "s2": [
+    "PEA.fr : interdiction des ETF synthétiques dans le PEA ?",
+    "https://pea.fr/actualites/interdiction-etf-synthetiques-pea/"
+   ]
+  },
+  "spiva_2025": {
+   "valeur": "79",
+   "unite": "%",
+   "precision": "sur un an (SPIVA fin 2025)",
+   "parametre": "Fonds actifs de grandes capitalisations américaines battus par le S&P 500 en 2025",
+   "s1": [
+    "S&P Dow Jones Indices : SPIVA U.S. year-end 2025",
+    "https://www.spglobal.com/spdji/en/spiva/article/spiva-us-year-end-2025/"
+   ],
+   "s2": [
+    "InvestmentNews : active managers stumble again in 2025",
+    "https://investmentnews.com/equities/active-managers-stumble-again-in-2025-as-large-caps-dominate/265541"
+   ]
+  },
+  "spiva_15ans": {
+   "valeur": "89.5",
+   "unite": "%",
+   "precision": "au 31/12/2024",
+   "parametre": "Fonds actifs de grandes capitalisations américaines battus par le S&P 500 sur 15 ans",
+   "s1": [
+    "Ritholtz : the data on active large cap underperformance",
+    "https://ritholtz.com/2025/05/the-data-on-active-large-cap-underperformance"
+   ],
+   "s2": [
+    "S&P Dow Jones Indices : SPIVA U.S.",
+    "https://spglobal.com/spdji/en/spiva/article/spiva-us"
+   ]
+  }
+ },
+ "ratios": {
+  "NVDA": {
+   "ticker": "NVDA",
+   "societe": "NVIDIA",
+   "exercice": "FY2026",
+   "chiffre_affaires": 215938.0,
+   "marge_brute": 0.7106808435754708,
+   "marge_operationnelle": 0.6038168363141272,
+   "marge_nette": 0.5560253406070261,
+   "taux_impot": 0.1511700247437257,
+   "tcam_ca": 0.6830139148028267,
+   "annees_tcam": 4,
+   "annee_depart": 2022,
+   "ca_depart": 26914.0,
+   "rn_depart": 9752.0,
+   "resultat_operationnel": 130387.0,
+   "resultat_avant_impot": 141450.0,
+   "impot": 21383.0,
+   "resultat_net": 120067.0,
+   "marge_brute_m": 153463.0,
+   "bpa_gaap": 4.9,
+   "bpa_non_gaap": 4.77,
+   "ecart_non_gaap": -0.026530612244898166,
+   "bpa_recalcule": 4.897895080362242,
+   "actions_moyennes": 24514.0,
+   "dilution": -0.004098360655737654,
+   "flux_operationnel": 102718.0,
+   "capex": 6042.0,
+   "fcf": 96676.0,
+   "capex_ca": 0.027980253591308617,
+   "marge_fcf": 0.44770258129648327,
+   "conversion_fcf": 0.8051837723937468,
+   "rachats": 40086.0,
+   "dividendes": 974.0,
+   "retour_actionnaire_fcf": 0.4247176134718027,
+   "tresorerie": 62556.0,
+   "dette": 8468.0,
+   "tresorerie_nette": 54088.0,
+   "capitaux_propres": 157293.0,
+   "roe": 1.014850815653791,
+   "nopat": 110676.39398373984,
+   "capital_investi": 103205.0,
+   "capital_investi_n1": 44580.0,
+   "capital_investi_moyen": 73892.5,
+   "roic": 1.4978028079133854,
+   "roic_significatif": true
+  },
+  "TSM": {
+   "ticker": "TSM",
+   "societe": "TSMC",
+   "exercice": "2025",
+   "chiffre_affaires": 121423.5,
+   "marge_brute": 0.59891371933769,
+   "marge_operationnelle": 0.5082862872508205,
+   "marge_nette": 0.4456756723369035,
+   "taux_impot": 0.1697294224298204,
+   "tcam_ca": 0.20692314537397105,
+   "annees_tcam": 4,
+   "annee_depart": 2021,
+   "ca_depart": 57224.8,
+   "rn_depart": 21354.0,
+   "resultat_operationnel": 61717.9,
+   "resultat_avant_impot": 65083.0,
+   "impot": 11046.5,
+   "resultat_net": 54115.5,
+   "marge_brute_m": 72722.2,
+   "bpa_gaap": 10.43,
+   "bpa_non_gaap": 10.65,
+   "ecart_non_gaap": 0.021093000958772867,
+   "bpa_recalcule": 10.434518529944855,
+   "actions_moyennes": 5186.2,
+   "dilution": 0.0,
+   "flux_operationnel": 72520.7,
+   "capex": 40536.0,
+   "fcf": 31984.699999999997,
+   "capex_ca": 0.3338398250750472,
+   "marge_fcf": 0.2634144131901979,
+   "conversion_fcf": 0.5910450795058716,
+   "rachats": 0.0,
+   "dividendes": 14879.8,
+   "retour_actionnaire_fcf": 0.4652161814867734,
+   "tresorerie": 99722.7,
+   "dette": 32929.2,
+   "tresorerie_nette": 66793.5,
+   "capitaux_propres": 172018.5,
+   "roe": 0.35776016374243486,
+   "nopat": 51242.55647941859,
+   "capital_investi": 105225.00000000001,
+   "capital_investi_n1": 85770.0,
+   "capital_investi_moyen": 95497.5,
+   "roic": 0.5365853187718903,
+   "roic_significatif": true
+  },
+  "NU": {
+   "ticker": "NU",
+   "societe": "Nu Holdings",
+   "exercice": "2025",
+   "chiffre_affaires": 15774.9,
+   "marge_brute": 0.7542615167132597,
+   "marge_operationnelle": 0.289738762210854,
+   "marge_nette": 0.1818648612669494,
+   "taux_impot": 0.25765174232240723,
+   "tcam_ca": 0.7458460851908035,
+   "annees_tcam": 4,
+   "annee_depart": 2021,
+   "ca_depart": 1698.02,
+   "rn_depart": -164.99,
+   "resultat_operationnel": 4570.6,
+   "resultat_avant_impot": 3868.4,
+   "impot": 996.7,
+   "resultat_net": 2868.9,
+   "marge_brute_m": 11898.4,
+   "bpa_gaap": 0.58,
+   "bpa_non_gaap": 0.62,
+   "ecart_non_gaap": 0.06896551724137945,
+   "bpa_recalcule": 0.5846126383434488,
+   "actions_moyennes": 4907.352,
+   "dilution": 0.007678578840327077,
+   "flux_operationnel": 3500.46,
+   "capex": 7.22,
+   "fcf": 3493.2400000000002,
+   "capex_ca": 0.00045768911371862897,
+   "marge_fcf": 0.22144292515324981,
+   "conversion_fcf": 1.2176234793823417,
+   "rachats": 0.0,
+   "dividendes": 0.0,
+   "retour_actionnaire_fcf": 0.0,
+   "tresorerie": 15003.6,
+   "dette": 4398.2,
+   "tresorerie_nette": null,
+   "capitaux_propres": 11321.6,
+   "roe": 0.3024881014387928,
+   "nopat": 3392.976946541206,
+   "capital_investi": 716.1999999999989,
+   "capital_investi_n1": 191.70000000000073,
+   "capital_investi_moyen": 453.9499999999998,
+   "roic": null,
+   "roic_significatif": false
+  },
+  "RDDT": {
+   "ticker": "RDDT",
+   "societe": "Reddit",
+   "exercice": "2025",
+   "chiffre_affaires": 2202.51,
+   "marge_brute": 0.9118187885639565,
+   "marge_operationnelle": 0.20067105257183848,
+   "marge_nette": 0.2405074210786784,
+   "taux_impot": -0.0019482116173939357,
+   "tcam_ca": 0.4893467129954705,
+   "annees_tcam": 3,
+   "annee_depart": 2022,
+   "ca_depart": 666.7,
+   "rn_depart": -158.55,
+   "resultat_operationnel": 441.98,
+   "resultat_avant_impot": 528.69,
+   "impot": -1.03,
+   "resultat_net": 529.72,
+   "marge_brute_m": 2008.29,
+   "bpa_gaap": 2.62,
+   "bpa_non_gaap": 2.62,
+   "ecart_non_gaap": 0.0,
+   "bpa_recalcule": 2.6209749242979004,
+   "actions_moyennes": 202.108,
+   "dilution": 0.05823627287853572,
+   "flux_operationnel": 690.88,
+   "capex": 6.71,
+   "fcf": 684.17,
+   "capex_ca": 0.0030465241928526996,
+   "marge_fcf": 0.3106319608083504,
+   "conversion_fcf": 1.291569130861587,
+   "rachats": 105.63,
+   "dividendes": 0.0,
+   "retour_actionnaire_fcf": 0.154391452416797,
+   "tresorerie": 2476.81,
+   "dette": 0.0,
+   "tresorerie_nette": 2476.81,
+   "capitaux_propres": 2929.04,
+   "roe": 0.20938418392858202,
+   "nopat": 441.98,
+   "capital_investi": 452.23,
+   "capital_investi_n1": 289.94000000000005,
+   "capital_investi_moyen": 371.08500000000004,
+   "roic": 1.191047873128798,
+   "roic_significatif": false
+  }
+ },
+ "val": {
+  "NVDA": {
+   "ticker": "NVDA",
+   "nom": "NVIDIA",
+   "prix": 226.32,
+   "capitalisation": 5454312.0,
+   "zacks_rank": 1,
+   "bpa_fy0": 4.77,
+   "bpa_f1": 9.2465,
+   "bpa_f2": 15.532,
+   "pe_dernier_exercice": 47.44654088050315,
+   "pe_f1": 24.476288325312282,
+   "pe_f2": 14.571207828998197,
+   "croissance_f1": 0.9384696016771488,
+   "croissance_f2": 0.6797707240577517,
+   "ltg": 14.0,
+   "beta": 2.22,
+   "dividende": 0.44,
+   "plus_haut_52s": 239.24,
+   "plus_bas_52s": 165.17,
+   "ecart_plus_haut": -0.054004347099147365,
+   "amplitude_52s": 0.4484470545498578,
+   "chg_52s": 0.2018,
+   "chg_ytd": 0.21350000000000002,
+   "pe_ntm": 16.568,
+   "bpa_ntm": 13.6603,
+   "croissance_retenue": 0.15,
+   "peg_lt": 1.105,
+   "peg_2027": 0.302,
+   "croissance_2027": 0.6914,
+   "prix_peg1": 204.9,
+   "ecart_zone": 0.105,
+   "tcam_bear": -0.155404,
+   "tcam_base": 0.15506,
+   "tcam_bull": 0.389439,
+   "tcam_esperance": 0.181546,
+   "theme": "IA calcul",
+   "prix_peg08": 163.92000000000002,
+   "p_s": 25.258694625309115,
+   "valeur_entreprise": 5400224.0,
+   "ve_ebit": 41.41688972060098,
+   "rendement_fcf": 0.0177246919501488
+  },
+  "TSM": {
+   "ticker": "TSM",
+   "nom": "TSMC",
+   "prix": 444.35,
+   "capitalisation": 2304623.5,
+   "zacks_rank": 2,
+   "bpa_fy0": 10.65,
+   "bpa_f1": 16.6,
+   "bpa_f2": 21.44,
+   "pe_dernier_exercice": 41.72300469483568,
+   "pe_f1": 26.768072289156624,
+   "pe_f2": 20.72527985074627,
+   "croissance_f1": 0.5586854460093897,
+   "croissance_f2": 0.29156626506024086,
+   "ltg": 27.3,
+   "beta": 1.37,
+   "dividende": 0.78,
+   "plus_haut_52s": 485.8,
+   "plus_bas_52s": 275.06,
+   "ecart_plus_haut": -0.08532317826265956,
+   "amplitude_52s": 0.7661601105213409,
+   "chg_52s": 0.467,
+   "chg_ytd": 0.4622,
+   "pe_ntm": 21.807,
+   "bpa_ntm": 20.3766,
+   "croissance_retenue": 0.18,
+   "peg_lt": 1.211,
+   "peg_2027": 0.711,
+   "croissance_2027": 0.2916,
+   "prix_peg1": 366.78,
+   "ecart_zone": 0.21100000000000002,
+   "tcam_bear": -0.101697,
+   "tcam_base": 0.189204,
+   "tcam_bull": 0.326905,
+   "tcam_esperance": 0.179848,
+   "theme": "IA fonderie et equipement",
+   "prix_peg08": 293.424,
+   "p_s": 18.98004504894028,
+   "valeur_entreprise": 2237830.0,
+   "ve_ebit": 36.25901075700891,
+   "rendement_fcf": 0.013878492517324412
+  },
+  "NU": {
+   "ticker": "NU",
+   "nom": "Nu Holdings",
+   "prix": 16.01,
+   "capitalisation": 77739.34,
+   "zacks_rank": 3,
+   "bpa_fy0": 0.62,
+   "bpa_f1": 0.862,
+   "bpa_f2": 1.162,
+   "pe_dernier_exercice": 25.822580645161292,
+   "pe_f1": 18.57308584686775,
+   "pe_f2": 13.777969018932877,
+   "croissance_f1": 0.39032258064516134,
+   "croissance_f2": 0.34802784222737815,
+   "ltg": 28.4,
+   "beta": 0.95,
+   "dividende": 0.0,
+   "plus_haut_52s": 18.76,
+   "plus_bas_52s": 11.6,
+   "ecart_plus_haut": -0.14658848614072495,
+   "amplitude_52s": 0.6172413793103451,
+   "chg_52s": 0.0617,
+   "chg_ytd": -0.0436,
+   "pe_ntm": 14.607,
+   "bpa_ntm": 1.0961,
+   "croissance_retenue": 0.22,
+   "peg_lt": 0.664,
+   "peg_2027": 0.396,
+   "croissance_2027": 0.348,
+   "prix_peg1": 24.11,
+   "ecart_zone": -0.336,
+   "tcam_bear": -0.060861,
+   "tcam_base": 0.228135,
+   "tcam_bull": 0.308668,
+   "tcam_esperance": 0.198789,
+   "theme": "Fintech emergente",
+   "prix_peg08": 19.288,
+   "p_s": 4.928040114358886,
+   "p_b": 6.866462337478801
+  },
+  "RDDT": {
+   "ticker": "RDDT",
+   "nom": "Reddit",
+   "prix": 159.93,
+   "capitalisation": 30769.97,
+   "zacks_rank": 2,
+   "bpa_fy0": 2.62,
+   "bpa_f1": 5.2725,
+   "bpa_f2": 6.9358,
+   "pe_dernier_exercice": 61.041984732824424,
+   "pe_f1": 30.33285917496444,
+   "pe_f2": 23.058623374376424,
+   "croissance_f1": 1.0124045801526718,
+   "croissance_f2": 0.31546704599336195,
+   "ltg": 41.0,
+   "beta": 2.05,
+   "dividende": 0.0,
+   "plus_haut_52s": 258.93,
+   "plus_bas_52s": 121.84,
+   "ecart_plus_haut": -0.38234271810914144,
+   "amplitude_52s": 1.1251641497045304,
+   "chg_52s": -0.2148,
+   "chg_ytd": -0.3043,
+   "pe_ntm": 24.341,
+   "bpa_ntm": 6.5704,
+   "croissance_retenue": 0.22,
+   "peg_lt": 1.106,
+   "peg_2027": 0.731,
+   "croissance_2027": 0.3155,
+   "prix_peg1": 144.55,
+   "ecart_zone": 0.106,
+   "tcam_bear": -0.117059,
+   "tcam_base": 0.22,
+   "tcam_bull": 0.369741,
+   "tcam_esperance": 0.209441,
+   "theme": "Internet et IA applicative",
+   "prix_peg08": 115.64000000000001,
+   "p_s": 13.970411031050936,
+   "valeur_entreprise": 28293.16,
+   "ve_ebit": 64.0145707950586,
+   "rendement_fcf": 0.022234990804345923
+  },
+  "ADYEY": {
+   "ticker": "ADYEY",
+   "nom": "Adyen (ADR 1/100)",
+   "prix": 10.21,
+   "capitalisation": 32360.47,
+   "zacks_rank": 3,
+   "bpa_fy0": 0.38,
+   "bpa_f1": 0.44,
+   "bpa_f2": 0.5325,
+   "pe_dernier_exercice": 26.868421052631582,
+   "pe_f1": 23.204545454545457,
+   "pe_f2": 19.173708920187796,
+   "croissance_f1": 0.1578947368421053,
+   "croissance_f2": 0.2102272727272727,
+   "ltg": 16.9,
+   "beta": 2.36,
+   "dividende": 0.0,
+   "plus_haut_52s": 17.57,
+   "plus_bas_52s": 9.01,
+   "ecart_plus_haut": -0.4188958451906659,
+   "amplitude_52s": 0.9500554938956716,
+   "chg_52s": -0.3998,
+   "chg_ytd": -0.3607,
+   "pe_ntm": 19.935,
+   "bpa_ntm": 0.5122,
+   "croissance_retenue": 0.19,
+   "peg_lt": 1.049,
+   "peg_2027": 0.912,
+   "croissance_2027": 0.2102,
+   "prix_peg1": 9.73,
+   "ecart_zone": 0.049,
+   "tcam_bear": -0.0487,
+   "tcam_base": 0.19,
+   "tcam_bull": 0.322798,
+   "tcam_esperance": 0.185152,
+   "theme": "Paiements",
+   "prix_peg08": 7.784000000000001
+  },
+  "MU": {
+   "ticker": "MU",
+   "nom": "Micron Technology",
+   "prix": 989.04,
+   "capitalisation": 1119022.75,
+   "zacks_rank": 1,
+   "bpa_fy0": 75.52,
+   "bpa_f1": 176.605,
+   "bpa_f2": 211.821,
+   "pe_dernier_exercice": 13.096398305084746,
+   "pe_f1": 5.600294442399706,
+   "pe_f2": 4.669225430906284,
+   "croissance_f1": 1.3385195974576272,
+   "croissance_f2": 0.19940545284674838,
+   "ltg": 32.6,
+   "beta": 2.22,
+   "dividende": 0.06,
+   "plus_haut_52s": 1213.56,
+   "plus_bas_52s": 181.6,
+   "ecart_plus_haut": -0.18500939384950066,
+   "amplitude_52s": 5.682599118942731,
+   "chg_52s": 4.1307,
+   "chg_ytd": 2.4653
+  },
+  "INTC": {
+   "ticker": "INTC",
+   "nom": "Intel",
+   "prix": 101.35,
+   "capitalisation": 511209.41,
+   "zacks_rank": 3,
+   "bpa_fy0": 0.42,
+   "bpa_f1": 1.5,
+   "bpa_f2": 1.9674,
+   "pe_dernier_exercice": 241.3095238095238,
+   "pe_f1": 67.56666666666666,
+   "pe_f2": 51.514689437836736,
+   "croissance_f1": 2.5714285714285716,
+   "croissance_f2": 0.3116000000000001,
+   "ltg": 9.0,
+   "beta": 2.22,
+   "dividende": 0.0,
+   "plus_haut_52s": 140.94,
+   "plus_bas_52s": 33.62,
+   "ecart_plus_haut": -0.28089967361998014,
+   "amplitude_52s": 3.1921475312314103,
+   "chg_52s": 1.723,
+   "chg_ytd": 1.7466
+  },
+  "AAPL": {
+   "ticker": "AAPL",
+   "nom": "Apple",
+   "prix": 340.97,
+   "capitalisation": 4976177.5,
+   "zacks_rank": 3,
+   "bpa_fy0": 7.46,
+   "bpa_f1": 8.856,
+   "bpa_f2": 9.5409,
+   "pe_dernier_exercice": 45.70643431635389,
+   "pe_f1": 38.50158084914183,
+   "pe_f2": 35.737718663857706,
+   "croissance_f1": 0.18713136729222524,
+   "croissance_f2": 0.07733739837398379,
+   "ltg": 13.2,
+   "beta": 1.07,
+   "dividende": 0.32,
+   "plus_haut_52s": 341.07,
+   "plus_bas_52s": 245.27,
+   "ecart_plus_haut": -0.0002931949453190974,
+   "amplitude_52s": 0.39058996208260277,
+   "chg_52s": 0.3768,
+   "chg_ytd": 0.25420000000000004
+  },
+  "GOOGL": {
+   "ticker": "GOOGL",
+   "nom": "Alphabet",
+   "prix": 352.72,
+   "capitalisation": 4313765.5,
+   "zacks_rank": 3,
+   "bpa_fy0": 10.81,
+   "bpa_f1": 20.537,
+   "bpa_f2": 14.888,
+   "pe_dernier_exercice": 32.62904717853839,
+   "pe_f1": 17.174855139504313,
+   "pe_f2": 23.691563675443312,
+   "croissance_f1": 0.899814986123959,
+   "croissance_f2": -0.27506451769976137,
+   "ltg": 16.8,
+   "beta": 1.21,
+   "dividende": 0.25,
+   "plus_haut_52s": 402.62,
+   "plus_bas_52s": 236.57,
+   "ecart_plus_haut": -0.12393820475882966,
+   "amplitude_52s": 0.7019064124783363,
+   "chg_52s": 0.4447,
+   "chg_ytd": 0.12689999999999999
+  }
+ },
+ "adyen": {
+  "ca": 1302.9,
+  "croissance": 0.19,
+  "marge_ebitda": 0.4923631898073528,
+  "marge_nette": 0.4176068769667664,
+  "volume_md": 803.8,
+  "take_rate": 0.0016209256033839264,
+  "resultat_net": 544.1,
+  "ebitda": 641.5
+ },
+ "nu": {
+  "clients": 139.0,
+  "resultat_net_trimestre": 1061.0,
+  "marge_interets_ajustee_risque": 12.4,
+  "ratio_efficacite": 19.5
+ },
+ "reddit": {
+  "utilisateurs_actifs_jour": 130.3,
+  "chiffre_affaires_trimestre": 805.0,
+  "croissance_ca": 61.0,
+  "revenu_par_utilisateur": 6.18,
+  "marge_ebitda_ajuste": 43.0
+ },
+ "nvda_zacks": {
+  "bpa_12_derniers_mois": "7.01",
+  "pe_12_derniers_mois": "32.28",
+  "objectif_zacks": "261",
+  "recommandation": "Outperform",
+  "zacks_rank": "1",
+  "score_value": "F",
+  "score_growth": "C",
+  "score_momentum": "D",
+  "surprise_bpa_dernier_trimestre": "6.22",
+  "prochaine_publication": "2026-11-18",
+  "bpa_fy2028_fiche": "15.33"
+ },
+ "hist": {
+  "MU": [
+   {
+    "exercice": "FY2022",
+    "ca": 30758.0,
+    "mb": 13898.0,
+    "rn": 8687.0,
+    "bpa": 7.75,
+    "bpa_ng": null,
+    "nature": "publié",
+    "taux_mb": 0.4518499252227063
+   },
+   {
+    "exercice": "FY2023",
+    "ca": 15540.0,
+    "mb": -1416.0,
+    "rn": -5833.0,
+    "bpa": -5.34,
+    "bpa_ng": null,
+    "nature": "publié",
+    "taux_mb": -0.09111969111969112
+   },
+   {
+    "exercice": "FY2024",
+    "ca": 25111.0,
+    "mb": 5613.0,
+    "rn": 778.0,
+    "bpa": 0.7,
+    "bpa_ng": null,
+    "nature": "publié",
+    "taux_mb": 0.22352753773246783
+   },
+   {
+    "exercice": "FY2025",
+    "ca": 37378.0,
+    "mb": 14873.0,
+    "rn": 8539.0,
+    "bpa": 7.59,
+    "bpa_ng": null,
+    "nature": "publié",
+    "taux_mb": 0.39790786023864305
+   },
+   {
+    "exercice": "FY2026",
+    "ca": 133188.0,
+    "mb": 107504.0,
+    "rn": 84969.0,
+    "bpa": 74.33,
+    "bpa_ng": 75.52,
+    "nature": "publié",
+    "taux_mb": 0.8071598041865633
+   },
+   {
+    "exercice": "FY2027",
+    "ca": null,
+    "mb": null,
+    "rn": null,
+    "bpa": null,
+    "bpa_ng": 176.605,
+    "nature": "consensus",
+    "taux_mb": null
+   },
+   {
+    "exercice": "FY2028",
+    "ca": null,
+    "mb": null,
+    "rn": null,
+    "bpa": null,
+    "bpa_ng": 211.821,
+    "nature": "consensus",
+    "taux_mb": null
+   }
+  ],
+  "INTC": [
+   {
+    "exercice": "2021",
+    "ca": 79024.0,
+    "mb": 43815.0,
+    "rn": 19868.0,
+    "bpa": 4.86,
+    "bpa_ng": null,
+    "nature": "publié",
+    "taux_mb": 0.5544518121077141
+   },
+   {
+    "exercice": "2022",
+    "ca": 63054.0,
+    "mb": 26866.0,
+    "rn": 8014.0,
+    "bpa": 1.94,
+    "bpa_ng": null,
+    "nature": "publié",
+    "taux_mb": 0.426079233672725
+   },
+   {
+    "exercice": "2023",
+    "ca": 54228.0,
+    "mb": 21711.0,
+    "rn": 1689.0,
+    "bpa": 0.4,
+    "bpa_ng": null,
+    "nature": "publié",
+    "taux_mb": 0.400365125027661
+   },
+   {
+    "exercice": "2024",
+    "ca": 53101.0,
+    "mb": 17345.0,
+    "rn": -18756.0,
+    "bpa": -4.38,
+    "bpa_ng": null,
+    "nature": "publié",
+    "taux_mb": 0.32664168283083184
+   },
+   {
+    "exercice": "2025",
+    "ca": 52853.0,
+    "mb": 18375.0,
+    "rn": -267.0,
+    "bpa": -0.06,
+    "bpa_ng": 0.42,
+    "nature": "publié",
+    "taux_mb": 0.34766238434904356
+   },
+   {
+    "exercice": "2026",
+    "ca": null,
+    "mb": null,
+    "rn": null,
+    "bpa": null,
+    "bpa_ng": 1.5,
+    "nature": "consensus",
+    "taux_mb": null
+   },
+   {
+    "exercice": "2027",
+    "ca": null,
+    "mb": null,
+    "rn": null,
+    "bpa": null,
+    "bpa_ng": 1.9674,
+    "nature": "consensus",
+    "taux_mb": null
+   }
+  ]
+ },
+ "grille": [
+  {
+   "ticker": "NVDA",
+   "criteres": [
+    [
+     "Croissance retenue ≥ 12 %",
+     "15 %",
+     true
+    ],
+    [
+     "PEG long terme ≤ 1,5",
+     "1,10",
+     true
+    ],
+    [
+     "ROIC (ROE pour une banque) ≥ 15 %",
+     "ROIC 150 %",
+     true
+    ],
+    [
+     "Marge nette ≥ 10 %",
+     "56 %",
+     true
+    ],
+    [
+     "Dilution ≤ 2 % par an",
+     "−0,4 %",
+     true
+    ],
+    [
+     "Trésorerie nette ≥ 0",
+     "54,1 Md$",
+     true
+    ],
+    [
+     "Rang Zacks ≤ 3",
+     "1",
+     true
+    ]
+   ],
+   "score": 7,
+   "evalues": 7
+  },
+  {
+   "ticker": "TSM",
+   "criteres": [
+    [
+     "Croissance retenue ≥ 12 %",
+     "18 %",
+     true
+    ],
+    [
+     "PEG long terme ≤ 1,5",
+     "1,21",
+     true
+    ],
+    [
+     "ROIC (ROE pour une banque) ≥ 15 %",
+     "ROIC 54 %",
+     true
+    ],
+    [
+     "Marge nette ≥ 10 %",
+     "45 %",
+     true
+    ],
+    [
+     "Dilution ≤ 2 % par an",
+     "+0,0 %",
+     true
+    ],
+    [
+     "Trésorerie nette ≥ 0",
+     "66,8 Md$",
+     true
+    ],
+    [
+     "Rang Zacks ≤ 3",
+     "2",
+     true
+    ]
+   ],
+   "score": 7,
+   "evalues": 7
+  },
+  {
+   "ticker": "NU",
+   "criteres": [
+    [
+     "Croissance retenue ≥ 12 %",
+     "22 %",
+     true
+    ],
+    [
+     "PEG long terme ≤ 1,5",
+     "0,66",
+     true
+    ],
+    [
+     "ROIC (ROE pour une banque) ≥ 15 %",
+     "ROE 30 %",
+     true
+    ],
+    [
+     "Marge nette ≥ 10 %",
+     "18 %",
+     true
+    ],
+    [
+     "Dilution ≤ 2 % par an",
+     "+0,8 %",
+     true
+    ],
+    [
+     "Trésorerie nette ≥ 0",
+     "banque",
+     null
+    ],
+    [
+     "Rang Zacks ≤ 3",
+     "3",
+     true
+    ]
+   ],
+   "score": 6,
+   "evalues": 6
+  },
+  {
+   "ticker": "RDDT",
+   "criteres": [
+    [
+     "Croissance retenue ≥ 12 %",
+     "22 %",
+     true
+    ],
+    [
+     "PEG long terme ≤ 1,5",
+     "1,11",
+     true
+    ],
+    [
+     "ROIC (ROE pour une banque) ≥ 15 %",
+     "ROE 21 %",
+     true
+    ],
+    [
+     "Marge nette ≥ 10 %",
+     "24 %",
+     true
+    ],
+    [
+     "Dilution ≤ 2 % par an",
+     "+5,8 %",
+     false
+    ],
+    [
+     "Trésorerie nette ≥ 0",
+     "2,5 Md$",
+     true
+    ],
+    [
+     "Rang Zacks ≤ 3",
+     "2",
+     true
+    ]
+   ],
+   "score": 6,
+   "evalues": 7
+  },
+  {
+   "ticker": "ADYEY",
+   "criteres": [
+    [
+     "Croissance retenue ≥ 12 %",
+     "19 %",
+     true
+    ],
+    [
+     "PEG long terme ≤ 1,5",
+     "1,05",
+     true
+    ],
+    [
+     "ROIC (ROE pour une banque) ≥ 15 %",
+     "n.d.",
+     null
+    ],
+    [
+     "Marge nette ≥ 10 %",
+     "42 % (S1)",
+     true
+    ],
+    [
+     "Dilution ≤ 2 % par an",
+     "n.d.",
+     null
+    ],
+    [
+     "Trésorerie nette ≥ 0",
+     "n.d.",
+     null
+    ],
+    [
+     "Rang Zacks ≤ 3",
+     "3",
+     true
+    ]
+   ],
+   "score": 4,
+   "evalues": 4
+  }
+ ],
+ "exemple_pe": {
+  "bpa0": 10.0,
+  "pe0": 20.0,
+  "bpa1": 20.0,
+  "pe1": 15.0,
+  "n": 5.0,
+  "cours0": 200.0,
+  "cours1": 300.0,
+  "perf": 0.5,
+  "tcam": 0.08447177119769855,
+  "tcam_bpa": 0.1486983549970351,
+  "tcam_pe": -0.05591248870509802
+ },
+ "interets": [
+  {
+   "taux": 0.04,
+   "valeur_10ans": 14802.442849183444,
+   "valeur_20ans": 21911.231430334206,
+   "valeur_30ans": 32433.975100275413,
+   "doublement_72": 18.0,
+   "doublement_exact": 17.672987685129698
+  },
+  {
+   "taux": 0.07,
+   "valeur_10ans": 19671.513572895663,
+   "valeur_20ans": 38696.844624861835,
+   "valeur_30ans": 76122.55042662042,
+   "doublement_72": 10.285714285714285,
+   "doublement_exact": 10.244768351058712
+  },
+  {
+   "taux": 0.1,
+   "valeur_10ans": 25937.424601000024,
+   "valeur_20ans": 67274.99949325611,
+   "valeur_30ans": 174494.0226888645,
+   "doublement_72": 7.2,
+   "doublement_exact": 7.272540897341713
+  },
+  {
+   "taux": 0.15,
+   "valeur_10ans": 40455.57735707907,
+   "valeur_20ans": 163665.37392946088,
+   "valeur_30ans": 662117.7195678577,
+   "doublement_72": 4.8,
+   "doublement_exact": 4.959484454640391
+  }
+ ],
+ "frais": [
+  {
+   "frais": 0.002,
+   "verse": 118000.0,
+   "valeur": 500565.1100271897,
+   "sans_frais": 523191.7450304753,
+   "cout": 22626.6350032856,
+   "part_perdue": 0.04324730888475237
+  },
+  {
+   "frais": 0.01,
+   "verse": 118000.0,
+   "valeur": 420139.8431509928,
+   "sans_frais": 523191.7450304753,
+   "cout": 103051.9018794825,
+   "part_perdue": 0.19696775199211114
+  },
+  {
+   "frais": 0.02,
+   "verse": 118000.0,
+   "valeur": 338941.7052474175,
+   "sans_frais": 523191.7450304753,
+   "cout": 184250.03978305781,
+   "part_perdue": 0.35216541838274884
+  }
+ ],
+ "bogle": {
+  "r": 0.07,
+  "f": 0.02,
+  "n": 50.0,
+  "part_perdue": 0.6358303199128843,
+  "part_perdue_soustraction": 0.6107074709275468
+ },
+ "enveloppes": [
+  {
+   "enveloppe": "PEA",
+   "verse": 82000.0,
+   "valeur": 202614.183414057,
+   "gains": 120614.18341405701,
+   "impot": 22434.238115014607,
+   "net": 180179.94529904242,
+   "reel": 121255.93798723344,
+   "taux_effectif": 0.18600000000000003
+  },
+  {
+   "enveloppe": "AV",
+   "verse": 82000.0,
+   "valeur": 202614.183414057,
+   "gains": 120614.18341405701,
+   "impot": 29446.70330327208,
+   "net": 173167.48011078493,
+   "reel": 116536.74994111796,
+   "taux_effectif": 0.2441396398811933
+  },
+  {
+   "enveloppe": "AV (couple)",
+   "verse": 82000.0,
+   "valeur": 202614.183414057,
+   "gains": 120614.18341405701,
+   "impot": 29101.70330327208,
+   "net": 173512.48011078493,
+   "reel": 116768.92505104023,
+   "taux_effectif": 0.24127927976238667
+  },
+  {
+   "enveloppe": "CTO",
+   "verse": 82000.0,
+   "valeur": 202614.183414057,
+   "gains": 120614.18341405701,
+   "impot": 37872.853592013904,
+   "net": 164741.3298220431,
+   "reel": 110866.19234833453,
+   "taux_effectif": 0.314
+  }
+ ],
+ "fisc_pv": {
+  "PEA (après 5 ans)": 1860.0000000000002,
+  "PEA (avant 5 ans)": 3140.0,
+  "Compte-titres": 3140.0,
+  "Assurance-vie (après 8 ans, seul)": 2125.0,
+  "Assurance-vie (après 8 ans, couple)": 1779.9999999999998,
+  "Assurance-vie (avant 8 ans)": 3000.0
+ },
+ "temps": {
+  "temps_age_tot": {
+   "age": 25.0,
+   "annees": 40.0,
+   "verse": 96000.0,
+   "valeur": 557977.9974063339,
+   "serie": [
+    0,
+    2480.9940756536434,
+    5147.070309351047,
+    8012.035830082273,
+    11090.727778660052,
+    14399.090146601722,
+    17954.25634719184,
+    21774.637946345978,
+    25880.020012797006,
+    30291.663581405275,
+    35032.41576023172,
+    40126.82805159861,
+    45601.28349990148,
+    51484.13332464772,
+    57805.84374632006,
+    64599.15376544914,
+    71899.24471200522,
+    79743.9224431744,
+    88173.81313308876,
+    97232.57366847071,
+    106967.11773979219,
+    117427.8587988342,
+    128668.97114088076,
+    140748.67046364394,
+    153729.51535588526,
+    167678.7312770878,
+    182668.5587060121,
+    198776.627261134,
+    216086.35773046804,
+    234687.3940928144,
+    254676.06776779177,
+    276155.89649892255,
+    299238.1204533956,
+    324042.2783148723,
+    350696.8263528151,
+    379339.80367438844,
+    410119.54710415105,
+    443195.4593937739,
+    478738.8347402028,
+    516933.7458874752,
+    557977.9974063339
+   ]
+  },
+  "temps_age_tard": {
+   "age": 35.0,
+   "annees": 30.0,
+   "verse": 72000.0,
+   "valeur": 254676.06776779177,
+   "serie": [
+    0,
+    2480.9940756536434,
+    5147.070309351047,
+    8012.035830082273,
+    11090.727778660052,
+    14399.090146601722,
+    17954.25634719184,
+    21774.637946345978,
+    25880.020012797006,
+    30291.663581405275,
+    35032.41576023172,
+    40126.82805159861,
+    45601.28349990148,
+    51484.13332464772,
+    57805.84374632006,
+    64599.15376544914,
+    71899.24471200522,
+    79743.9224431744,
+    88173.81313308876,
+    97232.57366847071,
+    106967.11773979219,
+    117427.8587988342,
+    128668.97114088076,
+    140748.67046364394,
+    153729.51535588526,
+    167678.7312770878,
+    182668.5587060121,
+    198776.627261134,
+    216086.35773046804,
+    234687.3940928144,
+    254676.06776779177
+   ]
+  }
+ },
+ "categories": [
+  {
+   "ticker": "AAPL",
+   "nom": "Apple",
+   "categorie": "Valeur solide",
+   "indicateur": "croissance du BPA attendue N+2",
+   "valeur": "+7,7 %",
+   "justification": "Géant mature : croissance attendue modeste, bilan solide, multiple élevé"
+  },
+  {
+   "ticker": "TSM",
+   "nom": "TSMC",
+   "categorie": "Croissance rapide de grande taille",
+   "indicateur": "croissance annuelle du CA 2021-2025",
+   "valeur": "20,7 %",
+   "justification": "Leader mondial des puces avancées ; la taille finira par freiner la croissance"
+  },
+  {
+   "ticker": "NU",
+   "nom": "Nu Holdings",
+   "categorie": "Croissance rapide",
+   "indicateur": "croissance du BPA attendue N+1",
+   "valeur": "+39 %",
+   "justification": "Banque numérique en conquête de clients au Brésil, au Mexique et en Colombie"
+  },
+  {
+   "ticker": "ADYEY",
+   "nom": "Adyen",
+   "categorie": "Croissance rapide",
+   "indicateur": "croissance du CA net, S1 2026",
+   "valeur": "+19 %",
+   "justification": "Plateforme de paiement qui gagne des parts de marché ; croissance à la limite basse de la catégorie"
+  },
+  {
+   "ticker": "NVDA",
+   "nom": "NVIDIA",
+   "categorie": "Croissance rapide à composante cyclique",
+   "indicateur": "croissance du BPA attendue N+1",
+   "valeur": "+94 %",
+   "justification": "Croissance tirée par le capex de ses clients : un poste qui peut se retourner"
+  },
+  {
+   "ticker": "RDDT",
+   "nom": "Reddit",
+   "categorie": "Redressement devenu croissance rapide",
+   "indicateur": "résultat net 2025",
+   "valeur": "530 M$",
+   "justification": "Pertes jusqu'en 2024, bénéfice en 2025, chiffre d'affaires en forte hausse"
+  },
+  {
+   "ticker": "MU",
+   "nom": "Micron",
+   "categorie": "Cyclique",
+   "indicateur": "BPA FY2023 → FY2026",
+   "valeur": "−5,34 → 74,33 $",
+   "justification": "Mémoire : les prix et les marges suivent l'équilibre de l'offre et de la demande"
+  },
+  {
+   "ticker": "INTC",
+   "nom": "Intel",
+   "categorie": "Redressement",
+   "indicateur": "BPA 2024 → consensus 2026",
+   "valeur": "−4,38 → 1,50 $",
+   "justification": "Pertes en 2024, retour au bénéfice attendu par le consensus"
+  }
+ ],
+ "pe5": [
+  [
+   "Dernier exercice publié (FY2026)",
+   4.77,
+   47.44654088050315
+  ],
+  [
+   "12 derniers mois",
+   7.01,
+   32.28530670470756
+  ],
+  [
+   "Exercice en cours (FY2027)",
+   9.2465,
+   24.476288325312282
+  ],
+  [
+   "12 prochains mois (NTM)",
+   13.6603,
+   16.568
+  ],
+  [
+   "Exercice suivant (FY2028)",
+   15.532,
+   14.571207828998197
+  ]
+ ],
+ "comparaison": {
+  "pe_ntm": {
+   "ptf": 18.802292,
+   "ndx": 21.164182,
+   "ndx_hm": 27.499045
+  },
+  "g27": {
+   "ptf": 38.519421,
+   "ndx": 44.005174,
+   "ndx_hm": 32.694942
+  },
+  "peg27": {
+   "ptf": 0.488125,
+   "ndx": 0.480948,
+   "ndx_hm": 0.841079
+  },
+  "g_lt": {
+   "ptf": 19.155476,
+   "ndx": 6.71884,
+   "ndx_hm": 14.01863
+  },
+  "peg_lt": {
+   "ptf": 0.981562,
+   "ndx": 3.149975,
+   "ndx_hm": 1.961607
+  },
+  "beta": {
+   "ptf": 1.79,
+   "ndx": 1.599969,
+   "ndx_hm": 1.493798
+  },
+  "div": {
+   "ptf": 0.244,
+   "ndx": 0.375344,
+   "ndx_hm": 0.404904
+  },
+  "part_ia": {
+   "ptf": 0.4,
+   "ndx": 0.377376,
+   "ndx_hm": 0.320982
+  },
+  "tcam_bear": {
+   "ptf": -0.094284,
+   "ndx": -0.11827,
+   "ndx_hm": -0.125193
+  },
+  "tcam_base": {
+   "ptf": 0.197319,
+   "ndx": 0.106228,
+   "ndx_hm": 0.109898
+  },
+  "tcam_bull": {
+   "ptf": 0.344569,
+   "ndx": 0.238279,
+   "ndx_hm": 0.240615
+  },
+  "tcam_esperance": {
+   "ptf": 0.191119,
+   "ndx": 0.104398,
+   "ndx_hm": 0.106202
+  },
+  "valeur_100_esperance": {
+   "ptf": 201.3,
+   "ndx": 148.8,
+   "ndx_hm": 149.7
+  },
+  "p_sous_indice_central": {
+   "ptf": 0.119141,
+   "ndx": null,
+   "ndx_hm": null
+  },
+  "p_perte": {
+   "ptf": 0.010742,
+   "ndx": null,
+   "ndx_hm": null
+  },
+  "couverture_ndx_pct": {
+   "ptf": null,
+   "ndx": 74.17,
+   "ndx_hm": null
+  }
+ },
+ "retro": {
+  "1an": {
+   "periode": "1an",
+   "portefeuille_poids_egaux": "2.32",
+   "QQQ": "23.5241",
+   "SPY": "17.1334",
+   "NVDA": "20.18",
+   "TSM": "46.7",
+   "NU": "6.17",
+   "RDDT": "-21.48",
+   "ADYEY": "-39.98"
+  },
+  "ytd": {
+   "periode": "ytd",
+   "portefeuille_poids_egaux": "-0.66",
+   "QQQ": "22.669",
+   "SPY": "14.9929",
+   "NVDA": "21.35",
+   "TSM": "46.22",
+   "NU": "-4.36",
+   "RDDT": "-30.43",
+   "ADYEY": "-36.07"
+  }
+ },
+ "stress": [
+  {
+   "scenario": "Krach du capex IA (valeurs IA en bear, le reste en base)",
+   "tcam_portefeuille": "0.112382",
+   "tcam_nasdaq100": "0.030576",
+   "ecart_pts": "8.18"
+  },
+  {
+   "scenario": "Choc géopolitique sur Taïwan (TSM en bear)",
+   "tcam_portefeuille": "0.155931",
+   "tcam_nasdaq100": "0.106228",
+   "ecart_pts": "4.97"
+  },
+  {
+   "scenario": "NVIDIA perd du terrain face au sur-mesure (NVDA en bear)",
+   "tcam_portefeuille": "0.158438",
+   "tcam_nasdaq100": "0.077086",
+   "ecart_pts": "8.14"
+  },
+  {
+   "scenario": "Choc de crédit ou politique au Brésil (NU en bear)",
+   "tcam_portefeuille": "0.1511",
+   "tcam_nasdaq100": "0.106228",
+   "ecart_pts": "4.49"
+  },
+  {
+   "scenario": "Reddit perd le trafic de recherche (RDDT en bear)",
+   "tcam_portefeuille": "0.147462",
+   "tcam_nasdaq100": "0.106228",
+   "ecart_pts": "4.12"
+  },
+  {
+   "scenario": "Stripe comprime les commissions d'Adyen (ADYEY en bear)",
+   "tcam_portefeuille": "0.161155",
+   "tcam_nasdaq100": "0.106228",
+   "ecart_pts": "5.49"
+  },
+  {
+   "scenario": "Double choc fintech : NU et ADYEY en bear",
+   "tcam_portefeuille": "0.110067",
+   "tcam_nasdaq100": "0.106228",
+   "ecart_pts": "0.38"
+  },
+  {
+   "scenario": "Tout en base",
+   "tcam_portefeuille": "0.197319",
+   "tcam_nasdaq100": "0.106228",
+   "ecart_pts": "9.11"
+  },
+  {
+   "scenario": "Tout en bear",
+   "tcam_portefeuille": "-0.094284",
+   "tcam_nasdaq100": "-0.11827",
+   "ecart_pts": "2.4"
+  },
+  {
+   "scenario": "Tout en bull",
+   "tcam_portefeuille": "0.344569",
+   "tcam_nasdaq100": "0.238279",
+   "ecart_pts": "10.63"
+  }
+ ],
+ "investisseurs": [
+  {
+   "id": "lynch_peg",
+   "auteur": "Peter Lynch",
+   "fonction": "gérant du fonds Magellan (Fidelity), 1977-1990",
+   "theme": "PEG",
+   "texte_original": "The p/e ratio of any company that's fairly priced will equal its growth rate.",
+   "traduction": "Le P/E d'une société correctement valorisée est égal à son taux de croissance.",
+   "date": "1989",
+   "occasion": "livre One Up on Wall Street",
+   "lecon_garp": "PEG = P/E ÷ croissance. Sous 1, la croissance est bon marché ; au-dessus de 2, elle est chère.",
+   "source_titre": "Validea : The Lynch Approach — GARP, PEGs, and Profits",
+   "source_url": "https://blog.validea.com/?p=7627",
+   "source2_titre": "GuruFocus : Peter Lynch Fair Value (P/E = croissance)",
+   "source2_url": "https://gurufocus.com/term/peter-lynch-fair-value/TSLA",
+   "fiabilite": "formulation du livre ; règle PEG = 1 confirmée par deux sources secondaires, texte original non consulté"
+  },
+  {
+   "id": "lynch_know",
+   "auteur": "Peter Lynch",
+   "fonction": "gérant du fonds Magellan (Fidelity), 1977-1990",
+   "theme": "Comprendre",
+   "texte_original": "Know what you own, and know why you own it.",
+   "traduction": "Sachez ce que vous possédez, et pourquoi vous le possédez.",
+   "date": "1994",
+   "occasion": "discours au National Press Club (selon Novel Investor)",
+   "lecon_garp": "Chaque ligne du portefeuille a une thèse écrite en deux phrases. Si la thèse casse, on vend.",
+   "source_titre": "Novel Investor : Peter Lynch — The Single Most Important Thing",
+   "source_url": "https://novelinvestor.com/peter-lynch-single-important-thing/",
+   "source2_titre": "Goodreads : citation de One Up on Wall Street",
+   "source2_url": "https://www.goodreads.com/quotes/7317641-know-what-you-own-and-know-why-you-own-it",
+   "fiabilite": "attribution solide, formulation condensée"
+  },
+  {
+   "id": "lynch_corrections",
+   "auteur": "Peter Lynch",
+   "fonction": "gérant du fonds Magellan (Fidelity), 1977-1990",
+   "theme": "Patience",
+   "texte_original": "Far more money has been lost by investors preparing for corrections than has been lost in corrections themselves.",
+   "traduction": "Les investisseurs ont perdu bien plus d'argent à se préparer aux corrections que dans les corrections elles-mêmes.",
+   "date": "non datée",
+   "occasion": "citée par le Wall Street Journal (selon Validea)",
+   "lecon_garp": "Rester investi. Le temps passé sur le marché compte plus que le moment d'entrée.",
+   "source_titre": "Benzinga : Peter Lynch's market observation (mai 2025)",
+   "source_url": "https://www.benzinga.com/markets/25/05/45210591/peter-lynchs-market-observation-far-more-money-has-been-lost-by-investors-preparing-for-corrections",
+   "source2_titre": "A Wealth of Common Sense : Peter Lynch on Stock Market Losses (août 2014)",
+   "source2_url": "https://awealthofcommonsense.com/2014/08/peter-lynch-stock-market-losses/",
+   "fiabilite": "attribuée ; publication d'origine non identifiée"
+  },
+  {
+   "id": "lynch_categories",
+   "auteur": "Peter Lynch",
+   "fonction": "gérant du fonds Magellan (Fidelity), 1977-1990",
+   "theme": "Catégories",
+   "texte_original": "slow growers, stalwarts, fast growers, cyclicals, turnarounds, asset plays",
+   "traduction": "croissance lente, valeurs solides, croissance rapide, cycliques, redressements, valeurs d'actifs",
+   "date": "1989",
+   "occasion": "livre One Up on Wall Street",
+   "lecon_garp": "Classer la société avant de la valoriser : on ne juge pas une cyclique comme une croissance rapide.",
+   "source_titre": "Value Research : Peter Lynch's six stock categories",
+   "source_url": "https://www.valueresearchonline.com/stories/51021/peter-lynch-s-six-stock-categories/",
+   "source2_titre": "DividendPower : Peter Lynch's six stock categories",
+   "source2_url": "https://www.dividendpower.org/peter-lynchs-six-stock-categories/",
+   "fiabilite": "classification du livre, rapportée par des résumés"
+  },
+  {
+   "id": "lynch_magellan",
+   "auteur": "Peter Lynch",
+   "fonction": "gérant du fonds Magellan (Fidelity), 1977-1990",
+   "theme": "Palmarès",
+   "texte_original": "29.2 % per year, 1977-1990; assets from $18 million to $14 billion",
+   "traduction": "29,2 % par an de 1977 à 1990 ; encours passé de 18 M$ à 14 Md$",
+   "date": "1977-1990",
+   "occasion": "fonds Fidelity Magellan",
+   "lecon_garp": "Le meilleur palmarès de l'époque, obtenu avec la méthode GARP. Contexte favorable : à ne pas extrapoler.",
+   "source_titre": "Wikipedia : Peter Lynch",
+   "source_url": "https://en.wikipedia.org/wiki/Peter_Lynch",
+   "source2_titre": "The Motley Fool : Peter Lynch's annual return at Fidelity Magellan (02/10/2026)",
+   "source2_url": "https://www.fool.com/investing/2026/10/02/peter-lynch-annual-return-fidelity-magellan/",
+   "fiabilite": "chiffres concordants entre les deux sources"
+  },
+  {
+   "id": "buffett_wonderful",
+   "auteur": "Warren Buffett",
+   "fonction": "PDG de Berkshire Hathaway",
+   "theme": "Qualité",
+   "texte_original": "It's far better to buy a wonderful company at a fair price than a fair company at a wonderful price.",
+   "traduction": "Il vaut bien mieux acheter une entreprise merveilleuse à un prix correct qu'une entreprise correcte à un prix merveilleux.",
+   "date": "1989",
+   "occasion": "lettre aux actionnaires de Berkshire Hathaway sur l'exercice 1989",
+   "lecon_garp": "La qualité (ROIC élevé, avantage durable) passe avant le rabais.",
+   "source_titre": "CNBC : Ten pieces of investment advice from America's greatest investor",
+   "source_url": "https://www.cnbc.com/id/101000052",
+   "source2_titre": "The Motley Fool : Warren Buffett's most important money-making revelation (06/07/2014)",
+   "source2_url": "https://www.fool.com/investing/general/2014/07/06/warren-buffetts-most-important-money-making-revela.aspx",
+   "fiabilite": "lettre publiée sur berkshirehathaway.com (non consultée : site injoignable depuis l'environnement)"
+  },
+  {
+   "id": "buffett_price",
+   "auteur": "Warren Buffett",
+   "fonction": "PDG de Berkshire Hathaway",
+   "theme": "Valeur",
+   "texte_original": "Price is what you pay; value is what you get.",
+   "traduction": "Le prix, c'est ce que vous payez ; la valeur, c'est ce que vous obtenez.",
+   "date": "2009-02",
+   "occasion": "lettre aux actionnaires sur l'exercice 2008 (leçon attribuée par Buffett à Ben Graham)",
+   "lecon_garp": "Le cours n'est pas la valeur. On estime la valeur (BPA × P/E justifié), puis on compare.",
+   "source_titre": "Monevator : Warren Buffett's annual letter to shareholders 2008",
+   "source_url": "https://monevator.com/warren-buffetts-annual-letter-to-shareholders-2008/",
+   "source2_titre": "Trade Brains : Price is what you pay, value is what you get",
+   "source2_url": "https://www.tradebrains.in/warren-buffet-price-is-what-you-pay-value-is-what-you-get/",
+   "fiabilite": "formulation de la lettre 2008, rapportée par deux sources secondaires"
+  },
+  {
+   "id": "buffett_forever",
+   "auteur": "Warren Buffett",
+   "fonction": "PDG de Berkshire Hathaway",
+   "theme": "Durée",
+   "texte_original": "When we own portions of outstanding businesses with outstanding managements, our favorite holding period is forever.",
+   "traduction": "Quand nous détenons des parts d'entreprises exceptionnelles, dirigées par des équipes exceptionnelles, notre durée de détention préférée est : pour toujours.",
+   "date": "1989-02",
+   "occasion": "lettre aux actionnaires sur l'exercice 1988 (achat de Coca-Cola)",
+   "lecon_garp": "La phrase a une condition. Sans entreprise ni dirigeants exceptionnels, « pour toujours » ne vaut pas.",
+   "source_titre": "Nasdaq : Every stock Warren Buffett has said he'd own practically forever",
+   "source_url": "https://www.nasdaq.com/articles/every-stock-warren-buffett-has-said-hed-own-practically-forever",
+   "source2_titre": "Novel Investor : Qualifying « Forever »",
+   "source2_url": "https://novelinvestor.com/happy-hour-qualifying-forever/",
+   "fiabilite": "phrase complète rapportée par deux sources ; Buffett l'a nuancée dans la lettre 2016"
+  },
+  {
+   "id": "buffett_fearful",
+   "auteur": "Warren Buffett",
+   "fonction": "PDG de Berkshire Hathaway",
+   "theme": "Psychologie",
+   "texte_original": "We simply attempt to be fearful when others are greedy and to be greedy only when others are fearful.",
+   "traduction": "Nous essayons simplement d'avoir peur quand les autres sont avides, et d'être avides seulement quand les autres ont peur.",
+   "date": "1987-03",
+   "occasion": "lettre aux actionnaires sur l'exercice 1986",
+   "lecon_garp": "Les meilleurs prix d'achat arrivent quand les titres font peur. Préparer sa liste avant la baisse.",
+   "source_titre": "Advisor Perspectives : Stay cautious when markets turn greedy (11/07/2025)",
+   "source_url": "https://www.advisorperspectives.com/commentaries/2025/07/11/stay-cautious-markets-turn-greedy",
+   "source2_titre": "The Motley Fool : 1 piece of Warren Buffett's advice most people can't follow (06/07/2014)",
+   "source2_url": "https://www.fool.com/investing/general/2014/07/06/1-piece-of-warren-buffetts-advice-most-people-cant.aspx",
+   "fiabilite": "formulation de la lettre, concordante entre les sources"
+  },
+  {
+   "id": "buffett_snowball",
+   "auteur": "Warren Buffett",
+   "fonction": "PDG de Berkshire Hathaway",
+   "theme": "Intérêts composés",
+   "texte_original": "Life is like a snowball. The important thing is finding wet snow and a really long hill.",
+   "traduction": "La vie est comme une boule de neige. L'important est de trouver de la neige collante et une très longue pente.",
+   "date": "non datée",
+   "occasion": "phrase qui a donné son titre à la biographie The Snowball d'Alice Schroeder (2008)",
+   "lecon_garp": "Neige collante = un rendement élevé ; longue pente = des décennies. Les deux comptent.",
+   "source_titre": "Penguin Random House : guide de lecture de The Snowball",
+   "source_url": "https://www.penguinrandomhouse.com/books/162310/the-snowball-by-alice-schroeder/readers-guide",
+   "source2_titre": "AZQuotes : Warren Buffett",
+   "source2_url": "https://www.azquotes.com/quote/373349",
+   "fiabilite": "attribuée ; occasion d'origine non identifiée"
+  },
+  {
+   "id": "munger_invert",
+   "auteur": "Charlie Munger",
+   "fonction": "vice-président de Berkshire Hathaway (1978-2023)",
+   "theme": "Méthode",
+   "texte_original": "Invert, always invert.",
+   "traduction": "Inversez, inversez toujours.",
+   "date": "1986",
+   "occasion": "discours de remise des diplômes à la Harvard School (maxime reprise du mathématicien Carl Jacobi)",
+   "lecon_garp": "Avant d'acheter, lister ce qui ferait perdre de l'argent. Puis l'éviter.",
+   "source_titre": "Stockopedia : Invert, always invert",
+   "source_url": "https://www.stockopedia.com/content/invert-always-invert-69794",
+   "source2_titre": "WealthManagement.com : A back door to success",
+   "source2_url": "https://www.wealthmanagement.com/wealth-management-industry-trends/a-back-door-to-success",
+   "fiabilite": "maxime de Jacobi popularisée par Munger"
+  },
+  {
+   "id": "munger_waiting",
+   "auteur": "Charlie Munger",
+   "fonction": "vice-président de Berkshire Hathaway (1978-2023)",
+   "theme": "Patience",
+   "texte_original": "The big money is not in the buying and selling, but in the waiting.",
+   "traduction": "Le gros argent n'est pas dans l'achat et la vente, mais dans l'attente.",
+   "date": "non datée",
+   "occasion": "phrase souvent citée",
+   "lecon_garp": "Moins d'ordres, moins de frais, moins d'impôts. L'attente laisse composer.",
+   "source_titre": "Benzinga : Charlie Munger's three investment lessons (janvier 2025)",
+   "source_url": "https://in.benzinga.com/news/25/01/43219503/charlie-mungers-three-investment-lessons-buy-wonderful-businesses-at-fair-prices-big-money-isnt-in-buying-or-selling-its-in-waiting-good-businesses-are-ethical-businesses",
+   "source2_titre": "Moomoo : Charlie Munger — the big money is in the waiting",
+   "source2_url": "https://www.moomoo.com/us/learn/charlie-munger-the-big-money-is-in-the-waiting",
+   "fiabilite": "attribuée ; occasion d'origine non identifiée"
+  },
+  {
+   "id": "graham_mrmarket",
+   "auteur": "Benjamin Graham",
+   "fonction": "professeur à Columbia, auteur de The Intelligent Investor (1949)",
+   "theme": "Psychologie",
+   "texte_original": "The investor with a portfolio of sound stocks should expect their prices to fluctuate and should neither be concerned by sizable declines nor become excited by sizable advances.",
+   "traduction": "L'investisseur qui détient des actions solides doit s'attendre à ce que leurs cours fluctuent. Il ne doit ni s'inquiéter des fortes baisses, ni s'exciter des fortes hausses.",
+   "date": "1949",
+   "occasion": "The Intelligent Investor, chapitre 8 (allégorie de « M. Marché »)",
+   "lecon_garp": "M. Marché propose chaque jour un prix selon son humeur. On s'en sert ; on ne lui obéit pas.",
+   "source_titre": "Wikipedia : Mr. Market",
+   "source_url": "https://en.wikipedia.org/wiki/Mr._Market",
+   "source2_titre": "Perishable Pundit : stock market fundamentals",
+   "source2_url": "https://perishablepundit.com/perishable-thoughts-stock-market-fundamentals/",
+   "fiabilite": "passage du livre, rapporté par des sources secondaires"
+  },
+  {
+   "id": "graham_margin",
+   "auteur": "Benjamin Graham",
+   "fonction": "professeur à Columbia, auteur de The Intelligent Investor (1949)",
+   "theme": "Prudence",
+   "texte_original": "To distill the secret of sound investment into three words, we venture the motto, MARGIN OF SAFETY.",
+   "traduction": "Pour résumer en trois mots le secret d'un investissement sain, nous proposons cette devise : MARGE DE SÉCURITÉ.",
+   "date": "1949",
+   "occasion": "The Intelligent Investor, chapitre 20",
+   "lecon_garp": "Acheter nettement sous la valeur estimée, pour qu'une erreur d'estimation ne coûte pas cher.",
+   "source_titre": "Livewire : The secret of sound investment in three words",
+   "source_url": "https://livewiremarkets.com/wires/the-secret-of-sound-investment-in-three-words",
+   "source2_titre": "Novel Investor : More wisdom from The Intelligent Investor (partie 5)",
+   "source2_url": "https://novelinvestor.com/wisdom-intelligent-investor-pt-5",
+   "fiabilite": "formulation variable selon les éditions"
+  },
+  {
+   "id": "graham_voting",
+   "auteur": "Benjamin Graham (formulation de Warren Buffett)",
+   "fonction": "professeur à Columbia ; formule de Buffett",
+   "theme": "Long terme",
+   "texte_original": "In the short run, the market is a voting machine but in the long run, it is a weighing machine.",
+   "traduction": "À court terme, le marché est une machine à voter ; à long terme, une machine à peser.",
+   "date": "1973 (Buffett) ; idée de 1934 (Graham et Dodd)",
+   "occasion": "idée de Security Analysis, formule de Buffett attribuée à Graham",
+   "lecon_garp": "À long terme, le cours suit le BPA. D'où l'importance du BPA dans la méthode.",
+   "source_titre": "Quote Investigator : In the short run, the market is a voting machine",
+   "source_url": "https://quoteinvestigator.com/2020/01/09/market/",
+   "source2_titre": "Validea : The voting machine vs. the weighing machine",
+   "source2_url": "https://blog.validea.com/the-voting-machine-vs-the-weighing-machine/",
+   "fiabilite": "formule de Buffett, idée de Graham : attribution corrigée"
+  },
+  {
+   "id": "fisher_never",
+   "auteur": "Philip Fisher",
+   "fonction": "fondateur de Fisher & Co., auteur de Common Stocks and Uncommon Profits (1958)",
+   "theme": "Vente",
+   "texte_original": "If the job has been correctly done when a common stock is purchased, the time to sell it is almost never.",
+   "traduction": "Si le travail a été bien fait à l'achat, le bon moment pour vendre est : presque jamais.",
+   "date": "1958",
+   "occasion": "Common Stocks and Uncommon Profits",
+   "lecon_garp": "Fisher ne vendait que pour trois raisons : erreur d'analyse, détérioration de l'entreprise, meilleure occasion.",
+   "source_titre": "Wikipedia : Philip Arthur Fisher",
+   "source_url": "https://en.wikipedia.org/wiki/Philip_Arthur_Fisher",
+   "source2_titre": "MOI Global : Investing titans on when to sell",
+   "source2_url": "https://moiglobal.com/investing-titans-on-when-to-sell/",
+   "fiabilite": "formulation du livre rapportée par des sources secondaires"
+  },
+  {
+   "id": "smith_3steps",
+   "auteur": "Terry Smith",
+   "fonction": "fondateur et gérant de Fundsmith",
+   "theme": "Qualité",
+   "texte_original": "Buy good companies. Don't overpay. Do nothing.",
+   "traduction": "Acheter de bonnes entreprises. Ne pas les surpayer. Ne rien faire.",
+   "date": "depuis 2010",
+   "occasion": "stratégie affichée du fonds Fundsmith Equity",
+   "lecon_garp": "Le GARP en trois verbes. Le troisième est le plus difficile.",
+   "source_titre": "Fidelity UK : Fundsmith Equity, an update from Terry Smith",
+   "source_url": "https://fidelity.co.uk/markets-insights/investing-ideas/funds/fundsmith-equity-fund-an-update-from-terry-smith",
+   "source2_titre": "FundCalibre : Fundsmith Equity",
+   "source2_url": "https://www.fundcalibre.com/?p=728",
+   "fiabilite": "devise officielle du fonds"
+  },
+  {
+   "id": "bogle_haystack",
+   "auteur": "John Bogle",
+   "fonction": "fondateur de Vanguard, inventeur du fonds indiciel grand public",
+   "theme": "Indice",
+   "texte_original": "Don't look for the needle in the haystack. Just buy the haystack!",
+   "traduction": "Ne cherchez pas l'aiguille dans la botte de foin. Achetez la botte de foin !",
+   "date": "2007",
+   "occasion": "livre The Little Book of Common Sense Investing",
+   "lecon_garp": "L'avocat du diable du stock picking. Sans avantage réel, l'ETF gagne.",
+   "source_titre": "Goodreads : citations de The Little Book of Common Sense Investing",
+   "source_url": "https://www.goodreads.com/work/quotes/165246",
+   "source2_titre": "Aspen Institute : John Bogle",
+   "source2_url": "https://www.aspeninstitute.org/?p=8367",
+   "fiabilite": "formulation du livre ; ponctuation variable"
+  },
+  {
+   "id": "bogle_costs",
+   "auteur": "John Bogle",
+   "fonction": "fondateur de Vanguard, inventeur du fonds indiciel grand public",
+   "theme": "Frais",
+   "texte_original": "The magic of compound returns is overwhelmed by the tyranny of compounding costs.",
+   "traduction": "La magie des rendements composés est écrasée par la tyrannie des frais composés.",
+   "date": "2012-11-05",
+   "occasion": "entretien à Frontline (PBS), diffusé dans The Retirement Gamble le 23/04/2013",
+   "lecon_garp": "Les frais composent aussi, contre vous. 2 % par an sur 50 ans coûtent près des deux tiers du capital final.",
+   "source_titre": "PBS Frontline : John Bogle — The train wreck awaiting American retirement",
+   "source_url": "https://www.pbs.org/wgbh/pages/frontline/business-economy-financial-crisis/retirement-gamble/john-bogle-the-train-wreck-awaiting-american-retirement",
+   "source2_titre": "Wealthfront : The tyranny of compounding costs",
+   "source2_url": "https://www.wealthfront.com/blog/tyranny-compounding-costs/",
+   "fiabilite": "transcription de l'entretien"
+  },
+  {
+   "id": "marks_second",
+   "auteur": "Howard Marks",
+   "fonction": "cofondateur d'Oaktree Capital",
+   "theme": "Raisonnement",
+   "texte_original": "First-level thinking is simplistic and superficial, and just about everyone can do it.",
+   "traduction": "La pensée de premier niveau est simpliste et superficielle, et à peu près tout le monde en est capable.",
+   "date": "2015-09-09",
+   "occasion": "mémo « It's Not Easy » (idée développée dans The Most Important Thing, 2011)",
+   "lecon_garp": "« Bonne société, donc j'achète » ne suffit pas. Il faut savoir ce que le prix suppose déjà, et en quoi on diffère du consensus.",
+   "source_titre": "Oaktree : mémo « It's Not Easy » (09/09/2015)",
+   "source_url": "https://www.oaktreecapital.com/docs/default-source/memos/2015-09-09-its-not-easy.pdf",
+   "source2_titre": "Nasdaq : Howard Marks memo on the importance of second-level thinking (10/09/2015)",
+   "source2_url": "https://www.nasdaq.com/articles/howard-marks-memo-importance-second-level-thinking-2015-09-10",
+   "fiabilite": "mémo non consulté directement (site injoignable depuis l'environnement)"
+  },
+  {
+   "id": "einstein_mythe",
+   "auteur": "Albert Einstein (attribution fausse)",
+   "fonction": "physicien",
+   "theme": "Mythe",
+   "texte_original": "Compound interest is the eighth wonder of the world.",
+   "traduction": "Les intérêts composés sont la huitième merveille du monde.",
+   "date": "sans source",
+   "occasion": "phrase sans trace chez Einstein ; « huitième merveille » est un slogan publicitaire dès 1816",
+   "lecon_garp": "Les intérêts composés n'ont pas besoin d'Einstein : les chiffres suffisent.",
+   "source_titre": "Quote Investigator : The eighth wonder of the world is compound interest (09/09/2019)",
+   "source_url": "https://quoteinvestigator.com/2019/09/09/interest/",
+   "source2_titre": "Quote Investigator : Compound interest is man's greatest invention (31/10/2011)",
+   "source2_url": "https://quoteinvestigator.com/2011/10/31/compound-interest/",
+   "fiabilite": "attribution apocryphe, classée « probablement pas d'Einstein » par The Ultimate Quotable Einstein (Princeton University Press)"
+  }
+ ],
+ "lynch": {
+  "rendement_annuel": {
+   "indicateur": "rendement_annuel",
+   "valeur": "29.2",
+   "unite": "% par an",
+   "source_titre": "Wikipedia : Peter Lynch",
+   "source_url": "https://en.wikipedia.org/wiki/Peter_Lynch",
+   "source2_titre": "The Motley Fool : Peter Lynch's annual return at Fidelity Magellan (02/10/2026)",
+   "source2_url": "https://www.fool.com/investing/2026/10/02/peter-lynch-annual-return-fidelity-magellan/"
+  },
+  "annee_debut": {
+   "indicateur": "annee_debut",
+   "valeur": "1977",
+   "unite": "",
+   "source_titre": "Wikipedia : Peter Lynch",
+   "source_url": "https://en.wikipedia.org/wiki/Peter_Lynch",
+   "source2_titre": "The Motley Fool (02/10/2026)",
+   "source2_url": "https://www.fool.com/investing/2026/10/02/peter-lynch-annual-return-fidelity-magellan/"
+  },
+  "annee_fin": {
+   "indicateur": "annee_fin",
+   "valeur": "1990",
+   "unite": "",
+   "source_titre": "Wikipedia : Peter Lynch",
+   "source_url": "https://en.wikipedia.org/wiki/Peter_Lynch",
+   "source2_titre": "The Motley Fool (02/10/2026)",
+   "source2_url": "https://www.fool.com/investing/2026/10/02/peter-lynch-annual-return-fidelity-magellan/"
+  },
+  "encours_debut": {
+   "indicateur": "encours_debut",
+   "valeur": "18",
+   "unite": "M$",
+   "source_titre": "Wikipedia : Peter Lynch",
+   "source_url": "https://en.wikipedia.org/wiki/Peter_Lynch",
+   "source2_titre": "Navexa : The investor who outperformed Buffett",
+   "source2_url": "https://www.navexa.com/the-benchmark/insane-stock-pickers-13-year-rampage"
+  },
+  "encours_fin": {
+   "indicateur": "encours_fin",
+   "valeur": "14000",
+   "unite": "M$",
+   "source_titre": "Wikipedia : Peter Lynch",
+   "source_url": "https://en.wikipedia.org/wiki/Peter_Lynch",
+   "source2_titre": "Navexa : The investor who outperformed Buffett",
+   "source2_url": "https://www.navexa.com/the-benchmark/insane-stock-pickers-13-year-rampage"
+  }
+ },
+ "etf": [],
+ "etf_regles": {},
+ "horizon": {},
+ "etf_us": {
+  "QQQ": {
+   "ticker": "QQQ",
+   "nom": "Invesco QQQ",
+   "indice": "Nasdaq-100",
+   "emetteur": "Invesco",
+   "creation": "1999-03-10",
+   "encours_musd": "502687.38",
+   "nombre_lignes": "106",
+   "frais_pct": "0.18",
+   "rendement_dividende_pct": "0.41",
+   "poids_10_premieres_pct": "46.83",
+   "perf_1an_pct": "23.5241",
+   "source": "Zacks get_zacks_metrics (dernière séance 12/10/2026, servi le 13/10/2026)"
+  },
+  "SPY": {
+   "ticker": "SPY",
+   "nom": "State Street SPDR S&P 500 ETF Trust",
+   "indice": "S&P 500",
+   "emetteur": "State Street Investment Management",
+   "creation": "1993-01-29",
+   "encours_musd": "822851.1792",
+   "nombre_lignes": "505",
+   "frais_pct": "0.09",
+   "rendement_dividende_pct": "0.97",
+   "poids_10_premieres_pct": "38.003445",
+   "perf_1an_pct": "17.1334",
+   "source": "Zacks get_zacks_metrics (dernière séance 12/10/2026, servi le 13/10/2026)"
+  },
+  "VOO": {
+   "ticker": "VOO",
+   "nom": "Vanguard S&P 500 ETF",
+   "indice": "S&P 500",
+   "emetteur": "Vanguard",
+   "creation": "",
+   "encours_musd": "1054455.543",
+   "nombre_lignes": "",
+   "frais_pct": "0.03",
+   "rendement_dividende_pct": "1.04",
+   "poids_10_premieres_pct": "37.78",
+   "perf_1an_pct": "",
+   "source": "Zacks get_zacks_metrics (dernière séance 12/10/2026, servi le 13/10/2026) (pair de SPY)"
+  },
+  "IVV": {
+   "ticker": "IVV",
+   "nom": "iShares Core S&P 500 ETF",
+   "indice": "S&P 500",
+   "emetteur": "BlackRock iShares",
+   "creation": "",
+   "encours_musd": "898660.5145",
+   "nombre_lignes": "",
+   "frais_pct": "0.03",
+   "rendement_dividende_pct": "1.07",
+   "poids_10_premieres_pct": "37.93",
+   "perf_1an_pct": "",
+   "source": "Zacks get_zacks_metrics (dernière séance 12/10/2026, servi le 13/10/2026) (pair de SPY)"
+  }
+ },
+ "qqq": [
+  {
+   "rang": "1",
+   "ticker": "NVDA",
+   "nom": "NVIDIA",
+   "poids_pct": "8.85",
+   "source": "Zacks get_etf_holdings QQQ, positions au 04/09/2026 (servi le 13/10/2026)"
+  },
+  {
+   "rang": "2",
+   "ticker": "AAPL",
+   "nom": "Apple",
+   "poids_pct": "7.46",
+   "source": "Zacks get_etf_holdings QQQ, positions au 04/09/2026 (servi le 13/10/2026)"
+  },
+  {
+   "rang": "3",
+   "ticker": "MSFT",
+   "nom": "Microsoft",
+   "poids_pct": "5.91",
+   "source": "Zacks get_etf_holdings QQQ, positions au 04/09/2026 (servi le 13/10/2026)"
+  },
+  {
+   "rang": "4",
+   "ticker": "MU",
+   "nom": "Micron",
+   "poids_pct": "5.03",
+   "source": "Zacks get_etf_holdings QQQ, positions au 04/09/2026 (servi le 13/10/2026)"
+  },
+  {
+   "rang": "5",
+   "ticker": "AMZN",
+   "nom": "Amazon",
+   "poids_pct": "4.42",
+   "source": "Zacks get_etf_holdings QQQ, positions au 04/09/2026 (servi le 13/10/2026)"
+  },
+  {
+   "rang": "6",
+   "ticker": "AMD",
+   "nom": "AMD",
+   "poids_pct": "3.41",
+   "source": "Zacks get_etf_holdings QQQ, positions au 04/09/2026 (servi le 13/10/2026)"
+  },
+  {
+   "rang": "7",
+   "ticker": "GOOGL",
+   "nom": "Alphabet (A)",
+   "poids_pct": "3.13",
+   "source": "Zacks get_etf_holdings QQQ, positions au 04/09/2026 (servi le 13/10/2026)"
+  },
+  {
+   "rang": "8",
+   "ticker": "GOOG",
+   "nom": "Alphabet (C)",
+   "poids_pct": "2.91",
+   "source": "Zacks get_etf_holdings QQQ, positions au 04/09/2026 (servi le 13/10/2026)"
+  },
+  {
+   "rang": "9",
+   "ticker": "META",
+   "nom": "Meta Platforms",
+   "poids_pct": "2.9",
+   "source": "Zacks get_etf_holdings QQQ, positions au 04/09/2026 (servi le 13/10/2026)"
+  },
+  {
+   "rang": "10",
+   "ticker": "TSLA",
+   "nom": "Tesla",
+   "poids_pct": "2.81",
+   "source": "Zacks get_etf_holdings QQQ, positions au 04/09/2026 (servi le 13/10/2026)"
+  },
+  {
+   "rang": "11",
+   "ticker": "AVGO",
+   "nom": "Broadcom",
+   "poids_pct": "2.69",
+   "source": "Zacks get_etf_holdings QQQ, positions au 04/09/2026 (servi le 13/10/2026)"
+  },
+  {
+   "rang": "12",
+   "ticker": "WMT",
+   "nom": "Walmart",
+   "poids_pct": "2.3",
+   "source": "Zacks get_etf_holdings QQQ, positions au 04/09/2026 (servi le 13/10/2026)"
+  },
+  {
+   "rang": "13",
+   "ticker": "INTC",
+   "nom": "Intel",
+   "poids_pct": "2.11",
+   "source": "Zacks get_etf_holdings QQQ, positions au 04/09/2026 (servi le 13/10/2026)"
+  },
+  {
+   "rang": "14",
+   "ticker": "CSCO",
+   "nom": "Cisco",
+   "poids_pct": "1.89",
+   "source": "Zacks get_etf_holdings QQQ, positions au 04/09/2026 (servi le 13/10/2026)"
+  },
+  {
+   "rang": "15",
+   "ticker": "COST",
+   "nom": "Costco",
+   "poids_pct": "1.78",
+   "source": "Zacks get_etf_holdings QQQ, positions au 04/09/2026 (servi le 13/10/2026)"
+  }
+ ],
+ "dca": {
+  "baisse_puis_rebond": {
+   "prix": [
+    100.0,
+    80.0,
+    60.0,
+    70.0,
+    90.0,
+    110.0
+   ],
+   "tranche": 1000.0,
+   "parts_dca": 73.65440115440116,
+   "parts_lump": 60.0,
+   "cout_moyen_dca": 81.46152715874027,
+   "prix_moyen": 85.0,
+   "valeur_dca": 8101.984126984127,
+   "valeur_lump": 6600.0
+  },
+  "hausse_reguliere": {
+   "prix": [
+    100.0,
+    105.0,
+    110.0,
+    115.0,
+    120.0,
+    125.0
+   ],
+   "tranche": 1000.0,
+   "parts_dca": 53.643704121964994,
+   "parts_lump": 60.0,
+   "cout_moyen_dca": 111.84909950212098,
+   "prix_moyen": 112.5,
+   "valeur_dca": 6705.463015245624,
+   "valeur_lump": 7500.0
+  }
+ },
+ "etf_frais": {
+  "etf_frais_bas": {
+   "frais": 0.0007000000000000001,
+   "valeur": 215183.2487537941,
+   "verse": 82000.0
+  },
+  "etf_frais_haut": {
+   "frais": 0.0038,
+   "valeur": 206038.55090831642,
+   "verse": 82000.0
+  }
+ },
+ "sources_societes": {
+  "adyen": [
+   {
+    "indicateur": "chiffre_affaires_net",
+    "valeur": "1302.9",
+    "unite": "M€",
+    "source_titre": "Finance Magnates : Adyen lifts 2026 revenue outlook as volume hits €804 billion",
+    "source_url": "https://www.financemagnates.com/fintech/payments/adyen-lifts-2026-revenue-outlook-to-2123-as-volume-hits-804-billion/",
+    "source2_titre": "Financial IT : Adyen publishes H1 2026 financial results",
+    "source2_url": "https://financialit.net/news/infrastructure/adyen-publishes-h1-2026-financial-results"
+   },
+   {
+    "indicateur": "croissance_ca_net",
+    "valeur": "19",
+    "unite": "%",
+    "source_titre": "Finance Magnates (13/08/2026)",
+    "source_url": "https://www.financemagnates.com/fintech/payments/adyen-lifts-2026-revenue-outlook-to-2123-as-volume-hits-804-billion/",
+    "source2_titre": "Financial IT (13/08/2026)",
+    "source2_url": "https://financialit.net/news/infrastructure/adyen-publishes-h1-2026-financial-results"
+   },
+   {
+    "indicateur": "ebitda",
+    "valeur": "641.5",
+    "unite": "M€",
+    "source_titre": "Finance Magnates (13/08/2026)",
+    "source_url": "https://www.financemagnates.com/fintech/payments/adyen-lifts-2026-revenue-outlook-to-2123-as-volume-hits-804-billion/",
+    "source2_titre": "Financial IT (13/08/2026)",
+    "source2_url": "https://financialit.net/news/infrastructure/adyen-publishes-h1-2026-financial-results"
+   },
+   {
+    "indicateur": "resultat_net",
+    "valeur": "544.1",
+    "unite": "M€",
+    "source_titre": "Finance Magnates (13/08/2026)",
+    "source_url": "https://www.financemagnates.com/fintech/payments/adyen-lifts-2026-revenue-outlook-to-2123-as-volume-hits-804-billion/",
+    "source2_titre": "Financial IT (13/08/2026)",
+    "source2_url": "https://financialit.net/news/infrastructure/adyen-publishes-h1-2026-financial-results"
+   },
+   {
+    "indicateur": "volume_traite",
+    "valeur": "803.8",
+    "unite": "Md€",
+    "source_titre": "Finance Magnates (13/08/2026)",
+    "source_url": "https://www.financemagnates.com/fintech/payments/adyen-lifts-2026-revenue-outlook-to-2123-as-volume-hits-804-billion/",
+    "source2_titre": "Financial IT (13/08/2026)",
+    "source2_url": "https://financialit.net/news/infrastructure/adyen-publishes-h1-2026-financial-results"
+   }
+  ],
+  "nu": [
+   {
+    "indicateur": "clients",
+    "valeur": "139",
+    "unite": "M",
+    "source_titre": "Nubank : Nu Holdings reports second quarter 2026 financial results (13/08/2026)",
+    "source_url": "https://international.nubank.com.br/company/nu-holdings-ltd-reports-second-quarter-2026-financial-results/",
+    "source2_titre": "KuCoin : Nu Holdings reports $1.06B net income in Q2 2026 with 139M customers",
+    "source2_url": "https://www.kucoin.com/news/flash/nu-holdings-reports-1-06b-net-income-in-q2-2026-with-139m-customers"
+   },
+   {
+    "indicateur": "resultat_net_trimestre",
+    "valeur": "1061",
+    "unite": "M$",
+    "source_titre": "Nubank (13/08/2026)",
+    "source_url": "https://international.nubank.com.br/company/nu-holdings-ltd-reports-second-quarter-2026-financial-results/",
+    "source2_titre": "KuCoin",
+    "source2_url": "https://www.kucoin.com/news/flash/nu-holdings-reports-1-06b-net-income-in-q2-2026-with-139m-customers"
+   },
+   {
+    "indicateur": "marge_interets_ajustee_risque",
+    "valeur": "12.4",
+    "unite": "%",
+    "source_titre": "Nubank (13/08/2026)",
+    "source_url": "https://international.nubank.com.br/company/nu-holdings-ltd-reports-second-quarter-2026-financial-results/",
+    "source2_titre": "parameter.io : Nu stock surges after $1B quarterly profit",
+    "source2_url": "https://parameter.io/nu-holdings-nu-stock-surges-9-5-after-breaking-1-billion-quarterly-profit-barrier/"
+   },
+   {
+    "indicateur": "ratio_efficacite",
+    "valeur": "19.5",
+    "unite": "%",
+    "source_titre": "Nubank (13/08/2026)",
+    "source_url": "https://international.nubank.com.br/company/nu-holdings-ltd-reports-second-quarter-2026-financial-results/",
+    "source2_titre": "parameter.io",
+    "source2_url": "https://parameter.io/nu-holdings-nu-stock-surges-9-5-after-breaking-1-billion-quarterly-profit-barrier/"
+   }
+  ],
+  "reddit": [
+   {
+    "indicateur": "utilisateurs_actifs_jour",
+    "valeur": "130.3",
+    "unite": "M",
+    "source_titre": "Reddit : communiqué du T2 2026 (8-K SEC)",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/0001713445/000171344526000098/earningspressreleaseq226.htm",
+    "source2_titre": "Business Wire : Reddit reports second quarter 2026 results",
+    "source2_url": "https://www.businesswire.com/news/home/20260730598707/en/"
+   },
+   {
+    "indicateur": "chiffre_affaires_trimestre",
+    "valeur": "805",
+    "unite": "M$",
+    "source_titre": "Reddit 8-K (30/07/2026)",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/0001713445/000171344526000098/earningspressreleaseq226.htm",
+    "source2_titre": "Business Wire",
+    "source2_url": "https://www.businesswire.com/news/home/20260730598707/en/"
+   },
+   {
+    "indicateur": "croissance_ca",
+    "valeur": "61",
+    "unite": "%",
+    "source_titre": "Reddit 8-K (30/07/2026)",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/0001713445/000171344526000098/earningspressreleaseq226.htm",
+    "source2_titre": "Business Wire",
+    "source2_url": "https://www.businesswire.com/news/home/20260730598707/en/"
+   },
+   {
+    "indicateur": "revenu_par_utilisateur",
+    "valeur": "6.18",
+    "unite": "$",
+    "source_titre": "Reddit 8-K (30/07/2026)",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/0001713445/000171344526000098/earningspressreleaseq226.htm",
+    "source2_titre": "Business Wire",
+    "source2_url": "https://www.businesswire.com/news/home/20260730598707/en/"
+   },
+   {
+    "indicateur": "marge_ebitda_ajuste",
+    "valeur": "43",
+    "unite": "%",
+    "source_titre": "Reddit 8-K (30/07/2026)",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/0001713445/000171344526000098/earningspressreleaseq226.htm",
+    "source2_titre": "Business Wire",
+    "source2_url": "https://www.businesswire.com/news/home/20260730598707/en/"
+   }
+  ]
+ },
+ "calc_serie_defaut": {
+  "verse": 82000.0,
+  "valeur": 202614.183414057,
+  "sans_frais": 217309.29220094296,
+  "cout_frais": 14695.108786885947,
+  "gains": 120614.18341405701,
+  "impot": 22434.238115014607,
+  "net": 180179.94529904242,
+  "reel": 121255.93798723344,
+  "serie": [
+   {
+    "annee": 0,
+    "verse": 10000.0,
+    "valeur": 10000.0,
+    "sans_frais": 10000.0
+   },
+   {
+    "annee": 1,
+    "verse": 13600.0,
+    "valeur": 14467.491113480455,
+    "sans_frais": 14530.165944154567
+   },
+   {
+    "annee": 2,
+    "verse": 17200.0,
+    "valeur": 19268.25706402655,
+    "sans_frais": 19422.745163841497
+   },
+   {
+    "annee": 3,
+    "verse": 20800.0,
+    "valeur": 24427.16015448338,
+    "sans_frais": 24706.730721103384
+   },
+   {
+    "annee": 4,
+    "verse": 24400.0,
+    "valeur": 29970.917415488286,
+    "sans_frais": 30413.435122946223
+   },
+   {
+    "annee": 5,
+    "verse": 28000.0,
+    "valeur": 35928.23896816415,
+    "sans_frais": 36576.67587693649
+   },
+   {
+    "annee": 6,
+    "verse": 31600.0,
+    "valeur": 42329.976708669616,
+    "sans_frais": 43232.975891245966
+   },
+   {
+    "annee": 7,
+    "verse": 35200.0,
+    "valeur": 49209.28408461679,
+    "sans_frais": 50421.779906700205
+   },
+   {
+    "annee": 8,
+    "verse": 38800.0,
+    "valeur": 56601.78779080964,
+    "sans_frais": 58185.688243390774
+   },
+   {
+    "annee": 9,
+    "verse": 42400.0,
+    "valeur": 64545.77227348445,
+    "sans_frais": 66570.7092470166
+   },
+   {
+    "annee": 10,
+    "verse": 46000.0,
+    "valeur": 73082.3779985668,
+    "sans_frais": 75626.53193093245
+   },
+   {
+    "annee": 11,
+    "verse": 49600.0,
+    "valeur": 82255.81451074025,
+    "sans_frais": 85406.8204295616
+   },
+   {
+    "annee": 12,
+    "verse": 53200.0,
+    "valeur": 92113.58938672184,
+    "sans_frais": 95969.53200808108
+   },
+   {
+    "annee": 13,
+    "verse": 56800.0,
+    "valeur": 102706.7542684517,
+    "sans_frais": 107377.2605128821
+   },
+   {
+    "annee": 14,
+    "verse": 60400.0,
+    "valeur": 114090.16925035857,
+    "sans_frais": 119697.60729806723
+   },
+   {
+    "annee": 15,
+    "verse": 64000.0,
+    "valeur": 126322.7869899157,
+    "sans_frais": 133003.58182606715
+   },
+   {
+    "annee": 16,
+    "verse": 67600.0,
+    "valeur": 139467.95801284382,
+    "sans_frais": 147374.03431630705
+   },
+   {
+    "annee": 17,
+    "verse": 71200.0,
+    "valeur": 153593.75879408236,
+    "sans_frais": 162894.12300576616
+   },
+   {
+    "annee": 18,
+    "verse": 74800.0,
+    "valeur": 168773.34431360118,
+    "sans_frais": 179655.81879038198
+   },
+   {
+    "annee": 19,
+    "verse": 78400.0,
+    "valeur": 185085.32691287616,
+    "sans_frais": 197758.45023776707
+   },
+   {
+    "annee": 20,
+    "verse": 82000.0,
+    "valeur": 202614.183414057,
+    "sans_frais": 217309.29220094296
+   }
+  ]
+ }
+}

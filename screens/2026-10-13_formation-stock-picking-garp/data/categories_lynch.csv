@@ -1,0 +1,9 @@
+ticker,nom,categorie,indicateur,justification
+AAPL,Apple,Valeur solide,croissance_f2,"Géant mature : croissance attendue modeste, bilan solide, multiple élevé"
+TSM,TSMC,Croissance rapide de grande taille,tcam_ca,Leader mondial des puces avancées ; la taille finira par freiner la croissance
+NU,Nu Holdings,Croissance rapide,croissance_f1,"Banque numérique en conquête de clients au Brésil, au Mexique et en Colombie"
+ADYEY,Adyen,Croissance rapide,croissance_ca_s1,Plateforme de paiement qui gagne des parts de marché ; croissance à la limite basse de la catégorie
+NVDA,NVIDIA,Croissance rapide à composante cyclique,croissance_f1,Croissance tirée par le capex de ses clients : un poste qui peut se retourner
+RDDT,Reddit,Redressement devenu croissance rapide,resultat_net,"Pertes jusqu'en 2024, bénéfice en 2025, chiffre d'affaires en forte hausse"
+MU,Micron,Cyclique,bpa_creux_pic,Mémoire : les prix et les marges suivent l'équilibre de l'offre et de la demande
+INTC,Intel,Redressement,bpa_2024_vs_f1,"Pertes en 2024, retour au bénéfice attendu par le consensus"

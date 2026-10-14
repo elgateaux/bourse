@@ -1,0 +1,13 @@
+scenario,mois,prix,justification
+baisse_puis_rebond,1,100,exemple pédagogique (hyp.) : une baisse de 40 % puis un rebond
+baisse_puis_rebond,2,80,exemple pédagogique (hyp.) : une baisse de 40 % puis un rebond
+baisse_puis_rebond,3,60,exemple pédagogique (hyp.) : une baisse de 40 % puis un rebond
+baisse_puis_rebond,4,70,exemple pédagogique (hyp.) : une baisse de 40 % puis un rebond
+baisse_puis_rebond,5,90,exemple pédagogique (hyp.) : une baisse de 40 % puis un rebond
+baisse_puis_rebond,6,110,exemple pédagogique (hyp.) : une baisse de 40 % puis un rebond
+hausse_reguliere,1,100,exemple pédagogique (hyp.) : une hausse de 5 points par mois
+hausse_reguliere,2,105,exemple pédagogique (hyp.) : une hausse de 5 points par mois
+hausse_reguliere,3,110,exemple pédagogique (hyp.) : une hausse de 5 points par mois
+hausse_reguliere,4,115,exemple pédagogique (hyp.) : une hausse de 5 points par mois
+hausse_reguliere,5,120,exemple pédagogique (hyp.) : une hausse de 5 points par mois
+hausse_reguliere,6,125,exemple pédagogique (hyp.) : une hausse de 5 points par mois

@@ -1,0 +1,12 @@
+indicateur,valeur,unite,source
+bpa_12_derniers_mois,7.01,$,"Zacks get_zacks_metrics NVDA (act_eps_ttm), dernière séance 12/10/2026"
+pe_12_derniers_mois,32.28,x,Zacks get_zacks_metrics NVDA (pe_trailing12m)
+objectif_zacks,261,$,Zacks get_zacks_metrics NVDA (zacks_target_price)
+recommandation,Outperform,,Zacks get_zacks_metrics NVDA (zacks_recommendation_text ; précédente : Neutral)
+zacks_rank,1,,Zacks get_zacks_metrics NVDA (Strong Buy)
+score_value,F,,Zacks get_zacks_metrics NVDA (style scores A à F)
+score_growth,C,,Zacks get_zacks_metrics NVDA
+score_momentum,D,,Zacks get_zacks_metrics NVDA
+surprise_bpa_dernier_trimestre,6.22,%,Zacks get_zacks_metrics NVDA (last_qtr_eps_surp_pct)
+prochaine_publication,2026-11-18,,Zacks get_zacks_metrics NVDA (exp_rep_date)
+bpa_fy2028_fiche,15.33,$,"Zacks get_zacks_metrics NVDA ; compare_stocks donne 15,532 le même jour (écart signalé)"
