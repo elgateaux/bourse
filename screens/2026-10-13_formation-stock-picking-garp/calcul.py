@@ -10,7 +10,8 @@ stress_tests.csv et data/zacks_2026-10-13.csv), puis écrit :
 - grille_garp.csv : la grille en 7 critères appliquée aux 5 valeurs ;
 - interets_composes.csv, frais.csv, enveloppes.csv : intérêts composés, frais et fiscalité ;
 - calculatrice_tests.csv : cas de contrôle de la calculatrice (le JavaScript doit retrouver ces valeurs) ;
-- diaporama/donnees_formation.json : tout ce qu'affiche le diaporama.
+- diaporama/donnees_formation.json : tout ce qu'affiche le diaporama, dont l'exemple de DCF, le risque de change,
+  le plafond du PER et l'exemple d'investissement locatif (rendement net, crédit, effet de levier).
 
 La simulation `simuler()` est la référence : le JavaScript de la calculatrice en est la traduction ligne à ligne.
 """
@@ -407,6 +408,57 @@ def main():
            ("12 prochains mois (NTM)", nv["bpa_ntm"], nv["pe_ntm"]),
            ("Exercice suivant (FY2028)", nv["bpa_f2"], nv["pe_f2"])]
 
+    # ---- moat, compléments de la « bible », immobilier, super-investisseurs
+    MOAT = {r["id"]: r for r in opt("moat.csv")}
+    BIB = {r["id"]: r for r in opt("bible.csv")}
+    IMMO = {r["id"]: r for r in opt("immobilier.csv")}
+    SUP = opt("super_investisseurs.csv")
+
+    def dcf(fcf0, g, n, g_lt, r_):
+        """Somme des flux actualisés des n années explicites + valeur terminale de Gordon-Shapiro actualisée."""
+        flux = [fcf0 * (1 + g) ** t for t in range(1, n + 1)]
+        va = [f / (1 + r_) ** t for t, f in enumerate(flux, 1)]
+        vt = flux[-1] * (1 + g_lt) / (r_ - g_lt)
+        va_vt = vt / (1 + r_) ** n
+        valeur = sum(va) + va_vt
+        return {"taux": r_, "flux": flux, "va": va, "somme_va": sum(va), "vt": vt, "va_vt": va_vt, "valeur": valeur,
+                "part_vt": va_vt / valeur, "multiple": valeur / fcf0}
+    args = (HYP["dcf_fcf"], HYP["dcf_croissance"] / 100, int(HYP["dcf_annees"]), HYP["dcf_croissance_long"] / 100)
+    dcf_res = {"bas": dcf(*args, HYP["dcf_taux"] / 100), "haut": dcf(*args, HYP["dcf_taux_haut"] / 100)}
+    dcf_res["variation"] = dcf_res["haut"]["valeur"] / dcf_res["bas"]["valeur"] - 1
+    change = {"hausse_euro": HYP["change_hausse_euro"] / 100, "perte_euro": 1 / (1 + HYP["change_hausse_euro"] / 100) - 1}
+    pass_ = float(BIB["pass_2026"]["valeur"]) if BIB else 0.0
+    per = {"pass": pass_, "plafond_max": 0.10 * 8 * pass_, "versement": HYP["per_versement"], "tmi": HYP["tmi_exemple"] / 100,
+           "economie": HYP["per_versement"] * HYP["tmi_exemple"] / 100}
+
+    immo = {}
+    if IMMO:
+        iv = lambda k: float(IMMO[k]["valeur"])
+        prix = HYP["immo_prix"]
+        frais_acq = prix * iv("frais_notaire") / 100
+
+        def net_locatif(brut):
+            loyer = prix * brut / 100
+            charges = loyer * HYP["immo_charges"] / 100
+            base = loyer * (1 - iv("micro_foncier") / 100)          # micro-foncier : abattement forfaitaire
+            impot = base * (HYP["tmi_exemple"] + iv("ps_foncier")) / 100
+            net = loyer - charges - impot
+            return {"brut": brut / 100, "loyer": loyer, "charges": charges, "base": base, "impot": impot, "net": net,
+                    "rdt_net": net / (prix + frais_acq), "annees_loyers": 100 / brut}
+        nets = {"france": net_locatif(iv("rendement_brut_france")), "paris": net_locatif(iv("rendement_brut_paris"))}
+        apport = frais_acq + prix * HYP["immo_apport"] / 100
+        emprunt = prix * (1 - HYP["immo_apport"] / 100)
+        tm, nm = iv("credit_taux_20") / 100 / 12, int(HYP["immo_duree_credit"] * 12)
+        mens = emprunt * tm / (1 - (1 + tm) ** -nm)
+        fr_ = nets["france"]
+        var = HYP["immo_variation"] / 100
+        immo = {"prix": prix, "frais": frais_acq, "net": nets, "apport": apport, "emprunt": emprunt, "taux": iv("credit_taux_20") / 100,
+                "mois": nm, "mensualite": mens, "cout_credit": mens * nm - emprunt, "loyer_m": fr_["loyer"] / 12, "charges_m": fr_["charges"] / 12,
+                "effort_m": mens + fr_["charges"] / 12 - fr_["loyer"] / 12, "variation": var, "effet_apport": prix * var / apport,
+                "frais_part_apport": frais_acq / apport,
+                "annees_frais": math.log(1 + frais_acq / prix) / math.log(1 + HYP["immo_hausse"] / 100),
+                "transactions_var": iv("transactions_2023") / iv("transactions_2022") - 1}
+
     D = {
         "date": "13/10/2026", "date_cours": "12/10/2026", "params": PARAMS, "defauts": dflt,
         "hyp": HYP, "fisc": {k: {"valeur": v["valeur"], "unite": v["unite"], "precision": v["precision"], "parametre": v["parametre"],
@@ -418,6 +470,7 @@ def main():
         "retro": RETRO, "stress": STRESS, "investisseurs": INV, "lynch": LYN,
         "etf": ETF, "etf_regles": {r["id"]: r for r in ETF_R}, "horizon": {r["id"]: r for r in HZ}, "etf_us": {r["ticker"]: r for r in ETF_US},
         "qqq": QQQ, "dca": dca_res, "etf_frais": etf_fr,
+        "moat": MOAT, "bible": BIB, "immo_data": IMMO, "immo": immo, "super": SUP, "dcf": dcf_res, "change": change, "per": per,
         "sources_societes": {"adyen": load(os.path.join(DATA, "adyen_s1_2026.csv")), "nu": load(os.path.join(DATA, "nu_t2_2026.csv")),
                              "reddit": load(os.path.join(DATA, "reddit_t2_2026.csv"))},
         "calc_serie_defaut": simuler(dflt["capital"], dflt["mensuel"], dflt["annees"], dflt["rendement"], dflt["frais"], "PEA", False, dflt["inflation"]),
@@ -440,6 +493,13 @@ def main():
     print("Bogle 7 %/2 %/50 ans : part perdue", pct(bogle["part_perdue"]), "| convention soustraction", pct(bogle["part_perdue_soustraction"]))
     print("P/E NVIDIA :", " | ".join(f"{l} {fr(p, 1)}" for l, _, p in pe5))
     print("Temps :", {k: eur(v["valeur"]) for k, v in tps.items()})
+    print("DCF :", eur(dcf_res["bas"]["valeur"]), "à", pct(dcf_res["bas"]["taux"], 0), "→", eur(dcf_res["haut"]["valeur"]), "à", pct(dcf_res["haut"]["taux"], 0),
+          "(", pct(dcf_res["variation"], 1, True), ") ; part de la valeur terminale", pct(dcf_res["bas"]["part_vt"]))
+    print("Change :", pct(change["perte_euro"], 1, True), "| PER plafond", eur(per["plafond_max"]), "économie", eur(per["economie"]))
+    if immo:
+        print("Immo : net France", pct(immo["net"]["france"]["rdt_net"], 2), "Paris", pct(immo["net"]["paris"]["rdt_net"], 2),
+              "| mensualité", eur(immo["mensualite"]), "effort", eur(immo["effort_m"]), "| levier ±", pct(immo["effet_apport"]),
+              "| frais/apport", pct(immo["frais_part_apport"]), "| années pour effacer les frais", fr(immo["annees_frais"], 1))
     print("Adyen take rate", pct(ady["take_rate"], 3), "marge nette", pct(ady["marge_nette"]))
 
 

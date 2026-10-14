@@ -42,3 +42,18 @@ noyau_min,50,% du portefeuille,noyau et satellites,"hyp. : tant qu'on n'a pas d'
 noyau_max,80,% du portefeuille,noyau et satellites,"hyp. : au-delà, la part en stock picking devient trop petite pour justifier le travail d'analyse"
 etf_frais_bas,0.07,% par an,frais courants d'un ETF,bas de la fourchette des ETF indiciels (data/etf.csv)
 etf_frais_haut,0.38,% par an,frais courants d'un ETF,haut de la fourchette des ETF indiciels courants (data/etf.csv)
+dcf_fcf,100,M€,exemple de DCF,exemple pédagogique : flux de trésorerie disponible de l'année 0
+dcf_croissance,10,% par an,exemple de DCF,exemple pédagogique : croissance des cinq premières années
+dcf_annees,5,ans,exemple de DCF,exemple pédagogique : horizon de prévision explicite
+dcf_croissance_long,3,% par an,exemple de DCF,"exemple pédagogique : croissance perpétuelle, proche de la croissance nominale de l'économie"
+dcf_taux,9,%,exemple de DCF,exemple pédagogique : taux d'actualisation
+dcf_taux_haut,11,%,exemple de DCF,exemple pédagogique : même société après une hausse des taux de 2 points
+change_hausse_euro,13,%,risque de change,"bas de la fourchette sourcée pour 2025 (13 à 14 %, data/bible.csv)"
+tmi_exemple,30,%,exemples PER et immobilier locatif,"hyp. : tranche marginale d'imposition de 30 % ; à remplacer par sa propre tranche (0, 11, 30, 41 ou 45 %)"
+per_versement,5000,€,exemple PER,exemple pédagogique : versement annuel sur un PER
+immo_prix,200000,€,immobilier locatif,exemple pédagogique : prix d'achat du logement hors frais
+immo_apport,10,% du prix,immobilier locatif,"exemple pédagogique : apport de 10 % du prix, en plus des frais d'acquisition payés comptant"
+immo_charges,25,% des loyers,immobilier locatif,"hyp. éditoriale : taxe foncière, charges non récupérables, assurance, entretien et environ un mois de vacance par an ; à adapter à chaque bien"
+immo_duree_credit,20,ans,immobilier locatif,durée associée au taux moyen sourcé de 3,27 % (data/immobilier.csv)
+immo_variation,10,%,immobilier locatif,"exemple pédagogique : variation du prix du bien de ±10 %, de l'ordre de la baisse de 2023-2024 en Île-de-France (−7,9 % sur un an pour les appartements)"
+immo_hausse,2,% par an,immobilier locatif,"hyp. : hausse des prix égale à la cible d'inflation de la BCE ; sur longue période, les prix ont suivi le revenu des ménages (tunnel de Friggit, 1965-2000)"

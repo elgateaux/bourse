@@ -147,12 +147,16 @@ const LISIBILITE = (seuil) => {
   await p.waitForTimeout(400);
   await p.fill('#peg-pe', '30'); await p.fill('#peg-g', '15');
   console.log('PEG 30 / 15 :', await p.$eval('#peg-v', el => el.textContent), '·', await p.$eval('#peg-txt', el => el.textContent));
-  const qi = await p.evaluate(() => [...document.querySelectorAll('.slide')].findIndex(s => s.querySelector('.qz')));
-  await p.evaluate(i => window.GZ.aller(i), qi);
-  await p.waitForTimeout(500);
-  const opts = await p.$$('.qz-q .opt[data-ok="1"]');
-  for (const o of opts) await o.click();
-  console.log('quiz :', await p.$eval('#qz-score', el => el.textContent));
+  // quiz réparti sur plusieurs diapositives : on répond juste partout, le score est commun
+  const qis = await p.evaluate(() => [...document.querySelectorAll('.slide')].map((s, i) => s.querySelector('.qz') ? i : -1).filter(i => i >= 0));
+  for (const qi of qis) {
+    await p.evaluate(i => window.GZ.aller(i), qi);
+    await p.waitForTimeout(500);
+    for (const o of await p.$$(`#s${qi + 1} .qz-q .opt[data-ok="1"]`)) await o.click();
+  }
+  const score = await p.$eval(`#s${qis[qis.length - 1] + 1} .qz-score`, el => el.textContent);
+  console.log('quiz :', score);
+  if (!/(\d+) \/ \1 — terminé/.test(score)) echecs++;
   console.log('erreurs JavaScript :', erreurs.length ? erreurs.join(' | ') : 'aucune');
   if (erreurs.length) echecs++;
 

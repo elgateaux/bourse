@@ -76,346 +76,511 @@
  },
  {
   "n": 16,
-  "section": "Lire les comptes",
-  "titre": "Lire les comptes"
+  "section": "Les bases",
+  "titre": "Le risque de change"
  },
  {
   "n": 17,
   "section": "Lire les comptes",
-  "titre": "Trois documents, trois questions"
+  "titre": "Lire les comptes"
  },
  {
   "n": 18,
   "section": "Lire les comptes",
-  "titre": "La cascade du compte de résultat"
+  "titre": "Trois documents, trois questions"
  },
  {
   "n": 19,
   "section": "Lire les comptes",
-  "titre": "Les marges"
+  "titre": "La cascade du compte de résultat"
  },
  {
   "n": 20,
   "section": "Lire les comptes",
-  "titre": "La croissance (TCAM)"
+  "titre": "Les marges"
  },
  {
   "n": 21,
   "section": "Lire les comptes",
-  "titre": "BPA GAAP et non-GAAP"
+  "titre": "La croissance (TCAM)"
  },
  {
   "n": 22,
   "section": "Lire les comptes",
-  "titre": "Dilution, rachats, dividendes"
+  "titre": "BPA GAAP et non-GAAP"
  },
  {
   "n": 23,
   "section": "Lire les comptes",
-  "titre": "Le FCF et le capex"
+  "titre": "Dilution, rachats, dividendes"
  },
  {
   "n": 24,
   "section": "Lire les comptes",
-  "titre": "Le bilan"
+  "titre": "Le FCF et le capex"
  },
  {
   "n": 25,
   "section": "Lire les comptes",
-  "titre": "ROE et ROIC"
+  "titre": "Le bilan"
  },
  {
   "n": 26,
   "section": "Lire les comptes",
-  "titre": "Lire une banque : Nu"
+  "titre": "ROE et ROIC"
  },
  {
   "n": 27,
   "section": "Lire les comptes",
-  "titre": "Lire une plateforme : Reddit et Adyen"
+  "titre": "Lire une banque : Nu"
  },
  {
   "n": 28,
   "section": "Lire les comptes",
-  "titre": "Les cycliques : Micron et Intel"
+  "titre": "Lire une plateforme : Reddit et Adyen"
  },
  {
   "n": 29,
+  "section": "Lire les comptes",
+  "titre": "Les cycliques : Micron et Intel"
+ },
+ {
+  "n": 30,
+  "section": "Le moat",
+  "titre": "Le moat"
+ },
+ {
+  "n": 31,
+  "section": "Le moat",
+  "titre": "Les douves autour du château"
+ },
+ {
+  "n": 32,
+  "section": "Le moat",
+  "titre": "Cinq sources de moat"
+ },
+ {
+  "n": 33,
+  "section": "Le moat",
+  "titre": "Le moat de nos cinq exemples"
+ },
+ {
+  "n": 34,
+  "section": "Le moat",
+  "titre": "Mesurer un moat"
+ },
+ {
+  "n": 35,
+  "section": "Le moat",
+  "titre": "Quand le moat s'effondre : Intel"
+ },
+ {
+  "n": 36,
+  "section": "Le moat",
+  "titre": "Les faux moats"
+ },
+ {
+  "n": 37,
   "section": "Valoriser",
   "titre": "Valoriser"
  },
  {
-  "n": 30,
+  "n": 38,
   "section": "Valoriser",
   "titre": "Capitalisation et valeur d'entreprise"
  },
  {
-  "n": 31,
+  "n": 39,
   "section": "Valoriser",
   "titre": "Cinq P/E pour une action"
  },
  {
-  "n": 32,
+  "n": 40,
   "section": "Valoriser",
   "titre": "Les autres multiples"
  },
  {
-  "n": 33,
+  "n": 41,
   "section": "Valoriser",
   "titre": "Le PEG"
  },
  {
-  "n": 34,
+  "n": 42,
   "section": "Valoriser",
   "titre": "Le piège du PEG de court terme"
  },
  {
-  "n": 35,
+  "n": 43,
   "section": "Valoriser",
   "titre": "Consensus et rang Zacks"
  },
  {
-  "n": 36,
+  "n": 44,
+  "section": "Valoriser",
+  "titre": "Le DCF"
+ },
+ {
+  "n": 45,
+  "section": "Valoriser",
+  "titre": "Les taux d'intérêt"
+ },
+ {
+  "n": 46,
   "section": "Valoriser",
   "titre": "Ce que le prix suppose"
  },
  {
-  "n": 37,
+  "n": 47,
   "section": "La méthode GARP",
   "titre": "La méthode GARP"
  },
  {
-  "n": 38,
+  "n": 48,
   "section": "La méthode GARP",
   "titre": "Les six catégories de Lynch"
  },
  {
-  "n": 39,
+  "n": 49,
   "section": "La méthode GARP",
   "titre": "La grille en sept critères"
  },
  {
-  "n": 40,
+  "n": 50,
   "section": "La méthode GARP",
   "titre": "La grille appliquée"
  },
  {
-  "n": 41,
+  "n": 51,
   "section": "La méthode GARP",
   "titre": "Trois scénarios"
  },
  {
-  "n": 42,
+  "n": 52,
   "section": "La méthode GARP",
   "titre": "La zone d'achat"
  },
  {
-  "n": 43,
+  "n": 53,
   "section": "La méthode GARP",
   "titre": "Quand vendre"
  },
  {
-  "n": 44,
+  "n": 54,
   "section": "La méthode GARP",
   "titre": "Diversifier les moteurs"
  },
  {
-  "n": 45,
+  "n": 55,
   "section": "La méthode GARP",
   "titre": "Les biais"
  },
  {
-  "n": 46,
+  "n": 56,
   "section": "Enveloppes, frais et impôts",
   "titre": "Enveloppes, frais et impôts"
  },
  {
-  "n": 47,
+  "n": 57,
   "section": "Enveloppes, frais et impôts",
   "titre": "Le tableau des enveloppes"
  },
  {
-  "n": 48,
+  "n": 58,
   "section": "Enveloppes, frais et impôts",
   "titre": "Le PEA"
  },
  {
-  "n": 49,
+  "n": 59,
   "section": "Enveloppes, frais et impôts",
   "titre": "Le compte-titres"
  },
  {
-  "n": 50,
+  "n": 60,
   "section": "Enveloppes, frais et impôts",
   "titre": "L'assurance-vie"
  },
  {
-  "n": 51,
+  "n": 61,
+  "section": "Enveloppes, frais et impôts",
+  "titre": "Le PER"
+ },
+ {
+  "n": 62,
   "section": "Enveloppes, frais et impôts",
   "titre": "Les frais"
  },
  {
-  "n": 52,
+  "n": 63,
   "section": "Enveloppes, frais et impôts",
   "titre": "Quelle enveloppe pour quelle valeur"
  },
  {
-  "n": 53,
+  "n": 64,
+  "section": "Enveloppes, frais et impôts",
+  "titre": "Déclarer ses revenus"
+ },
+ {
+  "n": 65,
   "section": "Les ETF",
   "titre": "Les ETF"
  },
  {
-  "n": 54,
+  "n": 66,
   "section": "Les ETF",
   "titre": "Comment fonctionne un ETF"
  },
  {
-  "n": 55,
+  "n": 67,
+  "section": "Les ETF",
+  "titre": "Les grands indices"
+ },
+ {
+  "n": 68,
   "section": "Les ETF",
   "titre": "Ce que contient un ETF Nasdaq 100"
  },
  {
-  "n": 56,
+  "n": 69,
   "section": "Les ETF",
   "titre": "Physique ou synthétique"
  },
  {
-  "n": 57,
+  "n": 70,
   "section": "Les ETF",
   "titre": "Capitalisant, distribuant et frais"
  },
  {
-  "n": 58,
+  "n": 71,
   "section": "Les ETF",
   "titre": "Les principaux ETF"
  },
  {
-  "n": 59,
+  "n": 72,
   "section": "Les ETF",
   "titre": "Choisir son ETF"
  },
  {
-  "n": 60,
+  "n": 73,
+  "section": "Bourse ou immobilier",
+  "titre": "Bourse ou immobilier"
+ },
+ {
+  "n": 74,
+  "section": "Bourse ou immobilier",
+  "titre": "Quarante ans de rendements"
+ },
+ {
+  "n": 75,
+  "section": "Bourse ou immobilier",
+  "titre": "Du loyer brut au loyer net"
+ },
+ {
+  "n": 76,
+  "section": "Bourse ou immobilier",
+  "titre": "Le crédit et l'effet de levier"
+ },
+ {
+  "n": 77,
+  "section": "Bourse ou immobilier",
+  "titre": "Le risque"
+ },
+ {
+  "n": 78,
+  "section": "Bourse ou immobilier",
+  "titre": "Le match en dix critères"
+ },
+ {
+  "n": 79,
+  "section": "Bourse ou immobilier",
+  "titre": "Chacun à sa place"
+ },
+ {
+  "n": 80,
   "section": "Intérêts composés",
   "titre": "Intérêts composés"
  },
  {
-  "n": 61,
+  "n": 81,
   "section": "Intérêts composés",
   "titre": "La mécanique"
  },
  {
-  "n": 62,
+  "n": 82,
   "section": "Intérêts composés",
   "titre": "La calculatrice"
  },
  {
-  "n": 63,
+  "n": 83,
   "section": "Intérêts composés",
   "titre": "La tyrannie des frais"
  },
  {
-  "n": 64,
+  "n": 84,
   "section": "Intérêts composés",
   "titre": "L'effet de l'enveloppe"
  },
  {
-  "n": 65,
+  "n": 85,
   "section": "Intérêts composés",
   "titre": "Le temps plutôt que le timing"
  },
  {
-  "n": 66,
+  "n": 86,
   "section": "Grands investisseurs",
   "titre": "Grands investisseurs"
  },
  {
-  "n": 67,
+  "n": 87,
   "section": "Grands investisseurs",
   "titre": "Peter Lynch"
  },
  {
-  "n": 68,
+  "n": 88,
   "section": "Grands investisseurs",
   "titre": "Warren Buffett"
  },
  {
-  "n": 69,
+  "n": 89,
   "section": "Grands investisseurs",
   "titre": "Charlie Munger"
  },
  {
-  "n": 70,
+  "n": 90,
   "section": "Grands investisseurs",
   "titre": "Benjamin Graham"
  },
  {
-  "n": 71,
+  "n": 91,
   "section": "Grands investisseurs",
   "titre": "Fisher et Smith"
  },
  {
-  "n": 72,
+  "n": 92,
   "section": "Grands investisseurs",
   "titre": "Bogle et Marks"
  },
  {
-  "n": 73,
+  "n": 93,
+  "section": "Grands investisseurs",
+  "titre": "Dalio et Druckenmiller"
+ },
+ {
+  "n": 94,
+  "section": "Grands investisseurs",
+  "titre": "Soros et Simons"
+ },
+ {
+  "n": 95,
+  "section": "Grands investisseurs",
+  "titre": "Greenblatt et Templeton"
+ },
+ {
+  "n": 96,
+  "section": "Grands investisseurs",
+  "titre": "Smith et Sleep"
+ },
+ {
+  "n": 97,
+  "section": "Grands investisseurs",
+  "titre": "Huit stratégies à votre portée ?"
+ },
+ {
+  "n": 98,
   "section": "Grands investisseurs",
   "titre": "La synthèse"
  },
  {
-  "n": 74,
+  "n": 99,
   "section": "Passer à l'action",
   "titre": "Passer à l'action"
  },
  {
-  "n": 75,
+  "n": 100,
   "section": "Passer à l'action",
   "titre": "Check-list et routine"
  },
  {
-  "n": 76,
+  "n": 101,
   "section": "Passer à l'action",
-  "titre": "Testez-vous"
+  "titre": "Passer un ordre"
  },
  {
-  "n": 77,
+  "n": 102,
   "section": "Passer à l'action",
-  "titre": "Glossaire (1/3)"
+  "titre": "Déjouer les arnaques"
  },
  {
-  "n": 78,
+  "n": 103,
   "section": "Passer à l'action",
-  "titre": "Glossaire (2/3)"
+  "titre": "Où s'informer"
  },
  {
-  "n": 79,
+  "n": 104,
   "section": "Passer à l'action",
-  "titre": "Glossaire (3/3)"
+  "titre": "Testez-vous (1/2)"
  },
  {
-  "n": 80,
+  "n": 105,
   "section": "Passer à l'action",
-  "titre": "Sources (1/4)"
+  "titre": "Testez-vous (2/2)"
  },
  {
-  "n": 81,
+  "n": 106,
   "section": "Passer à l'action",
-  "titre": "Sources (2/4)"
+  "titre": "Glossaire (1/4)"
  },
  {
-  "n": 82,
+  "n": 107,
   "section": "Passer à l'action",
-  "titre": "Sources (3/4)"
+  "titre": "Glossaire (2/4)"
  },
  {
-  "n": 83,
+  "n": 108,
   "section": "Passer à l'action",
-  "titre": "Sources (4/4)"
+  "titre": "Glossaire (3/4)"
  },
  {
-  "n": 84,
+  "n": 109,
+  "section": "Passer à l'action",
+  "titre": "Glossaire (4/4)"
+ },
+ {
+  "n": 110,
+  "section": "Passer à l'action",
+  "titre": "Sources (1/7)"
+ },
+ {
+  "n": 111,
+  "section": "Passer à l'action",
+  "titre": "Sources (2/7)"
+ },
+ {
+  "n": 112,
+  "section": "Passer à l'action",
+  "titre": "Sources (3/7)"
+ },
+ {
+  "n": 113,
+  "section": "Passer à l'action",
+  "titre": "Sources (4/7)"
+ },
+ {
+  "n": 114,
+  "section": "Passer à l'action",
+  "titre": "Sources (5/7)"
+ },
+ {
+  "n": 115,
+  "section": "Passer à l'action",
+  "titre": "Sources (6/7)"
+ },
+ {
+  "n": 116,
+  "section": "Passer à l'action",
+  "titre": "Sources (7/7)"
+ },
+ {
+  "n": 117,
   "section": "Passer à l'action",
   "titre": "Ce qu'il faut retenir"
  }

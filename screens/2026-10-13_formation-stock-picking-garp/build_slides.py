@@ -298,13 +298,15 @@ SECTIONS = [
     ("Objectifs et horizon", "01", "Pourquoi, pour quand, combien : les questions à régler avant d'acheter une seule action."),
     ("Les bases", "02", "Ce qu'on achète vraiment quand on achète une action."),
     ("Lire les comptes", "03", "Compte de résultat, bilan, flux de trésorerie : où se cache la qualité."),
-    ("Valoriser", "04", "Capitalisation, P/E, PEG : combien payer pour la croissance."),
-    ("La méthode GARP", "05", "La croissance à un prix raisonnable, en règles mesurables."),
-    ("Enveloppes, frais et impôts", "06", "PEA, compte-titres, assurance-vie : ce que l'État et les intermédiaires prélèvent."),
-    ("Les ETF", "07", "Le socle d'un portefeuille : comment fonctionne un fonds indiciel coté, et lesquels choisir."),
-    ("Intérêts composés", "08", "Le temps, le rendement et les frais : la calculatrice."),
-    ("Grands investisseurs", "09", "Lynch, Buffett, Munger, Graham, Fisher, Smith, Bogle, Marks."),
-    ("Passer à l'action", "10", "Routine, check-list, quiz, glossaire et sources."),
+    ("Le moat", "04", "Ce qui protège les profits d'une entreprise, et comment le vérifier dans ses comptes."),
+    ("Valoriser", "05", "Capitalisation, P/E, PEG, DCF et taux : combien payer pour la croissance."),
+    ("La méthode GARP", "06", "La croissance à un prix raisonnable, en règles mesurables."),
+    ("Enveloppes, frais et impôts", "07", "PEA, compte-titres, assurance-vie, PER : ce que l'État et les intermédiaires prélèvent, et comment déclarer."),
+    ("Les ETF", "08", "Le socle d'un portefeuille : comment fonctionne un fonds indiciel coté, quels indices, quels fonds."),
+    ("Bourse ou immobilier", "09", "Rendement, risque, frais, crédit et fiscalité : la comparaison honnête."),
+    ("Intérêts composés", "10", "Le temps, le rendement et les frais : la calculatrice."),
+    ("Grands investisseurs", "11", "Lynch, Buffett, Munger, Graham, Fisher, Smith, Bogle et Marks, puis les stratégies de Dalio, Soros, Druckenmiller, Simons, Greenblatt, Templeton et Sleep."),
+    ("Passer à l'action", "12", "Check-list, ordres, arnaques, sources d'information, quiz, glossaire et sources."),
 ]
 
 
@@ -360,22 +362,22 @@ def s_sommaire(ctx):
         idx = [i for i, s in enumerate(ctx["slides"]) if s["sec"] == sec]
         cards.append(f'<a class="card toc-card a" href="#s{idx[0] + 1}"><span class="tc-n">{num}</span><span class="tc-t">{e(sec)}</span>'
                      f'<span class="tc-s">{e(sous)}</span><span class="tc-r">diapos {idx[0] + 1} à {idx[-1] + 1}</span></a>')
-    return hd("Le parcours", "Dix chapitres pour tout maîtriser",
+    return hd("Le parcours", "Douze chapitres pour tout maîtriser",
               "Chaque notion est illustrée par une société réelle et des chiffres datés. Cliquez sur un chapitre ; les flèches du clavier font avancer.") + \
-        f'<div class="g c5 lc2 main">{"".join(cards)}</div>', ""
+        f'<div class="g c4 lc2 main toc12">{"".join(cards)}</div>', ""
 
 
 def s_objectifs(ctx):
     sp = float(FI["spiva_2025"]["valeur"])
     fx = D["frais"][2]
     items = ["Fixer un objectif, un horizon, et choisir entre investir d'un coup ou progressivement.",
-             "Lire un compte de résultat, un bilan et un tableau de flux de trésorerie.",
-             "Calculer un BPA, une marge, un FCF, un ROE et un ROIC.",
-             "Distinguer le BPA publié (GAAP) du BPA ajusté (non-GAAP).",
-             "Juger un P/E et calculer un PEG, puis une zone d'achat.",
-             "Classer une société dans les six catégories de Peter Lynch.",
-             "Appliquer une grille GARP et fixer des règles de vente.",
-             "Choisir entre PEA, compte-titres et assurance-vie, et le bon ETF.",
+             "Lire les trois documents comptables ; calculer un BPA, une marge, un FCF, un ROE et un ROIC.",
+             "Reconnaître un moat, le mesurer, et le voir s'éroder.",
+             "Juger un P/E, calculer un PEG et un DCF, comprendre l'effet des taux et du change.",
+             "Classer une société selon Lynch, appliquer une grille GARP, fixer des règles de vente.",
+             "Choisir entre PEA, compte-titres, assurance-vie et PER, et déclarer ses revenus.",
+             "Choisir un ETF, et comparer honnêtement la Bourse à l'immobilier.",
+             "Passer un ordre, déjouer les arnaques, apprendre des plus grands investisseurs.",
              "Mesurer l'effet du temps, des frais et des impôts."]
     stats = (f'<div class="card stat a" style="--c:var(--neg)"><span class="v">{cnt(sp, 0, NBSP + "%")}</span><span class="l">des fonds actifs de grandes valeurs américaines ont fait moins bien que le S&amp;P 500 en 2025. Battre l\'indice est difficile. {F("spiva_2025")}</span></div>'
              f'<div class="card stat a" style="--c:var(--gold)"><span class="v">{cnt(fv("pfu_total"), 1, NBSP + "%")}</span><span class="l">de flat tax sur les gains d\'un compte-titres en 2026, contre {fr(fv("ps_2026"), 1)}{NBSP}% dans un PEA de plus de {fr(fv("pea_duree"), 0)}{NBSP}ans. L\'enveloppe compte. {F("pfu_total", "ps_2026")}</span></div>'
@@ -884,7 +886,7 @@ def s_grille(ctx):
     body = hd("La méthode GARP · la grille", "La grille GARP en sept critères",
               "Sept critères chiffrés, les mêmes pour chaque société. Ils ne remplacent pas le jugement : ils forcent à regarder les mêmes choses à chaque fois.")
     body += f'''<div class="g c31 main">{table(["Critère", "Seuil (hyp.)", "Pourquoi", "Inspiration"], rows)}
-  <div class="g"><div class="card hl a"><span class="lab">Le huitième critère, qualitatif</span><p class="p">Un avantage concurrentiel que l'on sait expliquer en une phrase : un écosystème logiciel (NVIDIA), une avance de fabrication (TSMC), un coût d'acquisition client très bas (Nu), un réseau de communautés (Reddit), une plateforme unique de paiement (Adyen).</p></div>
+  <div class="g"><div class="card hl a"><span class="lab">Le huitième critère, qualitatif : le moat</span><p class="p">Un avantage concurrentiel durable (chapitre 04), que l'on sait expliquer en une phrase : un écosystème logiciel (NVIDIA), une avance de fabrication (TSMC), un coût d'acquisition client très bas (Nu), un réseau de communautés (Reddit), une plateforme unique de paiement (Adyen).</p></div>
   <p class="p m a">Seuils : {HYPS()}. Le PEG maximal de {fr(H['garp_peg_max'], 1)} est la règle d'éligibilité de la méthode.</p></div></div>'''
     return body, HYPS() + " ; " + METH()
 
@@ -1271,7 +1273,7 @@ def s_synthese(ctx):
 # ---------------------------------------------------------------- 8. passer à l'action
 def s_routine(ctx):
     check = ["Puis-je expliquer l'activité en deux phrases ?", "Dans quelle catégorie de Lynch ?", "Quelle croissance durable du BPA, plus prudente que le consensus ?",
-             "Que retire le BPA non-GAAP ?", "Quel FCF, quel capex ?", f"ROIC (ou ROE) au-dessus de {fr(H['garp_rentabilite_min'], 0)}{NBSP}% ?",
+             "Que retire le BPA non-GAAP ?", "Quel FCF, quel capex ?", f"ROIC (ou ROE) au-dessus de {fr(H['garp_rentabilite_min'], 0)}{NBSP}% ? Quel moat le protège ?",
              "Trésorerie nette ? Dilution ?", "PEG de long terme et zone d'achat ?", "Quelle enveloppe ?", "Quelle règle de vente, écrite avant d'acheter ?"]
     ol = "".join(f'<li class="a"><span class="num">{i + 1:02d}</span>{x}</li>' for i, x in enumerate(check))
     body = hd("Passer à l'action · la routine", "La check-list et la routine",
@@ -1285,7 +1287,7 @@ def s_routine(ctx):
     return body, METH() + " ; " + HYPS()
 
 
-def s_quiz(ctx):
+def questions():
     n, ts = R["NVDA"], R["TSM"]
     peg = V["NVDA"]["pe_ntm"] / (V["NVDA"]["croissance_retenue"] * 100)
     fx2 = D["frais"][2]
@@ -1305,14 +1307,34 @@ def s_quiz(ctx):
           ("Un ETF qui suit le Nasdaq 100 peut-il entrer dans un PEA ?", ["Jamais", "Oui, en synthétique", "S'il est américain"], 1, "Le swap échange la performance d'un panier européen contre celle du Nasdaq 100."),
           ("Selon Vanguard (2023), investir en une fois a battu un DCA de trois mois dans quelle part des cas ?",
            [pc(1 - float(D["horizon"]["dca_vanguard_2023"]["valeur"]) / 100, 0), "50 %", pc(float(D["horizon"]["dca_vanguard_2023"]["valeur"]) / 100, 0)], 2, "Le marché monte plus souvent qu'il ne baisse : l'argent investi tôt travaille plus longtemps.")]
-    cards = []
-    for i, (q, opts, ok, why) in enumerate(qs):
-        bt = "".join(f'<button type="button" class="opt{" good" if j == ok else ""}" data-ok="{1 if j == ok else 0}">{o}</button>' for j, o in enumerate(opts))
-        cards.append(f'<div class="card qz-q a"><p class="p"><span class="num gold">{i + 1:02d}</span> {q}</p><div class="opts">{bt}</div><p class="why">{why}</p></div>')
-    body = hd("Passer à l'action · testez-vous", "Testez-vous : dix questions",
-              'Cliquez sur une réponse. <span class="score" id="qz-score"></span>')
-    body += f'<div class="g c5 lc1 main qz">{"".join(cards)}</div>'
-    return body, "Données des diapositives précédentes"
+    d, c, L, p = D["dcf"], D["change"], D["immo"], D["per"]
+    qs += [("Changer de fournisseur obligerait vos ingénieurs à réécrire tout leur code. Quel moat protège ce fournisseur ?",
+            ["un effet de réseau", "des coûts de changement", "une taille efficiente"], 1, "C'est le moat de NVIDIA avec CUDA."),
+           ("Dans l'exemple de DCF, quelle part de la valeur vient d'après la cinquième année ?",
+            [pc(1 - d["bas"]["part_vt"], 0), "50 %", pc(d["bas"]["part_vt"], 0)], 2, "La valeur terminale pèse lourd : d'où la prudence sur la croissance de long terme."),
+           (f"L'euro gagne {pc(c['hausse_euro'], 0)} face au dollar. Une action américaine stable en dollars fait, en euros…",
+            [pc(c["perte_euro"], 1, True), "0 %", pc(c["hausse_euro"], 0, True)], 0, "1 ÷ (1 + hausse de l'euro) − 1."),
+           (f"Logement de {eur(L['prix'])}, apport de {eur(L['apport'])}. Le prix baisse de {pc(L['variation'], 0)} : l'apport perd…",
+            [pc(L["variation"], 0), pc(L["effet_apport"], 0), "100 %"], 1, f"{eur(L['prix'] * L['variation'])} de baisse ÷ {eur(L['apport'])} d'apport : c'est l'effet de levier."),
+           ("Pour acheter au prix décidé à l'avance, quel ordre passer ?", ["au marché", "à cours limité", "à seuil de déclenchement"], 1, "L'ordre à cours limité fixe un prix maximal à l'achat."),
+           (f"{eur(p['versement'])} versés sur un PER, tranche marginale de {fr(p['tmi'] * 100, 0)} % : combien d'impôt en moins cette année ?",
+            [eur(p["economie"]), eur(p["versement"]), eur(0)], 0, "Versement × tranche marginale ; l'impôt est reporté à la sortie.")]
+    return qs
+
+
+def s_quiz(part, nparts):
+    def fn(ctx):
+        qs = questions()
+        per = math.ceil(len(qs) / nparts)
+        cards = []
+        for i, (q, opts, ok, why) in list(enumerate(qs))[(part - 1) * per:part * per]:
+            bt = "".join(f'<button type="button" class="opt{" good" if j == ok else ""}" data-ok="{1 if j == ok else 0}">{o}</button>' for j, o in enumerate(opts))
+            cards.append(f'<div class="card qz-q a"><p class="p"><span class="num gold">{i + 1:02d}</span> {q}</p><div class="opts">{bt}</div><p class="why">{why}</p></div>')
+        body = hd("Passer à l'action · testez-vous", f"Testez-vous ({part}/{nparts}) : {len(qs)} questions en tout",
+                  'Cliquez sur une réponse. <span class="score qz-score"></span>')
+        body += f'<div class="g c4 lc1 main qz">{"".join(cards)}</div>'
+        return body, "Données des diapositives précédentes"
+    return fn
 
 
 GLOSS = [("Action", "Part du capital d'une société : droit aux bénéfices, aux dividendes et au vote."),
@@ -1367,7 +1389,28 @@ GLOSS = [("Action", "Part du capital d'une société : droit aux bénéfices, au
          ("Unités de compte", "Supports d'une assurance-vie investis en fonds, ETF ou actions, sans garantie du capital."),
          ("Valeur d'entreprise", "Capitalisation + dette − trésorerie."),
          ("Valeur liquidative", "Valeur des actifs d'un fonds par part, calculée chaque jour."),
-         ("W-8BEN", "Formulaire américain qui ramène la retenue sur dividendes de 30 % à 15 % pour un résident français.")]
+         ("W-8BEN", "Formulaire américain qui ramène la retenue sur dividendes de 30 % à 15 % pour un résident français."),
+         ("Moat", "Avantage concurrentiel durable qui protège les profits d'une entreprise, comme des douves protègent un château."),
+         ("Coûts de changement", "Ce qu'il en coûterait à un client de quitter son fournisseur : temps, argent, risque."),
+         ("Effet de réseau", "Un service devient plus utile à chaque nouvel utilisateur."),
+         ("DCF", "Discounted cash flows : valeur = somme des flux de trésorerie futurs, actualisés."),
+         ("Taux d'actualisation", "Rendement exigé qui ramène un euro futur à sa valeur d'aujourd'hui ; souvent le coût moyen du capital (CMPC)."),
+         ("Valeur terminale", "Dans un DCF, la valeur de tous les flux au-delà de l'horizon de prévision."),
+         ("PER (plan d'épargne retraite)", "Épargne bloquée jusqu'à la retraite, versements déductibles du revenu. Homonyme du PER (P/E)."),
+         ("PASS", "Plafond annuel de la Sécurité sociale : sert à calculer le plafond du PER."),
+         ("IFU", "Imprimé fiscal unique : récapitulatif annuel des revenus financiers envoyé par la banque."),
+         ("Ordre à cours limité", "Ordre exécuté seulement à un prix égal ou meilleur que la limite fixée."),
+         ("Ordre au marché", "Ordre exécuté immédiatement, au prix disponible, quel qu'il soit."),
+         ("Indice", "Panier d'actions défini par une règle (taille, pays, secteur) : CAC 40, S&P 500, MSCI World."),
+         ("Risque de change", "Variation de la valeur en euros d'un actif coté dans une autre devise."),
+         ("Rendement locatif brut", "Loyers annuels ÷ prix du logement, avant charges et impôts."),
+         ("Frais de notaire", f"Frais d'achat d'un logement, surtout des droits de mutation : environ {fr(float(D['immo_data']['frais_notaire']['valeur']), 1)} % dans l'ancien."),
+         ("Effet de levier", "Acheter avec de l'argent emprunté : gains et pertes sont multipliés sur l'apport."),
+         ("SCPI", "Société civile de placement immobilier : immobilier locatif mutualisé, parts non cotées."),
+         ("IFI", f"Impôt sur la fortune immobilière, au-delà de {fr(float(D['immo_data']['ifi_seuil']['valeur']) / 1e6, 1)} M€ de patrimoine immobilier net."),
+         ("Micro-foncier", f"Régime simplifié des petits revenus de location nue : abattement forfaitaire de {fr(float(D['immo_data']['micro_foncier']['valeur']), 0)} %."),
+         ("Réflexivité", "Idée de Soros : les cours influencent les fondamentaux, qui influencent les cours."),
+         ("Formule magique", "Méthode de Greenblatt : classer les actions par rendement du capital et par rendement bénéficiaire.")]
 
 
 def cle_alpha(x):
@@ -1386,7 +1429,7 @@ def s_glossaire(part, nparts=3):
         rng = f"{items[0][0][0]} à {items[-1][0][0]}"
         body = hd("Passer à l'action · le glossaire", f"Glossaire ({part}/{nparts}) : de {rng}", "")
         body += f'<dl class="gloss main">{dl}</dl>'
-        return body, "Taux du glossaire : " + F("pfu_total", "ps_2026", "ps_av", "ttf", "us_retenue")
+        return body, "Taux du glossaire : " + F("pfu_total", "ps_2026", "ps_av", "ttf", "us_retenue") + " ; immobilier " + IM("frais_notaire", "ifi_seuil", "micro_foncier")
     return fn
 
 
@@ -1409,11 +1452,14 @@ def s_fin(ctx):
            "Le PEG mesure le prix de la croissance ; méfiez-vous des croissances de pic.",
            "Une grille écrite, une zone d'achat, des règles de vente décidées à l'avance.",
            "PEA d'abord quand c'est possible ; les impôts et les frais se composent aussi.",
-           "Le temps est le premier moteur. Commencez tôt, restez investi, comparez-vous à l'indice."]
+           "Le temps est le premier moteur. Commencez tôt, restez investi, comparez-vous à l'indice.",
+           "Un moat se prouve par une rentabilité élevée qui dure ; il ne dispense pas de payer un prix raisonnable.",
+           "L'immobilier a le levier ; la Bourse a la liquidité, la diversification et des frais faibles."]
     corr = [f"BPA 2028 de NVIDIA : {usd(V['NVDA']['bpa_f2'])} (comparateur Zacks) contre {usd(float(D['nvda_zacks']['bpa_fy2028_fiche']))} (fiche Zacks) le même jour. La formation retient le premier, comme le modèle.",
             f"Plus haut de 52 semaines de NVIDIA : {usd(V['NVDA']['plus_haut_52s'])} (comparateur Zacks) ; la fiche affiche un autre chiffre. La diapositive sur le risque utilise le comparateur pour les cinq valeurs.",
             "La formule « machine à voter, machine à peser » est attribuée à Buffett, d'après Graham ; la « huitième merveille » n'est pas d'Einstein.",
-            "Retenue à la source de Taïwan sur les dividendes de TSMC : sources contradictoires, à vérifier."]
+            "Retenue à la source de Taïwan sur les dividendes de TSMC : sources contradictoires, à vérifier.",
+            "IEIF : un site attribue 4,45 % par an au logement parisien sur 40 ans ; chiffre non retrouvé dans l'étude, écarté au profit de 10,1 % (deux sources)."]
     body = hd("Fin", "Ce qu'il faut retenir", "")
     body += f'''<div class="g c2 main"><div>{ul(pts, "ck")}</div>
   <div class="g"><div class="card a"><span class="lab">Données signalées et corrigées</span>{ul(corr, "sm")}</div>
@@ -1680,6 +1726,500 @@ def s_etf_choisir(ctx):
     return body, "Sources : " + ERS("priips") + " ; frais américains " + S.refs([("Zacks Investment Research : fiches QQQ, SPY, VOO (12/10/2026)", "https://www.zacks.com/stock/quote/QQQ")])
 
 
+# ---------------------------------------------------------------- la « bible » : moat, DCF, taux, change, PER, ordres, immobilier, super-investisseurs
+def SRCS(tab, *ids):
+    paires = []
+    for i in ids:
+        r = tab[i]
+        paires += [(r["source_titre"], r["source_url"]), (r["source2_titre"], r["source2_url"])]
+    return S.refs([x for x in paires if x[0]])
+
+
+SUPD = {r["id"]: r for r in D.get("super", [])}
+
+
+def MO(*ids):
+    return SRCS(D["moat"], *ids)
+
+
+def BI(*ids):
+    return SRCS(D["bible"], *ids)
+
+
+def IM(*ids):
+    return SRCS(D["immo_data"], *ids)
+
+
+def SU(*ids):
+    return SRCS(SUPD, *ids)
+
+
+def mo(i):
+    return D["moat"][i]
+
+
+def bi(i):
+    return D["bible"][i]
+
+
+def im(i):
+    return D["immo_data"][i]
+
+
+def imv(i):
+    return float(D["immo_data"][i]["valeur"])
+
+
+def dot(t):
+    return f'<span class="dot" style="--c:{COUL[t]}"></span>{NOM[t]}'
+
+
+# ---- le moat
+def s_moat_def(ctx):
+    d, l, et = mo("moat_definition"), mo("moat_large"), mo("moat_etroit")
+    body = hd("Le moat · la définition", "Le moat : les douves autour du château",
+              e(d["fait"]) + " En anglais, moat signifie « douves » : l'image est de Warren Buffett.")
+    body += f'''<div class="g c2 main">
+  {quote("buffett_moat", "", avec_lecon=True)}
+  <div class="g">
+    <div class="formula a">Moat = ROIC supérieur au coût du capital, longtemps<br><small>coût du capital : le rendement minimal qu'exigent actionnaires et prêteurs</small></div>
+    <div class="g c2 lc2">{kv("Moat large", "≥ " + fr(float(l["valeur"]), 0) + NBSP + "ans", "rendements excédentaires presque certains à 10 ans, probables à 20 ans", "var(--gold)")}
+    {kv("Moat étroit", "≥ " + fr(float(et["valeur"]), 0) + NBSP + "ans", "rendements excédentaires probables pendant au moins 10 ans", "var(--ndx)")}</div>
+    <p class="p m a">Sans moat, la concurrence ramène les profits vers la moyenne : des marges élevées attirent des rivaux, qui cassent les prix. Avec un moat, l'entreprise réinvestit ses bénéfices à un rendement élevé, année après année. Ce sont les intérêts composés, à l'intérieur de l'entreprise.</p>
+  </div></div>'''
+    return body, "Définition et grille de Morningstar : " + MO("moat_definition", "moat_large", "moat_etroit") + " ; citation " + I("buffett_moat")
+
+
+def s_moat_sources(ctx):
+    src = [("Actifs immatériels", "Brevets, marques, licences, données uniques : ce qu'un concurrent ne peut pas copier.",
+            f"Reddit : des années de conversations humaines, licenciées à Google pour environ {fr(float(mo('reddit_google')['valeur']), 0)}{NBSP}M$ par an.", COUL["RDDT"]),
+           ("Coûts de changement", "Quitter le fournisseur coûterait plus cher que ce qu'on y gagnerait.",
+            "NVIDIA : migrer hors de CUDA impose de réécrire le code, de le revalider et de former les équipes.", COUL["NVDA"]),
+           ("Effets de réseau", "Chaque nouvel utilisateur rend le service plus utile aux autres.",
+            "Reddit : plus de membres apportent plus de contenu, qui attire plus de membres.", COUL["RDDT"]),
+           ("Avantage de coûts", "Produire moins cher que tous les autres, grâce à l'échelle ou à un procédé.",
+            f"TSMC : {fr(float(mo('tsm_part_fonderie')['valeur']), 1)}{NBSP}% de la fonderie mondiale. Nu : environ {fr(float(mo('nu_cout_service')['valeur']), 0)}{NBSP}$ par mois pour servir un client qui en rapporte {fr(float(mo('nu_arpac')['valeur']), 0)}.", COUL["TSM"]),
+           ("Taille efficiente", "Un marché trop petit pour deux : un second entrant n'y gagnerait pas d'argent.",
+            "La source la plus rare ; aucun de nos cinq exemples n'en relève.", "var(--ndx)")]
+    cards = "".join(f'<div class="card st-c a" style="--c:{c}"><span class="tc-n">{i + 1}</span><span class="tc-t">{t}</span><p class="p sm">{d}</p>'
+                    f'<p class="p sm m"><b class="col">Exemple.</b> {x}</p></div>' for i, (t, d, x, c) in enumerate(src))
+    body = hd("Le moat · les sources", "Cinq sources de moat",
+              "Un moat a toujours une cause précise. Si on ne sait pas la nommer, c'est qu'il n'y en a probablement pas.")
+    body += f'<div class="g c5 lc1 main">{cards}</div>'
+    body += f'<p class="p m a">{e(mo("moat_cinq_sources")["precision"])}. Une même société peut cumuler plusieurs sources : c\'est le signe d\'un moat large.</p>'
+    return body, "Sources de moat : " + MO("moat_cinq_sources") + " ; exemples : " + MO("reddit_google", "nvda_cuda", "tsm_part_fonderie", "nu_arpac", "nu_cout_service")
+
+
+def s_moat_ex(ctx):
+    n, t, a, nu = R["NVDA"], R["TSM"], D["adyen"], D["nu"]
+    rows = [[dot("NVDA"), "Coûts de changement : l'écosystème CUDA", f"marge brute {pc(n['marge_brute'], 1)}, ROIC {pc(n['roic'], 0)}", e(mo("nvda_cuda")["precision"])],
+            [dot("TSM"), "Avantage de coûts et d'échelle", f"{fr(float(mo('tsm_part_fonderie')['valeur']), 1)}{NBSP}% de la fonderie mondiale ; {md(t['capex'])} de capex en {t['exercice']}", "le risque vient moins des concurrents que de la géopolitique et du cycle des semi-conducteurs"],
+            [dot("NU"), "Avantage de coûts", f"environ {fr(float(mo('nu_arpac')['valeur']), 0)}{NBSP}$ de revenu mensuel par client pour environ {fr(float(mo('nu_cout_service')['valeur']), 0)}{NBSP}$ de coût ; ratio d'efficacité {fr(nu['ratio_efficacite'], 1)}{NBSP}%", "un moat de coûts ne protège pas des impayés : le coût du risque reste à surveiller"],
+            [dot("RDDT"), "Effets de réseau et données uniques", f"licence de données à Google : environ {fr(float(mo('reddit_google')['valeur']), 0)}{NBSP}M$ par an", "un moat jeune, encore à prouver dans la durée"],
+            [dot("ADYEY"), "Plateforme unique, développée en interne", f"marge d'EBITDA {pc(a['marge_ebitda'], 0)} au S1 2026", e(mo("adyen_plateforme")["precision"])]]
+    body = hd("Le moat · nos exemples", "Le moat de nos cinq exemples, preuves à l'appui",
+              "Un moat se prouve par les chiffres : marges, rentabilité, part de marché. Et chacun a sa faille, à surveiller chaque trimestre.")
+    body += table(["Société", "Source du moat", "Preuve chiffrée", "La faille"], rows, cls="w")
+    return body, "Moat : " + MO("nvda_cuda", "tsm_part_fonderie", "nu_arpac", "nu_cout_service", "reddit_google", "adyen_plateforme") + " ; comptes " + Z("NVDA", "TSM") + " ; Nu " + SOC("nu") + " ; Adyen " + SOC("adyen")
+
+
+def s_moat_mesure(ctx):
+    rows = []
+    for t in ["NVDA", "TSM", "RDDT", "NU"]:
+        r = R[t]
+        if t == "NU":
+            rows.append([dot(t), "banque", pc(r["marge_operationnelle"], 1), pc(r["roe"], 0) + " <small>(ROE)</small>"])
+            continue
+        rent = pc(r["roic"], 0) if r["roic_significatif"] else pc(r["roe"], 0) + " <small>(ROE)</small>"
+        rows.append([dot(t), pc(r["marge_brute"], 1), pc(r["marge_operationnelle"], 1), rent])
+    tests = [f"<b>La rentabilité</b> : un ROIC au-dessus de {fr(H['garp_rentabilite_min'], 0)}{NBSP}% (seuil de la grille), cinq à dix ans de suite, pas une seule année.",
+             "<b>Les marges</b> : élevées et stables. Le client accepte de payer plus cher.",
+             "<b>La part de marché</b> : stable ou en hausse, malgré la concurrence.",
+             "<b>Le pouvoir de fixer les prix</b> : augmenter ses tarifs sans perdre de clients.",
+             "<b>Le test de la phrase</b> : expliquer le moat en une phrase, et dire ce qui pourrait le détruire."]
+    body = hd("Le moat · le mesurer", "Mesurer un moat : cinq tests",
+              "Le moat est qualitatif, mais il laisse des traces dans les comptes. Une rentabilité très élevée qui dure est la meilleure preuve.")
+    body += f'''<div class="g c2 main"><div class="card a">{ul(tests)}</div>
+  <div class="g">{table(["Société", "Marge brute", "Marge opérationnelle", "ROIC"], rows, num=(1, 2, 3))}
+  <p class="p m a">Dernier exercice publié. Le ROIC de Reddit n'est pas significatif (trésorerie presque égale aux capitaux propres) : on retient le ROE. Un seul exercice ne prouve rien : regardez la tendance sur cinq ans.</p></div></div>'''
+    return body, "Comptes annuels : " + Z("NVDA", "TSM", "RDDT", "NU") + " ; " + HYPS()
+
+
+def s_moat_erosion(ctx):
+    h = [x for x in D["hist"]["INTC"] if x["nature"] == "publié"]
+    rows = [[x["exercice"], md(x["ca"]), pc(x["taux_mb"], 1), usd(x["bpa"])] for x in h]
+    a, z = h[0], h[-1]
+    body = hd("Le moat · l'érosion", "Quand le moat s'effondre : Intel",
+              f"De {a['exercice']} à {z['exercice']}, le chiffre d'affaires d'Intel passe de {md(a['ca'])} à {md(z['ca'])}, sa marge brute de {pc(a['taux_mb'], 0)} à {pc(z['taux_mb'], 0)}. Un moat n'est jamais acquis.")
+    body += f'''<div class="g c2 main">{table(["Exercice", "Chiffre d'affaires", "Marge brute", "BPA GAAP"], rows, num=(1, 2, 3))}
+  <div class="g">
+    <div class="card stat a" style="--c:var(--neg)"><span class="v">{cnt(float(mo("intel_perte_2024")["valeur"]), 1, NBSP + "Md$")}</span><span class="l">{e(mo("intel_perte_2024")["fait"])} ({e(mo("intel_perte_2024")["precision"])})</span></div>
+    {ul(["<b>Les signaux d'alerte</b> : une marge brute qui baisse plusieurs années de suite, une part de marché qui recule, un capex qui explose sans croissance.",
+         "<b>La règle</b> : la grille se recalcule chaque année. Si la marge et le ROIC ne tiennent plus, la thèse est cassée : on vend."])}
+  </div></div>'''
+    return body, "Comptes d'Intel : " + Z("INTC") + " ; perte 2024 " + MO("intel_perte_2024")
+
+
+def s_moat_faux(ctx):
+    faux = [("Une marque connue", "Elle ne protège que si elle permet de vendre plus cher ou de garder ses clients."),
+            ("Un bon produit", "Un produit se copie ; ce qui compte, c'est ce qui empêche la copie."),
+            ("Une forte part de marché", "Elle fond vite si les clients peuvent partir sans frais."),
+            ("Une croissance rapide", "Elle attire les concurrents, si rien ne les arrête."),
+            ("Un dirigeant brillant", "Il partira un jour ; le moat doit tenir sans lui.")]
+    li = "".join(f'<div class="ln-r a"><span><b>{a}</b></span><span class="m sm">{b}</span></div>' for a, b in faux)
+    body = hd("Le moat · les pièges", "Les faux moats, et le prix du vrai", e(mo("moat_faux")["fait"]))
+    body += f'''<div class="g c2 main"><div class="card a"><span class="lab">Cinq faux moats</span><div class="lines fx">{li}</div></div>
+  <div class="g">{quote("buffett_wonderful", "sm")}
+    <div class="card hl a"><span class="lab">Un moat ne dispense pas du prix</span><p class="p">Le moat justifie un P/E plus élevé que la moyenne, pas n'importe quel P/E. Une entreprise exceptionnelle achetée trop cher peut rester un mauvais placement pendant dix ans. Le PEG reste le juge.</p></div></div></div>'''
+    return body, "Faux moats : " + MO("moat_faux") + " ; citation " + I("buffett_wonderful")
+
+
+# ---- valoriser : DCF et taux
+def s_dcf(ctx):
+    d = D["dcf"]
+    b, h = d["bas"], d["haut"]
+    rows = [[f"Année {i + 1}", fr(f, 1), fr(b["va"][i], 1), fr(h["va"][i], 1)] for i, f in enumerate(b["flux"])]
+    rows.append(["Valeur terminale", f'{fr(b["vt"], 0)} <small>/</small> {fr(h["vt"], 0)}', fr(b["va_vt"], 1), fr(h["va_vt"], 1)])
+    rows.append(["<b>Valeur de l'entreprise</b>", "", f'<b class="gold">{fr(b["valeur"], 0)}</b>', f'<b class="neg">{fr(h["valeur"], 0)}</b>'])
+    body = hd("Valoriser · le DCF", "Le DCF : la valeur, ce sont les flux de demain",
+              e(bi("dcf_definition")["fait"]) + f" Exemple (hyp.) : {fr(H['dcf_fcf'], 0)}{NBSP}M€ de FCF, +{fr(H['dcf_croissance'], 0)}{NBSP}% par an pendant {fr(H['dcf_annees'], 0)} ans, puis +{fr(H['dcf_croissance_long'], 0)}{NBSP}% pour toujours.")
+    body += f'''<div class="g c2 main">
+  <div class="g">{table(["", "Flux (M€)", f"Actualisé à {fr(b['taux'] * 100, 0)}{NBSP}%", f"Actualisé à {fr(h['taux'] * 100, 0)}{NBSP}%"], rows, num=(1, 2, 3))}
+    <div class="formula a">Valeur = Σ FCF<sub>t</sub> ÷ (1 + r)<sup>t</sup> + valeur terminale ÷ (1 + r)<sup>5</sup><br><small>valeur terminale = FCF<sub>5</sub> × (1 + g) ÷ (r − g) ; r : taux d'actualisation, g : croissance perpétuelle</small></div></div>
+  <div class="g">
+    <div class="g c2 lc2">{kv("Part de la valeur terminale", pc(b["part_vt"], 0), "la valeur vient surtout d'après l'année 5", "var(--gold)")}
+    {kv("Taux + " + fr((h["taux"] - b["taux"]) * 100, 0) + " points", pc(d["variation"], 1, True), "même entreprise, mêmes flux", "var(--neg)")}
+    {kv("Valeur ÷ FCF", fr(b["multiple"], 1) + NBSP + "×", f"à {fr(b['taux'] * 100, 0)}{NBSP}%", "var(--gold)")}
+    {kv("Valeur ÷ FCF", fr(h["multiple"], 1) + NBSP + "×", f"à {fr(h['taux'] * 100, 0)}{NBSP}%", "var(--neg)")}</div>
+    {ul(["<b>Le DCF ne donne pas « le » prix juste</b> : il montre ce qu'il faut croire. Un point de croissance ou de taux change tout.",
+         "<b>Utilisez-le à l'envers</b> : quelle croissance le cours actuel suppose-t-il ? C'est la question de la diapositive « Ce que le prix suppose »."], "sm")}
+  </div></div>'''
+    return body, "Définition : " + BI("dcf_definition") + " ; exemple : " + HYPS()
+
+
+def s_taux(ctx):
+    d = D["dcf"]
+    body = hd("Valoriser · les taux", "Les taux d'intérêt, la gravité des marchés",
+              "Quand les taux montent, un euro de bénéfice futur vaut moins aujourd'hui. Les sociétés de croissance, dont les bénéfices sont lointains, en souffrent le plus. L'immobilier aussi.")
+    body += f'''<div class="g c2 main">
+  {quote("buffett_gravite", "", avec_lecon=True)}
+  <div class="g">
+    <div class="g c3 lc1">{kv("Notre DCF", pc(d["variation"], 1, True), f"+{fr((d['haut']['taux'] - d['bas']['taux']) * 100, 0)} points de taux d'actualisation", "var(--neg)")}
+    {kv("S&amp;P 500 en 2022", fr(-abs(HZv("krach_2022")), 1) + NBSP + "%", e(HZ("krach_2022")["fait"].split(" : ")[0]) + ", " + e(HZ("krach_2022")["periode"]), "var(--neg)")}
+    {kv("Logements anciens", fr(imv("france_baisse_2024"), 1) + NBSP + "%", "sur un an au T1 2024, après la remontée des taux de crédit", "var(--neg)")}</div>
+    {ul(["<b>Les banques centrales</b> (BCE, Fed) fixent le prix de l'argent à court terme ; les taux à 10 ans des États reflètent les anticipations d'inflation et de croissance.",
+         "<b>Une action de croissance ressemble à une obligation très longue</b> : sa valeur dépend de flux lointains, donc des taux.",
+         "<b>Ne pariez pas sur les taux</b> : retenez qu'un P/E élevé suppose des taux bas ou une croissance forte, et vérifiez lequel des deux vous achetez."], "sm")}
+  </div></div>'''
+    return body, "Citation " + I("buffett_gravite") + " ; 2022 " + HZS("krach_2022") + " ; immobilier " + IM("france_baisse_2024") + " ; DCF : " + HYPS()
+
+
+# ---- les bases : le change
+def s_change(ctx):
+    c = D["change"]
+    hz = c["hausse_euro"]
+    rows = []
+    for p in (0.0, 0.10, 0.20):
+        eu = (1 + p) / (1 + hz) - 1
+        rows.append([pc(p, 0, True) if p else "0 %", pc(eu, 1, True)])
+    body = hd("Les bases · le change", "Le risque de change : quand le dollar baisse, vos actions américaines aussi",
+              f"Une action américaine cote en dollars. En euros, sa performance combine celle de l'action et celle du dollar. {e(bi('eurusd_2025')['fait'])}")
+    body += f'''<div class="g c2 main">
+  <div class="g">
+    <div class="formula a">Performance en euros = (1 + performance en dollars) ÷ (1 + hausse de l'euro) − 1</div>
+    <div class="card a"><span class="lab">Si l'euro gagne {pc(hz, 0)} face au dollar (hyp., 2025)</span>
+      {table(["Performance en dollars", "Performance en euros"], rows, num=(0, 1))}
+      <p class="p m">Une action stable en dollars perd <b class="neg">{pc(-c["perte_euro"], 1)}</b> pour un investisseur en euros.</p></div>
+  </div>
+  {ul(["<b>Le risque joue dans les deux sens</b> : un euro qui baisse dope vos actions américaines.",
+       "<b>Nos exemples</b> : NVIDIA, TSMC (ADR), Nu et Reddit cotent en dollars ; Adyen cote en euros à Amsterdam, son ADR en dollars.",
+       "<b>Les ETF « couverts »</b> (hedged) neutralisent le change, contre des frais plus élevés.",
+       f"<b>Le coût de l'opération</b> : environ {fr(fv('change_frais'), 2)}{NBSP}% de frais de change par ordre chez les courtiers en ligne.",
+       "<b>Sur dix ans</b>, la croissance des bénéfices pèse plus que le change. Sur un an, le change peut effacer une bonne année."])}
+</div>'''
+    return body, "EUR/USD 2025 : " + BI("eurusd_2025") + " ; frais de change " + F("change_frais") + " ; exemple : " + HYPS()
+
+
+# ---- ETF : les grands indices
+def s_indices(ctx):
+    us = D["etf_us"]
+    rows = [["CAC 40", "France : les 40 plus grandes et plus échangées des sociétés cotées à Paris", fr(float(bi("idx_cac40")["valeur"]), 0), fr(float(bi("idx_cac40_top10")["valeur"]), 0) + NBSP + "%"],
+            ["Nasdaq 100", "États-Unis : les 100 plus grandes sociétés non financières du Nasdaq", fr(float(bi("idx_nasdaq100")["valeur"]), 0), fr(float(us["QQQ"]["poids_10_premieres_pct"]), 1) + NBSP + "% <small>(QQQ)</small>"],
+            ["S&amp;P 500", "États-Unis : environ 500 grandes sociétés", fr(float(us["SPY"]["nombre_lignes"]), 0) + " <small>lignes (SPY)</small>", fr(float(us["SPY"]["poids_10_premieres_pct"]), 1) + NBSP + "% <small>(SPY)</small>"],
+            ["STOXX Europe 600", "Europe : grandes, moyennes et petites sociétés de 17 pays", fr(float(bi("idx_stoxx600")["valeur"]), 0), fr(float(bi("idx_stoxx600_top10")["valeur"]), 0) + NBSP + "%"],
+            ["MSCI World", "Monde développé : 23 pays, grandes et moyennes sociétés", fr(float(bi("idx_msci_world")["valeur"]), 0), "n.d."]]
+    body = hd("Les ETF · les indices", "Les grands indices : ce que vous achetez vraiment",
+              "Un indice est une règle de sélection. Le nombre de sociétés ne dit pas tout : plus les dix premières pèsent lourd, plus l'indice ressemble à un portefeuille concentré.")
+    body += table(["Indice", "Contenu", "Sociétés", "Poids des 10 premières"], rows, num=(2, 3), cls="w")
+    body += f'<p class="p m a">Le CAC 40 n\'est pas « la France » : ses dix premières valeurs en font l\'essentiel. Le MSCI World est le plus diversifié en nombre de sociétés. {e(bi("idx_nasdaq100")["precision"])}.</p>'
+    return body, "Indices : " + BI("idx_cac40", "idx_cac40_top10", "idx_stoxx600", "idx_msci_world", "idx_nasdaq100") + " ; QQQ et SPY " + S.refs([("Zacks Investment Research : fiches QQQ, SPY, VOO (12/10/2026)", "https://www.zacks.com/stock/quote/QQQ")])
+
+
+# ---- enveloppes : PER et déclaration
+def s_per(ctx):
+    p = D["per"]
+    body = hd("Enveloppes · le PER", "Le PER : déduire aujourd'hui, payer à la retraite",
+              "Le plan d'épargne retraite (PER, à ne pas confondre avec le P/E, qu'on appelle aussi PER) permet de déduire ses versements de son revenu imposable. En échange, l'argent reste bloqué jusqu'à la retraite.")
+    body += f'''<div class="g c2 main">
+  <div class="g">
+    <div class="g c3 lc1">{kv("Plafond 2026", eur(p["plafond_max"]), f"10 % de 8 PASS (PASS : {eur(p['pass'])})", "var(--gold)")}
+    {kv("Exemple (hyp.)", eur(p["economie"]), f"d'impôt en moins pour {eur(p['versement'])} versés à {fr(p['tmi'] * 100, 0)}{NBSP}% de tranche marginale", "var(--pos)")}
+    {kv("Déblocage anticipé", fr(float(bi("per_deblocage")["valeur"]), 0) + NBSP + "cas", "dont l'achat de la résidence principale", "var(--ndx)")}</div>
+    <div class="card a"><span class="lab">Les règles</span>{ul([e(bi("per_plafond")["fait"]), e(bi("per_sortie")["fait"])], "sm")}</div>
+  </div>
+  <div class="g">
+    <div class="card hl a"><span class="lab">Pour qui ?</span><p class="p">{e(bi("per_sortie")["precision"])[0].upper() + e(bi("per_sortie")["precision"])[1:]}. Pour une tranche marginale de 0 ou 11 %, l'avantage est faible : le PEA d'abord.</p></div>
+    {ul(["<b>C'est un report d'impôt</b>, pas un cadeau : la déduction d'aujourd'hui sera imposée à la sortie.",
+         "<b>Le PER peut contenir des ETF et des actions</b>, comme une assurance-vie : la méthode de cette formation s'y applique.",
+         "<b>Le plafond exact</b> figure sur votre avis d'imposition ; les plafonds non utilisés des années précédentes se reportent."], "sm")}
+  </div></div>'''
+    return body, "PER : " + BI("pass_2026", "per_plafond", "per_deblocage", "per_sortie") + " ; exemple : " + HYPS()
+
+
+def s_declarer(ctx):
+    rows = [["PEA", "rien, tant qu'aucun retrait n'est fait", f"après {fr(fv('pea_duree'), 0)} ans, seuls les prélèvements sociaux, prélevés par la banque"],
+            ["Assurance-vie", "rien, tant qu'aucun rachat n'est fait", "l'assureur prélève et déclare"],
+            ["Compte-titres en France", "IFU envoyé par la banque ; montants préremplis", "vérifier les cases reportées sur la déclaration 2042"],
+            ["Compte-titres à l'étranger", "déclarations 2042, 2047 (revenus étrangers) et 2074 (plus-values)", "déclarer le compte lui-même : 3916-bis"],
+            ["Dividendes américains", f"{fr(fv('us_retenue'), 0)}{NBSP}% retenus avec le formulaire W-8BEN", "crédit d'impôt à reporter sur la 2047"]]
+    body = hd("Enveloppes · la déclaration", "Déclarer ses revenus de Bourse",
+              "Chaque printemps, la déclaration de revenus. Pour un PEA ou une assurance-vie sans retrait, il n'y a presque rien à faire. Pour un compte-titres, surtout à l'étranger, il faut être rigoureux.")
+    body += f'''<div class="g c32 main">{table(["Situation", "À déclarer", "À savoir"], rows)}
+  <div class="g">
+    <div class="card stat a" style="--c:var(--neg)"><span class="v">{cnt(float(bi("amende_3916")["valeur"]), 0, NBSP + "€")}</span><span class="l">{e(bi("amende_3916")["fait"])}</span></div>
+    {ul([e(bi("ifu")["fait"]), "<b>Garder une trace</b> de chaque achat (prix, frais) : le prix de revient sert à calculer la plus-value."], "sm")}
+  </div></div>'''
+    return body, "Déclaration : " + BI("ifu", "formulaires", "amende_3916") + " ; W-8BEN " + F("us_retenue")
+
+
+# ---- passer à l'action : ordres, arnaques, s'informer
+def s_ordres(ctx):
+    o = [("Au marché", "Exécuté tout de suite, à n'importe quel prix. Rapide, mais risqué sur une valeur peu échangée.", "var(--neg)"),
+         ("À cours limité", "Prix maximal à l'achat, minimal à la vente. Vous gardez le contrôle du prix : l'ordre de référence.", "var(--pos)"),
+         ("À seuil de déclenchement", "Devient un ordre au marché quand le cours franchit un seuil. Sert à couper une perte (« stop »).", "var(--gold)"),
+         ("À plage de déclenchement", "Comme le seuil, mais avec une limite de prix : il peut ne pas être exécuté.", "var(--ndx)")]
+    cards = "".join(f'<div class="card st-c a" style="--c:{c}"><span class="tc-n">{i + 1}</span><span class="tc-t col">{t}</span><p class="p sm">{d}</p></div>' for i, (t, d, c) in enumerate(o))
+    h = bi("horaires")
+    body = hd("Passer à l'action · l'ordre", "Passer un ordre de Bourse", e(bi("ordres")["fait"]))
+    body += f'''<div class="g main"><div class="g c4 lc1">{cards}</div>
+  <div class="g c2">
+    <div class="card a"><span class="lab">Les horaires</span><p class="p">{e(h["fait"])}</p><p class="p m">{e(h["precision"])}.</p></div>
+    <div class="card hl a"><span class="lab">Trois réflexes</span>{ul(["Utiliser l'ordre à cours limité, au prix que vous avez décidé avec la zone d'achat.", "Ne pas passer d'ordre au marché avant l'ouverture : le prix d'exécution peut surprendre.", e(bi("ordres")["precision"])[0].upper() + e(bi("ordres")["precision"])[1:] + "."], "sm")}</div>
+  </div></div>'''
+    return body, "Ordres et horaires : " + BI("ordres", "horaires")
+
+
+def s_arnaques(ctx):
+    body = hd("Passer à l'action · se protéger", "Déjouer les arnaques",
+              "Chaque année, des milliers d'épargnants perdent leurs économies dans de faux placements. Les escrocs imitent les vrais : sites soignés, faux conseillers, promesses chiffrées.")
+    body += f'''<div class="g c23 main">
+  <div class="g">
+    <div class="card stat a" style="--c:var(--neg)"><span class="v">{cnt(float(bi("arnaques_2025")["valeur"]), 0, "")}<small>+</small></span><span class="l">{e(bi("arnaques_2025")["fait"])}</span></div>
+    <div class="card stat a" style="--c:var(--neg)"><span class="v">{cnt(float(bi("arnaques_total")["valeur"]), 0, "")}</span><span class="l">{e(bi("arnaques_total")["fait"])} {e(bi("arnaques_total")["precision"])[0].upper() + e(bi("arnaques_total")["precision"])[1:]}.</span></div>
+  </div>
+  <div class="g c2 lc1">
+    <div class="card a"><span class="lab">Les signaux d'alerte</span>{ul(["Un rendement élevé « garanti » : cela n'existe pas.", "L'urgence : « offre limitée, décidez aujourd'hui ».", "Un contact que vous n'avez pas sollicité : appel, WhatsApp, réseaux sociaux.", "Des crypto-actifs ou du Forex présentés comme sans risque."], "sm")}</div>
+    <div class="card hl a"><span class="lab">Les réflexes</span>{ul(["Chercher le nom sur les listes noires de l'AMF et de l'ACPR.", "Vérifier l'agrément : registre REGAFI pour les banques et prestataires, ORIAS pour les intermédiaires.", "Ne jamais virer d'argent à un inconnu, surtout vers un compte à l'étranger.", "En cas de doute, ne rien faire : un vrai placement attend."], "sm")}</div>
+  </div></div>'''
+    return body, "Listes noires : " + BI("arnaques_2025", "arnaques_total")
+
+
+def s_informer(ctx):
+    L = lambda t, u: f'<a href="{u}" target="_blank" rel="noopener">{t}</a>'
+    rows = [["Comptes et présentations", "site « investisseurs » de la société ; " + L("SEC EDGAR", "https://www.sec.gov/edgar/search/") + " (10-K, 10-Q, 20-F)", "la source primaire, à lire en premier"],
+            ["Données et consensus", L("Zacks", "https://www.zacks.com") + " ; " + L("Bigdata.com", "https://bigdata.com"), "datées : un consensus change chaque semaine"],
+            ["Filières et goulots d'étranglement", L("TrendForce", "https://www.trendforce.com") + " ; " + L("SemiAnalysis", "https://semianalysis.com"), "pour comprendre une chaîne de valeur (semi-conducteurs, IA)"],
+            ["Régulateur", L("AMF", "https://www.amf-france.org") + " : guides, listes noires, alertes", "pour vérifier un intermédiaire"],
+            ["Opinions", "presse financière, lettres de gérants, réseaux sociaux", "des opinions datées, jamais des faits"]]
+    body = hd("Passer à l'action · s'informer", "Où s'informer, et dans quel ordre",
+              "Les faits d'abord, les opinions ensuite. Un chiffre se vérifie à sa source et se date ; une opinion se lit comme celle de son auteur, à sa date.")
+    body += f'''<div class="g c32 main">{table(["Besoin", "Où", "À savoir"], rows)}
+  <div class="g">{ul(["<b>Deux sources par chiffre clé</b>, la règle de ce dépôt.", "<b>Écouter la conférence de résultats</b> : le ton des dirigeants et les questions des analystes en disent long.", "<b>Tenir un journal</b> : la thèse, la date, le prix. Relire ses erreurs vaut toutes les lectures."], "sm")}</div></div>'''
+    return body, "Liens : " + S.refs([("SEC EDGAR : recherche de documents", "https://www.sec.gov/edgar/search/"), ("Zacks Investment Research", "https://www.zacks.com"),
+                                      ("Bigdata.com", "https://bigdata.com"), ("TrendForce", "https://www.trendforce.com"), ("SemiAnalysis", "https://semianalysis.com"),
+                                      ("AMF : Autorité des marchés financiers", "https://www.amf-france.org")])
+
+
+# ---- Bourse ou immobilier
+def s_immo_perf(ctx):
+    a40, p40, s40, l40 = imv("ieif_actions_40"), imv("ieif_paris_40"), imv("ieif_scpi_40"), imv("ieif_livreta_40")
+    a15, p15 = imv("ieif_actions_15"), imv("ieif_paris_15")
+    vmax = a40
+    b40 = "".join(hbar(lab, v / vmax, f"{fr(v, 1)}{NBSP}%", c) for lab, v, c in (("Actions françaises", a40, "var(--gold)"), ("Logement à Paris", p40, "var(--ndx)"), ("SCPI", s40, "#b07cff"), ("Livret A", l40, "var(--dim)")))
+    b15 = "".join(hbar(lab, v / vmax, f"{fr(v, 1)}{NBSP}%", c) for lab, v, c in (("Actions françaises", a15, "var(--gold)"), ("Logement à Paris", p15, "var(--ndx)")))
+    xa, xp = (1 + a40 / 100) ** 40, (1 + p40 / 100) ** 40
+    body = hd("Bourse ou immobilier · la performance", "Quarante ans de rendements : les actions devant, l'immobilier pas loin",
+              f"Chaque année, l'IEIF compare les placements des Français. Sur 40 ans, 1 € placé en actions françaises est devenu {fr(xa, 0)} € ; dans un logement parisien, {fr(xp, 0)} €. Sur 15 ans, l'écart se creuse.")
+    body += f'''<div class="g c2 main">
+  <div class="card tight a"><span class="lab">Rendement annuel moyen, 1983-2023 (40 ans)</span>{b40}
+    <span class="lab">Sur 15 ans, 2008-2023</span>{b15}</div>
+  <div class="g">
+    {kv("Édition 2025 (1984-2024)", f'{fr(imv("ieif25_actions_40"), 1)} <small>contre</small> {fr(imv("ieif25_paris_40"), 1)}{NBSP}%', "actions françaises contre logement à Paris, sur 40 ans", "var(--gold)")}
+    <div class="card hl a"><span class="lab">Lire ces chiffres avec prudence</span>{ul([e(im("ieif_methode")["fait"]), "Pour le logement, l'IEIF compte les loyers bruts : ni charges, ni taxe foncière, ni vacance, ni travaux.", "De 1983 à 2021, les taux d'intérêt ont fortement baissé : un vent arrière pour les deux placements."], "sm")}</div>
+  </div></div>'''
+    return body, "IEIF, éditions 2024 et 2025 : " + IM("ieif_actions_40", "ieif_paris_40", "ieif_scpi_40", "ieif_livreta_40", "ieif_actions_15", "ieif_paris_15", "ieif25_actions_40", "ieif25_paris_40", "ieif_methode")
+
+
+def s_immo_net(ctx):
+    I_ = D["immo"]
+    f, p = I_["net"]["france"], I_["net"]["paris"]
+    lignes = [("Loyer brut", f"{pc(f['brut'], 2)} de {eur(I_['prix'])}", f["loyer"], ""),
+              ("Charges, taxe foncière, vacance (hyp.)", f"{fr(H['immo_charges'], 0)}{NBSP}% des loyers", -f["charges"], "neg"),
+              ("Impôt et prélèvements sociaux", f"{fr(100 - imv('micro_foncier'), 0)}{NBSP}% des loyers × ({fr(H['tmi_exemple'], 0)} + {fr(imv('ps_foncier'), 1)}){NBSP}%", -f["impot"], "neg"),
+              ("Loyer net", "ce qui reste chaque année", f["net"], "gold")]
+    li = "".join(f'<div class="ln-r a"><span>{a} <small>{b}</small></span><b class="{c}">{eur(v)}</b></div>' for a, b, v, c in lignes)
+    body = hd("Bourse ou immobilier · le rendement net", "Du loyer brut au loyer net : il reste moins de 2 %",
+              f"Un logement de {eur(I_['prix'])} (hyp.) au rendement brut moyen de la France en 2025. Après les frais d'achat, les charges et l'impôt, le rendement net tombe à {pc(f['rdt_net'], 2)}, avant la variation du prix du logement.")
+    body += f'''<div class="g c2 main">
+  <div class="card a"><span class="lab">France, location nue, micro-foncier</span>{li}
+    <div class="ln-r a"><span>Coût total <small>prix + {fr(imv("frais_notaire"), 1)}{NBSP}% de frais d'achat</small></span><b>{eur(I_["prix"] + I_["frais"])}</b></div>
+    <div class="ln-r a"><span><b>Rendement net</b></span><b class="gold">{pc(f["rdt_net"], 2)}</b></div></div>
+  <div class="g">
+    <div class="g c2 lc2">{kv("Rendement net à Paris", pc(p["rdt_net"], 2), f"pour {pc(p['brut'], 2)} brut", "var(--ndx)")}
+    {kv("Le « P/E » d'un logement", fr(f["annees_loyers"], 1) + NBSP + "ans", f"de loyers bruts pour payer le prix ; {fr(p['annees_loyers'], 1)} ans à Paris", "var(--gold)")}</div>
+    {ul(["<b>Prix ÷ loyer annuel</b> se lit comme un P/E : combien d'années de revenus on paie. Avant charges et impôts.",
+         "<b>Au régime réel</b>, on déduit les charges réelles et les intérêts d'emprunt : l'impôt peut être bien plus faible.",
+         f"<b>Micro-foncier</b> : {e(im('micro_foncier')['fait'])}",
+         f"<b>Prélèvements sociaux</b> : {e(im('ps_foncier')['fait'])}"], "sm")}
+  </div></div>'''
+    return body, "Rendements bruts : " + IM("rendement_brut_france", "rendement_brut_paris") + " ; fiscalité " + IM("micro_foncier", "ps_foncier") + " ; frais " + IM("frais_notaire") + " ; " + HYPS()
+
+
+def s_immo_levier(ctx):
+    L = D["immo"]
+    body = hd("Bourse ou immobilier · le crédit", "Le crédit, l'arme de l'immobilier… à double tranchant",
+              f"Avec un crédit, {eur(L['apport'])} d'apport suffisent pour acheter un logement de {eur(L['prix'])} (hyp.). C'est le grand atout de l'immobilier. Mais le levier multiplie les gains comme les pertes.")
+    body += f'''<div class="g c3 main">
+  <div class="card a"><span class="lab">Le montage (hyp.)</span>
+    <div class="ln-r"><span>Frais d'achat <small>{fr(imv("frais_notaire"), 1)}{NBSP}% du prix</small></span><b>{eur(L["frais"])}</b></div>
+    <div class="ln-r"><span>Apport <small>frais + {fr(H["immo_apport"], 0)}{NBSP}% du prix</small></span><b>{eur(L["apport"])}</b></div>
+    <div class="ln-r"><span>Emprunt <small>{fr(L["mois"] / 12, 0)} ans à {pc(L["taux"], 2)}</small></span><b>{eur(L["emprunt"])}</b></div>
+    <div class="ln-r"><span>Mensualité <small>hors assurance</small></span><b>{eur(L["mensualite"])}</b></div>
+    <div class="ln-r"><span>Coût total du crédit</span><b class="neg">{eur(L["cout_credit"])}</b></div></div>
+  <div class="card a"><span class="lab">Chaque mois</span>
+    <div class="ln-r"><span>Loyer encaissé</span><b class="pos">+{eur(L["loyer_m"])}</b></div>
+    <div class="ln-r"><span>Charges, taxe foncière, vacance</span><b class="neg">−{eur(L["charges_m"])}</b></div>
+    <div class="ln-r"><span>Mensualité</span><b class="neg">−{eur(L["mensualite"])}</b></div>
+    <div class="ln-r"><span><b>Effort d'épargne</b> <small>avant impôt</small></span><b class="gold">−{eur(L["effort_m"])}</b></div>
+    <p class="p m sm">Le loyer ne rembourse pas tout le crédit : l'investisseur complète chaque mois. En contrepartie, il devient propriétaire d'un bien de {eur(L["prix"])} en {fr(L["mois"] / 12, 0)} ans.</p></div>
+  <div class="g">
+    <div class="card stat a" style="--c:var(--gold)"><span class="v">±{cnt(L["effet_apport"] * 100, 0, NBSP + "%")}</span><span class="l">sur l'apport si le prix du logement varie de ±{pc(L["variation"], 0)}. Le levier joue dans les deux sens.</span></div>
+    <div class="card stat a" style="--c:var(--neg)"><span class="v">{cnt(L["frais_part_apport"] * 100, 0, NBSP + "%")}</span><span class="l">de l'apport partent en frais dès la signature. Il faut environ {fr(L["annees_frais"], 1)} ans de hausse à {fr(H["immo_hausse"], 0)}{NBSP}% par an (hyp.) pour les effacer.</span></div>
+  </div></div>'''
+    return body, "Taux et durée : " + IM("credit_taux_20", "credit_duree") + " ; frais " + IM("frais_notaire", "dmto_2025") + " ; loyer " + IM("rendement_brut_france") + " ; " + HYPS()
+
+
+def s_immo_risque(ctx):
+    ep = [("Logement à Paris", "1990-1997, en euros constants", imv("paris_krach_1990"), "var(--ndx)"),
+          ("CAC 40", "2000-2003", imv("cac_krach_2000"), "var(--gold)"),
+          ("S&amp;P 500", e(HZ("krach_2008")["periode"]), -abs(HZv("krach_2008")), "var(--gold)"),
+          ("S&amp;P 500", e(HZ("krach_2022")["periode"]), -abs(HZv("krach_2022")), "var(--gold)"),
+          ("SCPI (17 baisses de prix de part)", "2024, baisse moyenne", imv("scpi_baisse_2024"), "#b07cff"),
+          ("Logements anciens en France", "T1 2024, sur un an", imv("france_baisse_2024"), "var(--ndx)")]
+    vmax = max(abs(v) for *_, v, _ in ep)
+    bars = "".join(hbar(a, abs(v) / vmax, f"{fr(v, 1)}{NBSP}%", c, b) for a, b, v, c in ep)
+    body = hd("Bourse ou immobilier · le risque", "L'immobilier aussi peut chuter, mais on le voit moins",
+              f"Paris a perdu {fr(-imv('paris_krach_1990'), 0)}{NBSP}% en euros constants entre 1990 et 1997, et la baisse a duré sept ans. La Bourse chute plus fort et plus vite, mais on le voit tous les jours.")
+    body += f'''<div class="g c2 main"><div class="card tight a"><span class="lab">Grandes baisses, du plus haut au plus bas</span>{bars}</div>
+  {ul(["<b>Pas de cours quotidien</b> : la volatilité de l'immobilier est cachée, pas absente. On découvre la baisse au moment de vendre.",
+       f"<b>Quand les prix baissent, les acheteurs disparaissent</b> : {fr(imv('transactions_2023'), 0)} ventes de logements anciens en 2023, contre {fr(imv('transactions_2022'), 0)} fin 2022 ({pc(D['immo']['transactions_var'], 0, True)}).",
+       f"<b>Le levier multiplie la baisse</b> : −{pc(D['immo']['variation'], 0)} sur le prix, c'est −{pc(D['immo']['effet_apport'], 0)} sur l'apport (diapositive précédente).",
+       "<b>Une baisse n'est une perte que si l'on vend</b> : en Bourse comme dans la pierre, l'horizon protège."], "sm")}</div>'''
+    return body, "Immobilier : " + IM("paris_krach_1990", "france_baisse_2024", "scpi_baisse_2024", "transactions_2023") + " ; actions " + IM("cac_krach_2000") + " " + HZS("krach_2008", "krach_2022")
+
+
+def s_immo_match(ctx):
+    rows = [["Rendement sur 40 ans (IEIF)", f"{fr(imv('ieif_paris_40'), 1)}{NBSP}% (Paris, brut)", f"{fr(imv('ieif_actions_40'), 1)}{NBSP}% (actions françaises)"],
+            ["Frais d'entrée", f"{fr(imv('frais_notaire'), 1)}{NBSP}% du prix (frais de notaire)", f"au plus {fr(fv('pea_frais_ordre'), 1)}{NBSP}% par ordre dans un PEA"],
+            ["Frais annuels", f"charges, taxe foncière, vacance : {fr(H['immo_charges'], 0)}{NBSP}% des loyers (hyp.)", f"{fr(H['etf_frais_bas'], 2)} à {fr(H['etf_frais_haut'], 2)}{NBSP}% pour un ETF"],
+            ["Liquidité", "des mois pour vendre", "quelques secondes, aux heures de Bourse"],
+            ["Diversification", "un bien, une ville", "des centaines de sociétés, des dizaines de pays"],
+            ["Levier", f"crédit sur {fr(H['immo_duree_credit'], 0)} ans à {pc(imv('credit_taux_20') / 100, 2)}", "en pratique, sans crédit"],
+            ["Impôt sur les revenus", f"barème + {fr(imv('ps_foncier'), 1)}{NBSP}% (abattement de {fr(imv('micro_foncier'), 0)}{NBSP}% en micro-foncier)", f"aucun dans le PEA ; {fr(fv('ps_2026'), 1)}{NBSP}% à la sortie après {fr(fv('pea_duree'), 0)} ans"],
+            ["Impôt sur les plus-values", f"{fr(imv('pv_immo'), 1)}{NBSP}% avant abattements pour durée de détention ; résidence principale exonérée", f"{fr(fv('ps_2026'), 1)}{NBSP}% (PEA après {fr(fv('pea_duree'), 0)} ans), {fr(fv('pfu_total'), 1)}{NBSP}% (compte-titres)"],
+            ["Impôt sur la fortune", f"IFI au-delà de {fr(imv('ifi_seuil') / 1e6, 1)}{NBSP}M€ de patrimoine immobilier net", "hors champ"],
+            ["Temps et gestion", "locataires, travaux, impayés", "quelques minutes par an pour un ETF"]]
+    body = hd("Bourse ou immobilier · le match", "Le match en dix critères", "Aucun des deux ne gagne partout. L'immobilier a le levier et l'usage ; la Bourse, la liquidité, la diversification et les frais.")
+    body += table(["Critère", "Immobilier locatif", "Bourse (ETF dans un PEA)"], rows, cls="w cmp")
+    return body, "Sources : " + IM("ieif_paris_40", "ieif_actions_40", "frais_notaire", "credit_taux_20", "ps_foncier", "micro_foncier", "pv_immo", "ifi_seuil") + " ; " + F("pea_frais_ordre", "ps_2026", "pfu_total") + " ; " + HYPS()
+
+
+def s_immo_verdict(ctx):
+    f = D["immo"]["net"]["france"]
+    body = hd("Bourse ou immobilier · le verdict", "Pas l'un contre l'autre : chacun à sa place", "")
+    body += f'''<div class="g c3 main">
+  <div class="card a"><span class="lab">La résidence principale</span><p class="cq">D'abord un toit, ensuite un placement.</p><p class="p sm">Elle supprime un loyer, ses plus-values sont exonérées et le crédit la rend accessible. Mais elle concentre souvent l'essentiel du patrimoine sur un seul bien.</p></div>
+  <div class="card a"><span class="lab">L'immobilier locatif</span><p class="cq">Une petite entreprise à crédit.</p><p class="p sm">Son atout est le levier ; son risque aussi. Rendement net d'environ {pc(f["rdt_net"], 1)} avant la variation du prix (hyp.), du temps de gestion et une fiscalité lourde hors régime réel.</p></div>
+  <div class="card hl a"><span class="lab">La Bourse</span><p class="cq">La diversification, la liquidité, des frais faibles.</p><p class="p sm">Le meilleur rendement de long terme selon l'IEIF, une fiscalité douce dans le PEA. Le prix à payer : supporter des baisses visibles, sans vendre.</p></div>
+  <div class="card a" style="grid-column:1 / -1"><span class="lab">L'œil de l'investisseur GARP</span>{ul([f"<b>Un logement se juge comme une action</b> : son « P/E » (prix ÷ loyer annuel) est d'environ {fr(f['annees_loyers'], 0)} ans en France. Une action à ce P/E doit croître pour rapporter ; un logement aussi, par ses loyers et son prix.",
+      f"<b>L'immobilier est cher au regard de l'histoire</b> : {e(im('friggit_ratio')['fait'])}",
+      f"<b>Les SCPI mutualisent</b>, mais leurs parts peuvent baisser : {e(im('scpi_baisse_2024')['fait'].removeprefix('SCPI : '))}"], "sm")}</div>
+</div>'''
+    return body, "Friggit " + IM("friggit_ratio") + " ; SCPI " + IM("scpi_baisse_2024") + " ; IEIF " + IM("ieif_actions_40") + " ; " + HYPS()
+
+
+# ---- autres super-investisseurs
+def si_chiffre(r):
+    v, u = float(r["chiffre"]), r["unite"]
+    if u == "% par an" or u == "% par an brut":
+        return fr(v, 1) + NBSP + "%" + (" <small>brut/an</small>" if "brut" in u else " <small>par an</small>")
+    if u == "Md$":
+        return "≈" + NBSP + fr(v, 0) + NBSP + "Md$"
+    if u == "% cumulés":
+        return "+" + fr(v, 0) + NBSP + "%"
+    if u == "% de risque en moins":
+        return "−" + fr(v, 0) + NBSP + "% <small>de risque</small>"
+    if u == "point par an":
+        return "+" + fr(v, 1) + NBSP + "pt <small>par an</small>"
+    return fr(v, 1) + NBSP + u
+
+
+def si_card(i, c="var(--gold)"):
+    r = SUPD[i]
+    cit = (f'<p class="si-q">« {e(r["citation_fr"])} » <span class="si-f">{e(r["citation_contexte"])}</span></p>') if r["citation_fr"] else ""
+    return (f'<div class="card si a" style="--c:{c}"><span class="lab">{e(r["ecole"])}</span><span class="si-n">{e(r["auteur"])}</span>'
+            f'<span class="si-f">{e(r["fonds"])} · {e(r["periode"])}</span><p class="p sm">{e(r["strategie"])}</p>'
+            f'<div class="si-big col">{si_chiffre(r)}</div><p class="p sm m">{e(r["chiffre_texte"])} {SU(i)}</p>{cit}'
+            f'<p class="p sm"><b>Leçon.</b> {e(r["lecon"])}</p><p class="p sm m"><b>Limite.</b> {e(r["limite"])}</p></div>')
+
+
+def fiab(*ids):
+    return " ; ".join(f'{e(SUPD[i]["auteur"].split(" ")[-1])} : {e(SUPD[i]["fiabilite"])}' for i in ids)
+
+
+def si_paire(kick, titre, lede, a, ca, b, cb):
+    def fn(ctx):
+        body = hd("Grands investisseurs · " + kick, titre, lede)
+        body += f'<div class="g c2 main">{si_card(a, ca)}{si_card(b, cb)}</div>'
+        return body, "Sources numérotées sous chaque chiffre ; fiabilité : " + fiab(a, b)
+    return fn
+
+
+s_si_macro = si_paire("les macros", "Dalio, Druckenmiller : répartir ou concentrer",
+                      "Deux géants de la macro aux conclusions opposées : répartir le risque à l'extrême, ou le concentrer sur quelques convictions.",
+                      "dalio", "var(--ndx)", "druckenmiller", "var(--gold)")
+s_si_quant = si_paire("hors de portée", "Soros et Simons : lire la foule, lire les données",
+                      "Les deux palmarès les plus spectaculaires, et les moins imitables : l'un lit la psychologie des marchés, l'autre confie tout à des modèles mathématiques.",
+                      "soros", "var(--neg)", "simons", "#5ab4ff")
+s_si_valeur = si_paire("la valeur", "Greenblatt et Templeton : la valeur, par formule ou à contre-courant",
+                       "Acheter moins cher que la valeur : l'un l'a réduit à deux ratios, l'autre l'a cherché là où tout le monde vendait.",
+                       "greenblatt", "var(--pos)", "templeton", "var(--gold)")
+s_si_qualite = si_paire("la qualité", "Smith et Sleep : la qualité, puis ne rien faire",
+                        "Deux héritiers de Buffett : acheter des entreprises au moat profond, ne pas les payer trop cher, et les garder des années.",
+                        "smith", "var(--pos)", "sleep", "#b07cff")
+
+
+def s_si_table(ctx):
+    lab = {"oui": '<span class="pos">oui</span>', "partiel": '<span class="gold">en partie</span>', "non": '<span class="neg">non</span>'}
+    ordre = ["greenblatt", "smith", "sleep", "templeton", "dalio", "druckenmiller", "soros", "simons"]
+    rows = [[f'<b>{e(SUPD[i]["auteur"])}</b>', f'<span class="nw">{si_chiffre(SUPD[i]).replace(" ", NBSP)}</span>', lab[SUPD[i]["applicable"]], e(SUPD[i]["lecon"].split(". ")[0].rstrip(".")) + "."] for i in ordre]
+    body = hd("Grands investisseurs · à votre portée ?", "Huit stratégies : laquelle est à votre portée ?",
+              "Les palmarès les plus spectaculaires sont les moins imitables. Qualité, prix et patience restent à votre portée : le GARP en fait la synthèse.")
+    body += table(["Investisseur", "Chiffre clé", "À votre portée ?", "Ce qu'on en garde"], rows, cls="w")
+    return body, "Sources : " + SU(*ordre)
+
+
+
 # ============================================================ assemblage du plan
 def plan(n_sources):
     SL.clear()
@@ -1698,6 +2238,7 @@ def plan(n_sources):
     add("Les bases", "Cours = BPA × P/E", s_formule)
     add("Les bases", "ETF ou stock picking", s_etf)
     add("Les bases", "Le risque", s_risque)
+    add("Les bases", "Le risque de change", s_change)
     opener("Lire les comptes")
     add("Lire les comptes", "Trois documents, trois questions", s_etats)
     add("Lire les comptes", "La cascade du compte de résultat", s_cascade)
@@ -1711,6 +2252,13 @@ def plan(n_sources):
     add("Lire les comptes", "Lire une banque : Nu", s_banque)
     add("Lire les comptes", "Lire une plateforme : Reddit et Adyen", s_plateformes)
     add("Lire les comptes", "Les cycliques : Micron et Intel", s_cycliques)
+    opener("Le moat")
+    add("Le moat", "Les douves autour du château", s_moat_def)
+    add("Le moat", "Cinq sources de moat", s_moat_sources)
+    add("Le moat", "Le moat de nos cinq exemples", s_moat_ex)
+    add("Le moat", "Mesurer un moat", s_moat_mesure)
+    add("Le moat", "Quand le moat s'effondre : Intel", s_moat_erosion)
+    add("Le moat", "Les faux moats", s_moat_faux)
     opener("Valoriser")
     add("Valoriser", "Capitalisation et valeur d'entreprise", s_cap)
     add("Valoriser", "Cinq P/E pour une action", s_pe5)
@@ -1718,6 +2266,8 @@ def plan(n_sources):
     add("Valoriser", "Le PEG", s_peg)
     add("Valoriser", "Le piège du PEG de court terme", s_piege)
     add("Valoriser", "Consensus et rang Zacks", s_consensus)
+    add("Valoriser", "Le DCF", s_dcf)
+    add("Valoriser", "Les taux d'intérêt", s_taux)
     add("Valoriser", "Ce que le prix suppose", s_suppose)
     opener("La méthode GARP")
     add("La méthode GARP", "Les six catégories de Lynch", s_categories)
@@ -1733,15 +2283,25 @@ def plan(n_sources):
     add("Enveloppes, frais et impôts", "Le PEA", s_pea)
     add("Enveloppes, frais et impôts", "Le compte-titres", s_cto)
     add("Enveloppes, frais et impôts", "L'assurance-vie", s_av)
+    add("Enveloppes, frais et impôts", "Le PER", s_per)
     add("Enveloppes, frais et impôts", "Les frais", s_frais)
     add("Enveloppes, frais et impôts", "Quelle enveloppe pour quelle valeur", s_ou)
+    add("Enveloppes, frais et impôts", "Déclarer ses revenus", s_declarer)
     opener("Les ETF")
     add("Les ETF", "Comment fonctionne un ETF", s_etf_fonctionne)
+    add("Les ETF", "Les grands indices", s_indices)
     add("Les ETF", "Ce que contient un ETF Nasdaq 100", s_etf_contenu)
     add("Les ETF", "Physique ou synthétique", s_etf_replication)
     add("Les ETF", "Capitalisant, distribuant et frais", s_etf_capi)
     add("Les ETF", "Les principaux ETF", s_etf_table)
     add("Les ETF", "Choisir son ETF", s_etf_choisir)
+    opener("Bourse ou immobilier")
+    add("Bourse ou immobilier", "Quarante ans de rendements", s_immo_perf)
+    add("Bourse ou immobilier", "Du loyer brut au loyer net", s_immo_net)
+    add("Bourse ou immobilier", "Le crédit et l'effet de levier", s_immo_levier)
+    add("Bourse ou immobilier", "Le risque", s_immo_risque)
+    add("Bourse ou immobilier", "Le match en dix critères", s_immo_match)
+    add("Bourse ou immobilier", "Chacun à sa place", s_immo_verdict)
     opener("Intérêts composés")
     add("Intérêts composés", "La mécanique", s_composes)
     add("Intérêts composés", "La calculatrice", s_calc, "calc-sl")
@@ -1755,12 +2315,21 @@ def plan(n_sources):
     add("Grands investisseurs", "Benjamin Graham", s_graham)
     add("Grands investisseurs", "Fisher et Smith", s_fisher)
     add("Grands investisseurs", "Bogle et Marks", s_bogle)
+    add("Grands investisseurs", "Dalio et Druckenmiller", s_si_macro)
+    add("Grands investisseurs", "Soros et Simons", s_si_quant)
+    add("Grands investisseurs", "Greenblatt et Templeton", s_si_valeur)
+    add("Grands investisseurs", "Smith et Sleep", s_si_qualite)
+    add("Grands investisseurs", "Huit stratégies à votre portée ?", s_si_table)
     add("Grands investisseurs", "La synthèse", s_synthese)
     opener("Passer à l'action")
     add("Passer à l'action", "Check-list et routine", s_routine)
-    add("Passer à l'action", "Testez-vous", s_quiz, "quiz-sl")
-    for k in (1, 2, 3):
-        add("Passer à l'action", f"Glossaire ({k}/3)", s_glossaire(k))
+    add("Passer à l'action", "Passer un ordre", s_ordres)
+    add("Passer à l'action", "Déjouer les arnaques", s_arnaques)
+    add("Passer à l'action", "Où s'informer", s_informer)
+    for k in (1, 2):
+        add("Passer à l'action", f"Testez-vous ({k}/2)", s_quiz(k, 2), "quiz-sl")
+    for k in (1, 2, 3, 4):
+        add("Passer à l'action", f"Glossaire ({k}/4)", s_glossaire(k, 4))
     for k in range(n_sources):
         add("Passer à l'action", f"Sources ({k + 1}/{n_sources})", s_sources(k, n_sources), "src-sl")
     add("Passer à l'action", "Ce qu'il faut retenir", s_fin)
@@ -1774,6 +2343,8 @@ def teasers():
     return {
         "Objectifs et horizon": t(cnt(float(D["horizon"]["dca_vanguard_2023"]["valeur"]), 0, NBSP + "%"), "des cas où investir en une fois a battu un DCA de trois mois (Vanguard, MSCI World, 1976-2022)"),
         "Les ETF": t(f"{fr(min(fx), 2)} → {fr(max(fx), 2)}{NBSP}%", "les frais courants annuels des principaux ETF : des centaines d'actions pour presque rien"),
+        "Le moat": t(cnt(float(D["moat"]["tsm_part_fonderie"]["valeur"]), 1, NBSP + "%"), "du marché mondial de la fonderie pour TSMC : un avantage d'échelle que personne ne rattrape vite"),
+        "Bourse ou immobilier": t(f'{fr(float(D["immo_data"]["ieif_actions_40"]["valeur"]), 1)} <small>contre</small> {fr(float(D["immo_data"]["ieif_paris_40"]["valeur"]), 1)}{NBSP}%', "par an sur 40 ans : actions françaises contre logement à Paris (IEIF, 1983-2023)"),
         "Les bases": t(cnt(n["bpa_gaap"], 2, NBSP + "$"), "de bénéfice par action pour NVIDIA sur l'exercice 2026"),
         "Lire les comptes": t(cnt(n["marge_operationnelle"] * 100, 1, NBSP + "%"), "de marge opérationnelle chez NVIDIA : 60 cents gardés sur chaque dollar vendu"),
         "Valoriser": t(f'{fr(min(p for *_, p in pe5), 1)} → {fr(max(p for *_, p in pe5), 1)}', "les cinq P/E de NVIDIA, pour un seul et même cours"),
@@ -1983,6 +2554,8 @@ i.dot { font-style:normal; }
 .tc-n { font:900 var(--fs-n3)/1 "GZ Archivo"; font-stretch:62%; color:var(--gold); }
 .tc-t { font:800 var(--fs-n4)/1.05 "GZ Archivo"; font-stretch:75%; text-transform:uppercase; }
 %P .toc-card { gap:6u; } %P .toc-card .tc-t { font-size:calc(var(--fs-n4) * .85); } %P .toc-card .tc-s { font-size:var(--fs-xs); }
+%P .toc12 .tc-s { display:none; } %P .toc12 .toc-card { padding:14u 22u; }
+.formula sub, .formula sup { font-size:max(11px, .75em); line-height:0; }
 .tc-s { font-size:var(--fs-s); color:var(--muted); line-height:1.35; }
 .tc-r { font:500 var(--fs-xs) "GZ Plex Mono"; color:var(--dim); text-transform:uppercase; letter-spacing:.06em; margin-top:auto; }
 
@@ -2130,6 +2703,12 @@ input[type=number]:focus-visible, input[type=range]:focus-visible, button:focus-
 .srcs li { break-inside:avoid; padding:3u 0 5u; color:var(--muted); overflow-wrap:anywhere; }
 .srcs a { text-decoration:none; color:var(--paper); } .srcs a:hover { color:var(--gold); text-decoration:underline; }
 .srcs .num { color:var(--gold); }
+.nw { white-space:nowrap; } .si { gap:7u; } .si-n { font:900 var(--fs-n4)/1 "GZ Archivo", sans-serif; font-stretch:62%; text-transform:uppercase; }
+.si-f { font:500 var(--fs-xs)/1.3 "GZ Plex Mono", monospace; color:var(--dim); }
+.si-big { font:900 var(--fs-n3)/1 "GZ Archivo", sans-serif; font-stretch:62%; font-variant-numeric:tabular-nums; }
+.si-big small { font-size:.42em; font-stretch:100%; font-weight:500; color:var(--muted); }
+.si-q { font:italic 400 var(--fs-s)/1.35 "GZ Newsreader", Georgia, serif; border-left:3px solid var(--c, var(--gold)); padding-left:12px; }
+.lines.fx .ln-r { align-items:flex-start; } .ln-r .m { color:var(--muted); text-align:right; } .ln-r .sm { font-size:var(--fs-s); line-height:1.35; }
 .chk { display:flex; flex-direction:column; gap:7u; }
 .chk li { display:flex; gap:14px; align-items:baseline; font-size:var(--fs-b); line-height:1.35; padding-bottom:7u; border-bottom:1px solid var(--line2); }
 .chk .num { color:var(--gold); font-size:.85em; }
@@ -2496,7 +3075,7 @@ JS = r"""
   }
 
   // ---------- quiz
-  var score = 0, rep = 0, total = root.querySelectorAll(".qz-q").length, sc = document.getElementById("qz-score");
+  var score = 0, rep = 0, total = root.querySelectorAll(".qz-q").length, scs = root.querySelectorAll(".qz-score");
   root.querySelectorAll(".qz-q").forEach(function (q) {
     q.querySelectorAll(".opt").forEach(function (b) {
       b.addEventListener("click", function () {
@@ -2505,7 +3084,7 @@ JS = r"""
         var ok = b.dataset.ok === "1"; if (ok) score++;
         b.classList.add(ok ? "ok" : "ko");
         q.querySelector('.opt[data-ok="1"]').classList.add("ok");
-        if (sc) sc.textContent = " Score : " + score + " / " + rep + (rep === total ? " — terminé." : "");
+        scs.forEach(function (sc) { sc.textContent = " Score : " + score + " / " + rep + (rep === total ? " — terminé." : ""); });
       });
     });
   });

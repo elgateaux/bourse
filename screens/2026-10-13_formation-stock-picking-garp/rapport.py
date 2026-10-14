@@ -24,6 +24,9 @@ fx = D["frais"]
 dca = D["dca"]
 hz = D["horizon"]
 etf = D["etf"]
+IM = {k: float(v["valeur"]) for k, v in D["immo_data"].items() if v["valeur"]}
+immo, dcf, chg, per = D["immo"], D["dcf"], D["change"], D["per"]
+NQ = open(os.path.join(HERE, "diaporama", "index.html"), encoding="utf-8").read().count('class="card qz-q')
 
 chap = []
 for x in PLAN:
@@ -36,7 +39,9 @@ w = L.append
 w("# Formation : le stock picking GARP, de zéro à autonome")
 w("")
 w(f"Diaporama du {D['date']} (cours du {D['date_cours']}) pour un investisseur français débutant : {len(PLAN)} diapositives, une calculatrice d'intérêts composés, "
-  "un calculateur de PEG, un quiz de dix questions, un glossaire et des sources numérotées. Même style que la vidéo du même jour. "
+  f"un calculateur de PEG, un quiz de {NQ} questions, un glossaire et des sources numérotées. Même style que la vidéo du même jour. "
+  "Conçu comme une « bible » de l'investisseur français : moat, DCF, taux, change, PER, déclaration fiscale, ordres de Bourse, arnaques, "
+  "comparaison Bourse-immobilier et stratégies de quinze grands investisseurs. "
   "NVIDIA, TSMC, Nu, Reddit et Adyen servent uniquement d'exemples d'analyse : le diaporama ne présente ni portefeuille ni comparaison de performance avec un indice.")
 w("")
 w("*La Gazette du PEG est un titre fictif : il ne correspond à aucune publication existante. Analyse quantitative et datée, qui ne constitue pas un conseil en investissement personnalisé.*")
@@ -73,6 +78,18 @@ w(f"- **DCA.** Exemple pédagogique : après une baisse puis un rebond, le DCA f
   f"{eur(h['valeur_lump'])} contre {eur(h['valeur_dca'])}. Vanguard (2023, MSCI World, 1976-2022) : l'investissement en une fois a gagné dans {fr(float(hz['dca_vanguard_2023']['valeur']), 0)} % des cas.")
 w(f"- **Temps.** {eur(H['temps_versement'])} par mois de {fr(H['temps_age_tot'], 0)} à {fr(H['temps_age_fin'], 0)} ans : {eur(D['temps']['temps_age_tot']['valeur'])} ; "
   f"de {fr(H['temps_age_tard'], 0)} à {fr(H['temps_age_fin'], 0)} ans : {eur(D['temps']['temps_age_tard']['valeur'])}.")
+w(f"- **Moat.** TSMC détient {fr(float(D['moat']['tsm_part_fonderie']['valeur']), 1)} % de la fonderie mondiale. Intel montre l'érosion : marge brute de "
+  f"{pct(D['hist']['INTC'][0]['taux_mb'], 0)} en {D['hist']['INTC'][0]['exercice']}, puis perte nette de {fr(-float(D['moat']['intel_perte_2024']['valeur']), 1)} Md$ en 2024.")
+w(f"- **DCF et taux.** Exemple pédagogique : {fr(dcf['bas']['valeur'], 0)} M€ de valeur à {pct(dcf['bas']['taux'], 0)}, {fr(dcf['haut']['valeur'], 0)} M€ à {pct(dcf['haut']['taux'], 0)} "
+  f"({pct(dcf['variation'], 1, True)}) ; la valeur terminale pèse {pct(dcf['bas']['part_vt'], 0)} de la valeur.")
+w(f"- **Change et PER.** Avec un euro en hausse de {pct(chg['hausse_euro'], 0)}, une action américaine stable en dollars perd {pct(-chg['perte_euro'])} en euros. "
+  f"Plafond du PER en 2026 : {eur(per['plafond_max'])} ; {eur(per['versement'])} versés à {pct(per['tmi'], 0)} de tranche marginale économisent {eur(per['economie'])} d'impôt (hyp.).")
+w(f"- **Bourse ou immobilier.** IEIF, 1983-2023 : {fr(IM['ieif_actions_40'], 1)} % par an pour les actions françaises, {fr(IM['ieif_paris_40'], 1)} % pour le logement parisien ; "
+  f"sur 2008-2023, {fr(IM['ieif_actions_15'], 1)} % contre {fr(IM['ieif_paris_15'], 1)} %. Logement de {eur(immo['prix'])} (hyp.) : rendement net de {pct(immo['net']['france']['rdt_net'], 2)} "
+  f"({pct(immo['net']['paris']['rdt_net'], 2)} à Paris), effort d'épargne de {eur(immo['effort_m'])} par mois avec un crédit à {pct(immo['taux'], 2)} sur {fr(immo['mois'] / 12, 0)} ans, "
+  f"apport qui varie de ±{pct(immo['effet_apport'], 0)} pour ±{pct(immo['variation'], 0)} sur le prix. Paris a perdu {fr(-IM['paris_krach_1990'], 0)} % en euros constants de 1990 à 1997.")
+w(f"- **Grands investisseurs.** Huit stratégies de plus, sourcées : Dalio, Druckenmiller, Soros, Simons, Greenblatt, Templeton, Terry Smith, Nick Sleep ; "
+  "classées selon qu'elles sont à la portée d'un particulier ou non.")
 w("")
 w("## Données signalées et corrigées")
 w("")
@@ -86,14 +103,23 @@ for r in etf:
 w("- Part des périodes de perte du S&P 500 par horizon : les pourcentages dépendent de la base de données (Dimensional 1926-2017 pour 1, 5 et 10 ans ; Ben Carlson pour 20 ans).")
 w(f"- Inflation de septembre 2026 : estimation provisoire de l'Insee ({hz['inflation_2026']['valeur'].replace('.', ',')} %), chiffre définitif attendu le 15/10/2026.")
 w("- Retenue à la source de Taïwan sur les dividendes de TSMC : sources contradictoires, à vérifier auprès du courtier.")
+w(f"- IEIF : un site attribue {fr(4.45, 2)} % par an au logement parisien sur 1984-2024 ; ce chiffre n'a pas été retrouvé dans l'étude et contredit deux sources ({fr(IM['ieif25_paris_40'], 1)} %). Il est écarté.")
+w("- Baisse des prix à Paris dans les années 1990 : −36 % en euros courants (mars 1991 à mars 1998), −42 % en euros constants (Notaires, 1990-1997), −46 % en termes réels (CEPII, 1991-1997). La formation retient −42 %.")
+w("- Rendement locatif brut national 2025 : 4,78 % selon Lokimo, jusqu'à 5,9 % selon d'autres études ; Paris : 4,11 % à 4,33 %. La formation retient les deux premiers chiffres de chaque fourchette.")
+w("- Prélèvements sociaux 2026 : 17,2 % sur les revenus fonciers et les plus-values immobilières, mais 18,6 % sur la location meublée (LMNP) selon plusieurs sources ; à vérifier sur la déclaration.")
+w("- Super-investisseurs : performances déclarées ou reconstituées, rarement auditées (Druckenmiller : chiffres du fonds repris par Bloomberg ; Medallion : 39,1 % net selon Zuckerman, d'autres estimations vont de 35,6 % à 40 % ; "
+  "Nomad : 18,4 % par an selon une source, 21 % selon une autre ; Fundsmith 2025 : 0,8 % ou 0,9 % selon la part). La citation de Templeton n'a pas de source primaire retrouvée.")
 w("- Accès aux sources : les pages de première main (AMF, Oaktree, Quote Investigator, émetteurs d'ETF) étaient inaccessibles depuis l'environnement de calcul (DNS ou proxy). "
-  "Les chiffres ont été recoupés par la recherche web et par Zacks ; [Bigdata.com](https://bigdata.com) n'a pas pu être utilisé (crédits épuisés).")
+  "Les chiffres ont été recoupés par la recherche web et par Zacks ; [Bigdata.com](https://bigdata.com) n'a pas pu être utilisé (crédits épuisés, puis connexion refusée par le proxy). "
+  "Le 14/10/2026, les sites de l'IEIF, de l'Insee et de l'IGEDD étaient aussi inaccessibles : les chiffres immobiliers viennent de la recherche web, avec deux sources chacun.")
 w("")
 w("## Hypothèses")
 w("")
 w("Toutes les hypothèses éditoriales sont marquées « hyp. » et justifiées ligne par ligne dans [data/hypotheses.csv](data/hypotheses.csv) : valeurs par défaut de la calculatrice "
   f"(rendement de {fr(H['calc_rendement'], 0)} % brut par an), seuils de la grille GARP, noyau de "
-  f"{fr(H['noyau_min'], 0)} à {fr(H['noyau_max'], 0)} %, exemples pédagogiques (formule cours = BPA × P/E, DCA).")
+  f"{fr(H['noyau_min'], 0)} à {fr(H['noyau_max'], 0)} %, exemples pédagogiques (formule cours = BPA × P/E, DCA, DCF, PER), et l'exemple d'investissement locatif : "
+  f"logement de {eur(H['immo_prix'])}, apport de {fr(H['immo_apport'], 0)} % plus les frais, charges de {fr(H['immo_charges'], 0)} % des loyers, tranche marginale de {fr(H['tmi_exemple'], 0)} %, "
+  f"hausse des prix de {fr(H['immo_hausse'], 0)} % par an.")
 w("")
 w("## Calculatrice")
 w("")
@@ -120,6 +146,8 @@ w("python3 planche_contact.py && python3 rapport.py")
 w("```")
 w("")
 w("Données d'entrée dans [data/](data/) : comptes annuels et consensus Zacks, résultats trimestriels de Nu, Reddit et Adyen, fiscalité 2026, citations, ETF, horizon et DCA, "
+  "moat ([moat.csv](data/moat.csv)), compléments de la bible ([bible.csv](data/bible.csv)), immobilier ([immobilier.csv](data/immobilier.csv)), "
+  "super-investisseurs ([super_investisseurs.csv](data/super_investisseurs.csv)), "
   "chacune avec deux sources par chiffre clé. Les P/E NTM, croissances supposées, scénarios et zones d'achat par société viennent du modèle PEG du dépôt, daté du même jour.")
 w("")
 w("## Contrôles avant livraison")
@@ -131,9 +159,11 @@ w("- PDF : polices embarquées, une diapositive par page, planche contact relue.
 open(os.path.join(HERE, "RAPPORT.md"), "w", encoding="utf-8").write("\n".join(L) + "\n")
 
 ligne = (f"| {D['date']} | [Formation : le stock picking GARP, de zéro à autonome]({DOSSIER}/RAPPORT.md) | "
-         f"Diaporama de {len(PLAN)} diapositives pour débutant (objectifs et horizon, DCA, comptes, valorisation, PEG, grille GARP, PEA, compte-titres, assurance-vie, ETF, grands investisseurs), "
+         f"Diaporama « bible » de {len(PLAN)} diapositives pour débutant (horizon, DCA, comptes, moat, PEG, DCF, taux, change, grille GARP, PEA, compte-titres, assurance-vie, PER, ETF, "
+         f"Bourse contre immobilier, quinze grands investisseurs, ordres, arnaques), "
          f"avec calculatrice : {eur(D['defauts']['capital'])} + {eur(D['defauts']['mensuel'])}/mois sur {fr(D['defauts']['annees'], 0)} ans à {fr(D['defauts']['rendement'] * 100, 0)} % brut "
-         f"donnent {eur(env['PEA']['net'])} nets en PEA contre {eur(env['CTO']['net'])} sur un compte-titres ; {pct(fx[2]['frais'], 0)} de frais par an coûtent {pct(fx[2]['part_perdue'], 0)} du capital en 30 ans "
+         f"donnent {eur(env['PEA']['net'])} nets en PEA contre {eur(env['CTO']['net'])} sur un compte-titres ; {pct(fx[2]['frais'], 0)} de frais par an coûtent {pct(fx[2]['part_perdue'], 0)} du capital en 30 ans ; "
+         f"IEIF sur 40 ans : {fr(IM['ieif_actions_40'], 1)} % par an pour les actions françaises contre {fr(IM['ieif_paris_40'], 1)} % pour le logement parisien "
          f"· [PDF]({DOSSIER}/Formation_GARP_2026-10-13.pdf)" + (f" · [en ligne]({lien})" if lien else "") + " |")
 readme = os.path.join(RACINE, "README.md")
 lignes = open(readme, encoding="utf-8").read().split("\n")
