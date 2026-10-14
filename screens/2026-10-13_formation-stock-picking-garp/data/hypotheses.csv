@@ -2,7 +2,7 @@ id,valeur,unite,usage,justification
 calc_capital,10000,€,"calculatrice, valeur par défaut",hyp. pédagogique : un premier capital courant
 calc_versement,300,€ par mois,"calculatrice, valeur par défaut",hyp. pédagogique : effort d'épargne régulier
 calc_duree,20,ans,"calculatrice, valeur par défaut","hyp. : au-delà des 5 ans du PEA et des 8 ans de l'assurance-vie, pour montrer leur avantage"
-calc_rendement,8,% par an,"calculatrice, valeur par défaut","hyp. prudente : sous le rendement espéré central du Nasdaq 100 reconstitué (10,4 %/an) et du portefeuille (19,1 %/an) calculés le 13/10/2026"
+calc_rendement,8,% par an,"calculatrice, valeur par défaut","hyp. prudente pour des actions détenues longtemps : sous le rendement espéré central de 10,4 %/an du Nasdaq 100 reconstitué (modèle PEG du 13/10/2026)"
 calc_frais,0.5,% par an,"calculatrice, valeur par défaut",hyp. : bas de la fourchette des frais de gestion d'une assurance-vie en ligne (fiscalite.csv)
 calc_inflation,2,% par an,"calculatrice, valeur par défaut",hyp. : cible de moyen terme de la Banque centrale européenne
 ex_bpa_depart,10,$,exemple cours = BPA × P/E,exemple pédagogique

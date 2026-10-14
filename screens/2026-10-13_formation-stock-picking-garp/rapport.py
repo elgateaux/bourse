@@ -36,7 +36,8 @@ w = L.append
 w("# Formation : le stock picking GARP, de zéro à autonome")
 w("")
 w(f"Diaporama du {D['date']} (cours du {D['date_cours']}) pour un investisseur français débutant : {len(PLAN)} diapositives, une calculatrice d'intérêts composés, "
-  "un calculateur de PEG, un quiz de dix questions, un glossaire et des sources numérotées. Même style que la vidéo du portefeuille du même jour.")
+  "un calculateur de PEG, un quiz de dix questions, un glossaire et des sources numérotées. Même style que la vidéo du même jour. "
+  "NVIDIA, TSMC, Nu, Reddit et Adyen servent uniquement d'exemples d'analyse : le diaporama ne présente ni portefeuille ni comparaison de performance avec un indice.")
 w("")
 w("*La Gazette du PEG est un titre fictif : il ne correspond à aucune publication existante. Analyse quantitative et datée, qui ne constitue pas un conseil en investissement personnalisé.*")
 w("")
@@ -61,7 +62,7 @@ n, t = R["NVDA"], R["TSM"]
 w(f"- **Lire les comptes.** NVIDIA, exercice 2026 : marge opérationnelle de {pct(n['marge_operationnelle'])}, FCF de {fr(n['fcf'] / 1000, 1)} Md$, ROIC de {pct(n['roic'])}. "
   f"TSMC, 2025 : capex de {pct(t['capex_ca'])} du chiffre d'affaires, contre {pct(n['capex_ca'])} pour NVIDIA. Reddit : {pct(R['RDDT']['dilution'], 1, True)} d'actions en un an.")
 w(f"- **Valoriser.** Cinq P/E pour le même cours de NVIDIA, de {fr(min(p for *_, p in D['pe5']), 1)} à {fr(max(p for *_, p in D['pe5']), 1)}. "
-  f"PEG de long terme du portefeuille : {fr(D['comparaison']['peg_lt']['ptf'], 2)}, contre {fr(D['comparaison']['peg_lt']['ndx'], 2)} pour le Nasdaq 100 reconstitué.")
+  f"Son PEG tombe à {fr(V['NVDA']['peg_2027'], 2)} avec la croissance de pic attendue pour 2027, mais vaut {fr(V['NVDA']['peg_lt'], 2)} avec une croissance durable de {pct(V['NVDA']['croissance_retenue'], 0)} (hyp.).")
 w(f"- **Enveloppes.** {eur(D['defauts']['capital'])} puis {eur(D['defauts']['mensuel'])} par mois, {fr(D['defauts']['annees'], 0)} ans, {fr(D['defauts']['rendement'] * 100, 0)} % brut, "
   f"{fr(D['defauts']['frais'] * 100, 1)} % de frais : {eur(env['PEA']['net'])} nets dans un PEA, {eur(env['AV']['net'])} en assurance-vie, {eur(env['CTO']['net'])} sur un compte-titres.")
 w(f"- **Frais.** Sur 30 ans, {pct(fx[2]['frais'], 0)} de frais par an coûtent {pct(fx[2]['part_perdue'])} du capital final ; {pct(fx[0]['frais'])} en coûtent {pct(fx[0]['part_perdue'])}. "
@@ -91,7 +92,7 @@ w("")
 w("## Hypothèses")
 w("")
 w("Toutes les hypothèses éditoriales sont marquées « hyp. » et justifiées ligne par ligne dans [data/hypotheses.csv](data/hypotheses.csv) : valeurs par défaut de la calculatrice "
-  f"(rendement de {fr(H['calc_rendement'], 0)} %, sous les {fr(D['comparaison']['tcam_esperance']['ndx'] * 100, 1)} %/an espérés pour le Nasdaq 100), seuils de la grille GARP, noyau de "
+  f"(rendement de {fr(H['calc_rendement'], 0)} % brut par an), seuils de la grille GARP, noyau de "
   f"{fr(H['noyau_min'], 0)} à {fr(H['noyau_max'], 0)} %, exemples pédagogiques (formule cours = BPA × P/E, DCA).")
 w("")
 w("## Calculatrice")
@@ -119,7 +120,7 @@ w("python3 planche_contact.py && python3 rapport.py")
 w("```")
 w("")
 w("Données d'entrée dans [data/](data/) : comptes annuels et consensus Zacks, résultats trimestriels de Nu, Reddit et Adyen, fiscalité 2026, citations, ETF, horizon et DCA, "
-  "chacune avec deux sources par chiffre clé. Les sorties datées de l'analyse vidéo du même jour (P/E NTM, PEG, scénarios) sont réutilisées telles quelles.")
+  "chacune avec deux sources par chiffre clé. Les P/E NTM, croissances supposées, scénarios et zones d'achat par société viennent du modèle PEG du dépôt, daté du même jour.")
 w("")
 w("## Contrôles avant livraison")
 w("")

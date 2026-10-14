@@ -129,7 +129,7 @@ def SOC(soc):
 
 
 def VID():
-    return "calculs du 13/10/2026 " + S.refs([("La Gazette du PEG* : modèle PEG et vidéo du portefeuille, 13/10/2026 (valeurs.csv, comparaison.csv, stress_tests.csv)",
+    return "calculs du 13/10/2026 " + S.refs([("Modèle PEG du dépôt : P/E NTM, croissances supposées, scénarios et zones d'achat au 13/10/2026 (valeurs.csv)",
                                                 REPO + "screens/2026-10-13_video-portefeuille_hyperframes/RAPPORT.md")])
 
 
@@ -301,7 +301,7 @@ SECTIONS = [
     ("Valoriser", "04", "Capitalisation, P/E, PEG : combien payer pour la croissance."),
     ("La méthode GARP", "05", "La croissance à un prix raisonnable, en règles mesurables."),
     ("Enveloppes, frais et impôts", "06", "PEA, compte-titres, assurance-vie : ce que l'État et les intermédiaires prélèvent."),
-    ("Les ETF", "07", "Le socle du portefeuille : comment fonctionne un fonds indiciel coté, et lesquels choisir."),
+    ("Les ETF", "07", "Le socle d'un portefeuille : comment fonctionne un fonds indiciel coté, et lesquels choisir."),
     ("Intérêts composés", "08", "Le temps, le rendement et les frais : la calculatrice."),
     ("Grands investisseurs", "09", "Lynch, Buffett, Munger, Graham, Fisher, Smith, Bogle, Marks."),
     ("Passer à l'action", "10", "Routine, check-list, quiz, glossaire et sources."),
@@ -333,7 +333,7 @@ def s_cover(ctx):
     for t in CINQ:
         v = V[t]
         tape.append(f'<span class="tk" style="--c:{COUL[t]}"><b>{t}</b> {usd(v["prix"])} <s>P/E NTM</s> {fr(v["pe_ntm"], 1)} '
-                    f'<s>PEG</s> {fr(v["peg_lt"], 2)} <s>espéré</s> {pc(v["tcam_esperance"], 1, True)}/an</span>')
+                    f'<s>PEG</s> {fr(v["peg_lt"], 2)} <s>marge op.</s> {pc(R[t]["marge_operationnelle"], 0) if t in R else pc(D["adyen"]["marge_ebitda"], 0) + " (EBITDA)"}</span>')
     tape_html = "".join(tape) * 2
     body = f'''
 <div class="cv">
@@ -431,7 +431,7 @@ def s_formule(ctx):
     <ol class="steps">
       <li class="a"><b>La croissance du BPA.</b> Le moteur principal sur trois à cinq ans : à long terme, le cours suit le bénéfice.</li>
       <li class="a"><b>La variation du P/E.</b> L'humeur du marché. Elle peut doper ou annuler la croissance.</li>
-      <li class="a"><b>Le dividende.</b> Faible chez les sociétés de croissance : de 0 à 1 % pour nos cinq valeurs.</li>
+      <li class="a"><b>Le dividende.</b> Faible chez les sociétés de croissance : de 0 à 1 % pour nos cinq exemples.</li>
     </ol>
     <p class="p a"><b class="gold">Le GARP</b> consiste à acheter un BPA qui croît vite, sans payer un P/E qui risque de se dégonfler.</p>
   </div>
@@ -440,7 +440,6 @@ def s_formule(ctx):
 
 
 def s_etf(ctx):
-    ro = D["retro"]["1an"]
     s1, s15 = float(FI["spiva_2025"]["valeur"]), float(FI["spiva_15ans"]["valeur"])
     rows = [["Frais", "faibles et prévisibles", "courtage et change à l'achat, puis quasi nuls"],
             ["Temps", "quelques minutes par an", "plusieurs heures par trimestre"],
@@ -457,10 +456,10 @@ def s_etf(ctx):
   </div>
   <div class="g">
     {table(["", "ETF indiciel", "Stock picking"], rows, cls="cmp")}
-    <div class="card a" style="border-color:var(--neg)"><p class="p"><b>Notre propre rétroviseur.</b> Sur 12 mois, le portefeuille de cinq valeurs a fait <b class="neg">{fr(float(ro["portefeuille_poids_egaux"]), 1, True)}{NBSP}%</b>, contre <b>{fr(float(ro["QQQ"]), 1, True)}{NBSP}%</b> pour le Nasdaq 100 (QQQ). Le stock picking peut sous-performer longtemps. Il n'a de sens qu'avec une méthode, un horizon de trois à cinq ans et de la discipline.</p></div>
+    <div class="card hl a"><p class="p"><b>Quand le stock picking a du sens.</b> Avec une méthode écrite, un horizon de trois à cinq ans, du temps pour suivre chaque société, et l'acceptation de faire moins bien que l'indice pendant des années. Sinon, l'ETF suffit.</p></div>
   </div>
 </div>'''
-    return body, "SPIVA " + F("spiva_2025") + " ; rétroviseur : " + VID()
+    return body, "SPIVA " + F("spiva_2025", "spiva_15ans") + " ; citation " + I("bogle_haystack")
 
 
 def s_risque(ctx):
@@ -800,15 +799,13 @@ def s_piege(ctx):
     for t in CINQ:
         v = V[t]
         rows.append([f'<span class="dot" style="--c:{COUL[t]}"></span>{NOM[t]}', pc(v["croissance_2027"], 0, True), fr(v["peg_2027"], 2), pc(v["croissance_retenue"], 0), f'<b>{fr(v["peg_lt"], 2)}</b>'])
-    c = D["comparaison"]
-    rows.append(['<span class="dot" style="--c:var(--ndx)"></span>Nasdaq 100 reconstitué', pc(c["g27"]["ndx"] / 100, 0, True), fr(c["peg27"]["ndx"], 2), pc(c["g_lt"]["ndx"] / 100, 1), f'<b>{fr(c["peg_lt"]["ndx"], 2)}</b>'])
     body = hd("Valoriser · le piège", "Le piège : un PEG flatté par une croissance de pic",
               f"Le consensus prévoit {pc(V['NVDA']['croissance_2027'], 0, True)} de BPA pour NVIDIA en 2027. Avec ce chiffre, le PEG tombe à {fr(V['NVDA']['peg_2027'], 2)}. Mais une croissance pareille ne dure pas.")
     body += f'''<div class="g c32 main">{table(["Valeur", "BPA 2027 (consensus)", "PEG 2027", "Croissance retenue", "PEG long terme"], rows, num=(1, 2, 3, 4))}
   <div class="g">{ul(["<b>Plafond.</b> Dans le PEG N+1, la méthode plafonne la croissance à 50 % pour neutraliser les effets de base.",
                     "<b>Prudence.</b> Le PEG de long terme utilise une croissance durable, plus prudente que le consensus quand celui-ci extrapole un pic (hyp.).",
-                    f"<b>L'indice aussi.</b> Le Nasdaq 100 affiche un PEG 2027 de {fr(c['peg27']['ndx'], 2)}, mais {fr(c['peg_lt']['ndx'], 2)} sur la durée : la mémoire, au sommet de son cycle, fausse la photo ({fr(c['peg_lt']['ndx_hm'], 2)} hors mémoire)."])}</div></div>'''
-    return body, "Données : " + VID() + " ; " + METH()
+                    f"<b>Les cycliques à part.</b> Le consensus attend {pc(V['MU']['croissance_f1'], 0, True)} de BPA pour Micron l'an prochain : un PEG calculé sur ce chiffre ne veut rien dire. La méthode n'applique pas de PEG aux cycliques."])}</div></div>'''
+    return body, "Données : " + VID() + " ; Micron " + Z("MU") + " ; " + METH()
 
 
 def s_consensus(ctx):
@@ -834,25 +831,25 @@ def s_consensus(ctx):
 
 
 def s_suppose(ctx):
-    c = D["comparaison"]
     rows = []
     for t in CINQ:
         v = V[t]
-        rows.append([f'<span class="dot" style="--c:{COUL[t]}"></span>{NOM[t]}', usd(v["prix"]), usd(v["prix_peg1"]), pc(v["ecart_zone"], 1, True)])
+        rows.append([f'<span class="dot" style="--c:{COUL[t]}"></span>{NOM[t]}', fr(v["pe_ntm"], 1), f'{fr(v["pe_ntm"], 1)}{NBSP}%', pc(v["croissance_retenue"], 0),
+                     f'<span class="{"neg" if v["pe_ntm"] > v["croissance_retenue"] * 100 else "pos"}">{pc(v["ecart_zone"], 1, True)}</span>'])
+    nv = V["NVDA"]
+    dessus = [NOM[t] for t in CINQ if V[t]["ecart_zone"] > 0]
+    dessous = [NOM[t] for t in CINQ if V[t]["ecart_zone"] <= 0]
+    def liste(xs):
+        return xs[0] if len(xs) == 1 else ", ".join(xs[:-1]) + " et " + xs[-1]
     body = hd("Valoriser · le second niveau", "Ce que le prix suppose déjà",
               "« Bonne société, donc j'achète » ne suffit pas. La vraie question : quelle croissance le cours suppose-t-il, et en quoi pensez-vous différemment du marché ?")
-    body += f'''<div class="g c2 main">
-  <div class="g">
-    <div class="g c3 lc1">
-      {kv("P/E NTM du portefeuille", fr(c["pe_ntm"]["ptf"], 1), f'contre {fr(c["pe_ntm"]["ndx"], 1)} pour le Nasdaq 100', "var(--gold)")}
-      {kv("Croissance durable retenue", f'{fr(c["g_lt"]["ptf"], 1)}{NBSP}%', f'contre {fr(c["g_lt"]["ndx"], 1)}{NBSP}% (hyp.)', "var(--gold)")}
-      {kv("PEG de long terme", fr(c["peg_lt"]["ptf"], 2), f'contre {fr(c["peg_lt"]["ndx"], 2)}', "var(--gold)")}
-    </div>
-    <p class="p a">À {fr(c["pe_ntm"]["ndx"], 1)} fois les bénéfices, le Nasdaq 100 suppose une croissance d'environ {fr(c["pe_ntm"]["ndx"], 0)}{NBSP}% par an pour un PEG de 1. Nous retenons {fr(c["g_lt"]["ndx"], 1)}{NBSP}%. Le portefeuille, lui, est payé à peu près sa croissance.</p>
+    body += f'''<div class="g main">
+  <div class="g c2">
+    <div class="card hl a"><span class="lab">L'exemple de NVIDIA</span><p class="p">À {fr(nv["pe_ntm"], 1)} fois ses bénéfices des douze prochains mois, NVIDIA est « payée à son prix » si son BPA croît de {fr(nv["pe_ntm"], 1)}{NBSP}% par an pendant des années. L'hypothèse centrale est de {pc(nv["croissance_retenue"], 0)} : le cours suppose un peu plus que ce que l'on attend.</p></div>
     {quote("marks_second", "sm")}
   </div>
-  <div class="g">{table(["Valeur", "Cours", "Cours pour un PEG de 1", "Écart"], rows, num=(1, 2, 3))}
-  <p class="p m a">Toutes les valeurs cotent au-dessus de leur prix « PEG = 1 ». Acheter quand même, c'est parier sur une croissance au moins égale à l'hypothèse centrale.</p></div>
+  {table(["Société", "P/E NTM", "Croissance implicite (PEG = 1)", "Croissance supposée (hyp.)", "Cours face au cours « PEG = 1 »"], rows, num=(1, 2, 3, 4))}
+  <p class="p m a">La croissance implicite est égale au P/E. {liste(dessus)} {"cote" if len(dessus) == 1 else "cotent"} au-dessus de {"son" if len(dessus) == 1 else "leur"} cours « PEG = 1 » ; {liste(dessous)} en dessous. Acheter au-dessus, c'est parier sur une croissance au moins égale à l'hypothèse.</p>
 </div>'''
     return body, "Données : " + VID()
 
@@ -906,8 +903,8 @@ def s_grille_app(ctx):
         rows.append(r)
     rows.append(["<b>Score</b>"] + [f'<b>{G[t]["score"]} / {G[t]["evalues"]}</b>' for t in CINQ])
     head = ["Critère"] + [f'<span class="dot" style="--c:{COUL[t]}"></span>{NOM[t]}' for t in CINQ]
-    body = hd("La méthode GARP · l'application", "La grille appliquée aux cinq valeurs",
-              "Les cinq valeurs ont été choisies avec cette méthode : elles passent presque tous les critères. Les écarts sont plus instructifs que les succès.")
+    body = hd("La méthode GARP · l'application", "La grille appliquée à cinq exemples",
+              "Cinq sociétés en exemple, sept critères. Une grille se lit ligne par ligne : les échecs sont plus instructifs que les succès.")
     body += table(head, rows, cls="grille w")
     body += f'''<div class="g c3 main">
   <div class="card a" style="--c:{COUL["RDDT"]}"><p class="p"><b class="col">Reddit</b> échoue sur la dilution ({pc(R["RDDT"]["dilution"], 1, True)} d'actions en un an). À surveiller à chaque trimestre.</p></div>
@@ -925,19 +922,17 @@ def s_scenarios(ctx):
 
     rows = []
     items = [(t, NOM[t], COUL[t], V[t]["tcam_bear"], V[t]["tcam_base"], V[t]["tcam_bull"], V[t]["tcam_esperance"]) for t in CINQ]
-    c = D["comparaison"]
-    items.append(("PTF", "Portefeuille", "var(--gold)", c["tcam_bear"]["ptf"], c["tcam_base"]["ptf"], c["tcam_bull"]["ptf"], c["tcam_esperance"]["ptf"]))
-    items.append(("NDX", "Nasdaq 100", "var(--ndx)", c["tcam_bear"]["ndx"], c["tcam_base"]["ndx"], c["tcam_bull"]["ndx"], c["tcam_esperance"]["ndx"]))
     for t, nom, col, b, m, u, esp in items:
         rows.append(f'''<div class="rg a" style="--c:{col}"><span class="rg-l">{nom}</span><span class="rg-t"><i class="rg-band" style="left:{pos(b):.2f}%;width:{pos(u) - pos(b):.2f}%"></i>
       <i class="rg-m" style="left:{pos(m):.2f}%"></i><i class="rg-e" style="left:{pos(esp):.2f}%"></i>
       <span class="rg-v b" style="left:{pos(b):.2f}%">{pc(b, 0, True)}</span><span class="rg-v u" style="left:{pos(u):.2f}%">{pc(u, 0, True)}</span></span><span class="rg-x">{pc(esp, 1, True)}</span></div>''')
     ticks = "".join(f'<span style="left:{pos(x / 100):.2f}%">{fr(x, 0, x > 0)}{NBSP}%</span>' for x in range(-20, 41, 10))
     body = hd("La méthode GARP · l'incertitude", "Penser en fourchettes : trois scénarios par valeur",
-              "Pessimiste, central, optimiste, pondérés 25 / 50 / 25 : on en tire un rendement annuel espéré sur quatre ans.")
+              "Personne ne connaît l'avenir d'une société. On écrit donc trois scénarios, pessimiste, central et optimiste, pondérés 25 / 50 / 25, et on en tire un rendement annuel espéré sur quatre ans.")
     body += f'''<div class="g c31 main"><div class="card tight a"><div class="rg-head"><span class="lab">Rendement annuel sur 4 ans : pessimiste · central (trait) · optimiste ; losange = espérance</span><span class="lab">Espéré</span></div>
     {"".join(rows)}<div class="rg-ticks">{ticks}</div></div>
-  <div class="g">{ul(["<b>L'espérance se calcule sur les valeurs finales</b>, pas sur les taux : le scénario optimiste pèse plus qu'il n'y paraît.",
+  <div class="g">{ul(["<b>Chaque scénario</b> combine une croissance du BPA et un P/E de sortie : c'est la formule cours = BPA × P/E, projetée sur quatre ans.",
+                    "<b>L'espérance se calcule sur les valeurs finales</b>, pas sur les taux : le scénario optimiste pèse plus qu'il n'y paraît.",
                     "<b>Le pessimiste n'est pas le pire</b> : c'est un scénario plausible et défavorable, avec un P/E de sortie comprimé."])}</div></div>'''
     return body, "Scénarios et espérances : " + VID() + " ; " + METH()
 
@@ -956,7 +951,7 @@ def s_zone(ctx):
       <span class="zn-x">{pc(v["ecart_zone"], 1, True)}</span></div>''')
     body = hd("La méthode GARP · acheter", "La zone d'achat, ou la marge de sécurité",
               f"La zone d'achat est le cours pour lequel le PEG de long terme vaut {fr(H['zone_peg'], 0)} : croissance retenue × BPA NTM. Sous un PEG de {fr(H['zone_peg_forte'], 1)}, c'est la zone de forte sécurité.")
-    body += f'''<div class="g c31 main"><div class="card a"><div class="rg-head"><span class="lab">Cours du {D["date_cours"]} face à la zone d'achat (vert foncé : PEG ≤ {fr(H['zone_peg_forte'], 1)} ; vert : PEG ≤ {fr(H['zone_peg'], 0)})</span><span class="lab">Au-dessus de la zone</span></div>{"".join(rows)}</div>
+    body += f'''<div class="g c31 main"><div class="card a"><div class="rg-head"><span class="lab">Cours du {D["date_cours"]} face à la zone d'achat (vert foncé : PEG ≤ {fr(H['zone_peg_forte'], 1)} ; vert : PEG ≤ {fr(H['zone_peg'], 0)})</span><span class="lab">Écart à la zone</span></div>{"".join(rows)}</div>
   <div class="g">{ul(["<b>Dans la zone</b> : achat en une fois.",
                     "<b>Au-dessus</b> : en deux fois, la moitié maintenant, la moitié sur repli ou après la publication suivante.",
                     "<b>Toujours dire</b> que l'on achète au-dessus de la zone, et pourquoi."])}
@@ -978,23 +973,25 @@ def s_vendre(ctx):
 
 
 def s_portefeuille(ctx):
-    c = D["comparaison"]
-    st = D["stress"]
-    moteurs = "".join(f'<div class="ln-r a"><span><i class="dot" style="--c:{COUL[t]}"></i>{NOM[t]} · <small>{e(V[t]["theme"])}</small></span><b>20{NBSP}%</b></div>' for t in CINQ)
-    chocs = [s for s in st if not s["scenario"].startswith("Tout en")]
-    srows = table(["Choc (une ou plusieurs valeurs en scénario pessimiste)", "Portefeuille", "Nasdaq 100"],
-                  [[e(s["scenario"]), pc(float(s["tcam_portefeuille"]), 1, True), pc(float(s["tcam_nasdaq100"]), 1, True)] for s in chocs], num=(1, 2), cls="stress")
-    body = hd("La méthode GARP · assembler", "Des moteurs de croissance indépendants",
-              "Le but n'est pas la diversification pour elle-même. C'est l'indépendance des moteurs de croissance : que la panne de l'un n'arrête pas les autres.")
-    body += f'''<div class="g c23 main">
+    moteur = {"NVDA": "les dépenses d'intelligence artificielle des grands groupes du numérique",
+              "TSM": "la fabrication des puces les plus avancées, pour tous les concepteurs",
+              "NU": "la bancarisation numérique au Brésil, au Mexique et en Colombie",
+              "RDDT": "la publicité et les licences de données de ses communautés",
+              "ADYEY": "le volume de paiements des grands marchands"}
+    moteurs = "".join(f'<div class="ln-r a"><span><i class="dot" style="--c:{COUL[t]}"></i><b>{NOM[t]}</b></span><span class="mot">{moteur[t]}</span></div>' for t in CINQ)
+    body = hd("La méthode GARP · assembler", "Diversifier les moteurs, pas les lignes",
+              "Dix actions qui dépendent de la même tendance ne font pas un portefeuille diversifié. La question : qu'est-ce qui fait croître chaque société, et un même choc peut-il en frapper plusieurs ?")
+    body += f'''<div class="g c2 main">
+  <div class="card a"><span class="lab">Cinq exemples, cinq moteurs de croissance</span>{moteurs}</div>
   <div class="g">
-    <div class="card a"><span class="lab">Cinq lignes, cinq moteurs, poids égaux (hyp.)</span>{moteurs}</div>
-    <div class="card stat a" style="--c:var(--gold)"><span class="v">{cnt(c["part_ia"]["ptf"] * 100, 0, NBSP + "%")}</span><span class="l">du portefeuille dépend de l'intelligence artificielle, contre {pc(c["part_ia"]["ndx"], 0)} pour le Nasdaq 100 : le principal risque de concentration.</span></div>
+    <div class="card hl a"><span class="lab">Le risque commun</span><p class="p">NVIDIA et TSMC n'ont pas le même métier, mais le même client final : les investissements dans l'IA. Un ralentissement de ces dépenses frapperait les deux en même temps. Deux lignes, un seul moteur.</p></div>
+    {ul(["<b>5 à 10 lignes</b> (hyp.) : assez pour survivre à une erreur, assez peu pour suivre chaque société.",
+         "<b>Pas plus de deux lignes par moteur.</b>",
+         "<b>Pour chaque ligne, le choc qui la ferait chuter</b> : vérifier qu'il ne frappe pas toutes les autres.",
+         "<b>Poids égaux au départ</b>, puis rééquilibrage selon les règles de vente."])}
   </div>
-  <div class="g"><span class="lab a">Tests de résistance : rendement annuel sur 4 ans</span>{srows}
-    <p class="p m a">5 à 10 lignes, pas plus de deux par moteur. Si les scénarios des valeurs étaient indépendants, le portefeuille aurait {pc(c['p_sous_indice_central']['ptf'], 0)} de chances de finir sous l'indice et {pc(c['p_perte']['ptf'], 1)} de perdre de l'argent. Ils ne le sont pas tout à fait : ces chiffres flattent la diversification.</p></div>
 </div>'''
-    return body, "Données et tests : " + VID()
+    return body, HYPS() + " ; " + METH()
 
 
 def s_biais(ctx):
@@ -1007,7 +1004,7 @@ def s_biais(ctx):
           ("Excès de confiance", f"{fr(float(FI['spiva_2025']['valeur']), 0)}{NBSP}% des gérants professionnels ont fait moins bien que l'indice en 2025. Et vous ?")]
     cards = "".join(f'<div class="card a"><span class="lab">{n}</span><p class="p">{t}</p></div>' for n, t in bs)
     body = hd("La méthode GARP · se méfier de soi", "Les biais qui coûtent cher",
-              "Le premier ennemi de l'investisseur est dans le miroir. Chaque biais a un exemple chiffré dans nos cinq valeurs.")
+              "Le premier ennemi de l'investisseur est dans le miroir. Chaque biais a un exemple chiffré parmi nos sociétés.")
     body += f'<div class="g c32 main"><div class="g c3 lc1">{cards}</div><div class="g">{quote("munger_invert", "sm", avec_lecon=True)}</div></div>'
     return body, "Cours et variations : " + Z("ADYEY", "MU", "RDDT") + " ; SPIVA " + F("spiva_2025") + " ; citation " + I("munger_invert")
 
@@ -1038,7 +1035,7 @@ def s_pea(ctx):
     body += f'''<div class="g c3 main">
   <div class="g">{kv("Plafond de versements", cnt(fv("pea_plafond"), 0, NBSP + "€"), e(FI["pea_plafond"]["precision"].split(";")[0]), "var(--gold)")}
     {kv("Impôt après " + fr(fv("pea_duree"), 0) + " ans", cnt(fv("ps_2026"), 1, NBSP + "%"), "prélèvements sociaux seulement", "var(--gold)")}</div>
-  <div class="g"><div class="card a"><span class="lab">Nos cinq valeurs dans un PEA ?</span>{elig}</div>
+  <div class="g"><div class="card a"><span class="lab">Nos cinq exemples dans un PEA ?</span>{elig}</div>
     <div class="card hl a"><p class="p"><b>L'astuce des ETF synthétiques.</b> Des ETF répliquent le Nasdaq 100 ou le S&amp;P 500 par un contrat d'échange tout en restant éligibles. {e(FI["etf_synthetiques"]["precision"].split(";")[-1].strip()).capitalize()}.</p></div></div>
   <div class="card a"><span class="lab">Frais plafonnés (décret n° 2020-95)</span>{"".join(f'<div class="ln-r"><span>{a}</span><b>{b}</b></div><p class="p m sm">{e(c)}</p>' for a, b, c in fr_)}
 </div>
@@ -1263,7 +1260,7 @@ def s_synthese(ctx):
             ["Benjamin Graham", "M. Marché, marge de sécurité", "Zone d'achat à PEG " + fr(H["zone_peg"], 0) + " et " + fr(H["zone_peg_forte"], 1) + ", trésorerie nette"],
             ["Philip Fisher", "Croissance de qualité, vendre presque jamais", "Trois raisons de vendre, marge nette ≥ " + fr(H["garp_marge_nette_min"], 0) + NBSP + "%"],
             ["Terry Smith", "Bonnes entreprises, pas trop cher, ne rien faire", "Grille de qualité, rééquilibrage seulement à PEG " + fr(H["vente_peg"], 0)],
-            ["John Bogle", "Les frais et l'indice", "Comparer chaque année au Nasdaq 100 ; frais bas"],
+            ["John Bogle", "Les frais et l'indice", "Un socle d'ETF à bas frais ; se mesurer chaque année à un indice"],
             ["Howard Marks", "Pensée de second niveau", "Ce que le prix suppose ; croissance retenue plus prudente que le consensus"]]
     body = hd("Grands investisseurs · la synthèse", "Ce que chacun apporte à la grille",
               "La méthode de cette formation n'invente rien. Elle assemble les leçons des plus grands en règles chiffrées.")
@@ -1290,13 +1287,12 @@ def s_routine(ctx):
 
 def s_quiz(ctx):
     n, ts = R["NVDA"], R["TSM"]
-    c = D["comparaison"]
-    peg = c["pe_ntm"]["ptf"] / c["g_lt"]["ptf"]
+    peg = V["NVDA"]["pe_ntm"] / (V["NVDA"]["croissance_retenue"] * 100)
     fx2 = D["frais"][2]
     qs = [(f"NVIDIA : {md(n['resultat_net'])} de résultat net, {fr(n['actions_moyennes'] / 1000, 2)} milliards d'actions. Son BPA ?",
            [usd(n["bpa_recalcule"]), usd(n["bpa_recalcule"] * 10, 1), usd(n["bpa_recalcule"] / 10)], 0, "BPA = résultat net ÷ nombre moyen d'actions."),
-          (f"P/E de {fr(c['pe_ntm']['ptf'], 1)}, croissance du BPA de {fr(c['g_lt']['ptf'], 1)} % par an. Le PEG ?",
-           [fr(1 / peg, 2), fr(peg, 2), fr(c["peg_lt"]["ndx"], 2)], 1, "PEG = P/E ÷ croissance en points."),
+          (f"P/E de {fr(V['NVDA']['pe_ntm'], 1)}, croissance du BPA de {fr(V['NVDA']['croissance_retenue'] * 100, 0)} % par an. Le PEG ?",
+           [fr(1 / peg, 2), fr(peg, 2), fr(V['NVDA']['pe_ntm'] + V['NVDA']['croissance_retenue'] * 100, 1)], 1, "PEG = P/E ÷ croissance en points."),
           (f"TSMC : flux opérationnel {md(ts['flux_operationnel'])}, capex {md(ts['capex'])}. Son FCF ?",
            [md(ts["flux_operationnel"] + ts["capex"]), md(ts["fcf"]), md(ts["flux_operationnel"])], 1, "FCF = flux opérationnel − capex."),
           ("Laquelle de ces actions peut entrer dans un PEA ?", ["NVIDIA", "Nu", "Adyen"], 2, "Adyen est une société néerlandaise : Union européenne."),
@@ -1440,11 +1436,12 @@ def s_noyau(ctx):
          "<b>Satellites</b> : le reste, en actions choisies avec la grille GARP. C'est là que se joue la surperformance… ou la sous-performance.",
          "<b>Une fois par an</b>, comparer les satellites à l'indice. Trois ans de retard ? Réduire leur part."])}</div>
   <div class="g">
-    <div class="card hl a"><p class="p"><b>Le portefeuille de cette formation est 100 % satellites.</b> Cinq valeurs, aucun ETF : c'est le choix d'un investisseur qui accepte l'écart à l'indice. Sur 12 mois, il a fait {fr(float(D["retro"]["1an"]["portefeuille_poids_egaux"]), 1, True)}{NBSP}%, contre {fr(float(D["retro"]["1an"]["QQQ"]), 1, True)}{NBSP}% pour le Nasdaq 100.</p></div>
-    {quote("bogle_haystack", "sm")}
+    <div class="card stat a" style="--c:var(--neg)"><span class="v">{cnt(float(FI["spiva_2025"]["valeur"]), 0, NBSP + "%")}</span><span class="l">des gérants professionnels de grandes valeurs américaines ont fait moins bien que le S&amp;P 500 en 2025. Le noyau indiciel protège de ce risque ; les satellites l'assument. {F("spiva_2025")}</span></div>
+    {ul(["<b>Le noyau</b> se gère presque seul : un ou deux ETF larges, un versement programmé, très peu de décisions.",
+         "<b>Les satellites</b> sont le terrain de la méthode GARP, détaillée dans la suite de cette formation."])}
   </div>
 </div>'''
-    return body, HYPS() + " ; rétroviseur " + VID()
+    return body, HYPS() + " ; SPIVA " + F("spiva_2025")
 
 
 def s_dca_ex(ctx):
@@ -1481,7 +1478,7 @@ def s_etf_contenu(ctx):
               f"L'ETF américain QQQ réplique le Nasdaq 100 : {q['nombre_lignes']} lignes pour {fr(float(q['frais_pct']), 2)}{NBSP}% de frais par an. Ses dix premières lignes pèsent {fr(float(q['poids_10_premieres_pct']), 1)}{NBSP}% du fonds.")
     body += f'''<div class="g c32 main"><div class="card tight a"><span class="lab">Les dix premières lignes de QQQ, positions au 04/09/2026</span>{bars}
     <p class="p m">Total des dix premières : {fr(top10, 1)}{NBSP}% (Alphabet compte deux fois : actions A et C).</p></div>
-  <div class="g">{ul([f"<b>Une seule de nos cinq valeurs</b> est dans le Nasdaq 100 : NVIDIA, première ligne à {fr(float(pos[0]['poids_pct']), 2)}{NBSP}%. TSMC, Nu et Reddit sont cotées au NYSE ; Adyen à Amsterdam.",
+  <div class="g">{ul([f"<b>Un seul de nos cinq exemples</b> est dans le Nasdaq 100 : NVIDIA, première ligne à {fr(float(pos[0]['poids_pct']), 2)}{NBSP}%. TSMC, Nu et Reddit sont cotées au NYSE ; Adyen à Amsterdam.",
                     f"<b>Un indice achète aussi les cycliques au sommet</b> : Micron pèse {fr(float(D['qqq'][3]['poids_pct']), 2)}{NBSP}% après {pc(V['MU']['chg_52s'], 0, True)} en un an.",
                     "<b>Pondération par la capitalisation</b> : plus une action monte, plus elle pèse. L'indice renforce ses gagnants, sans jamais regarder le prix.",
                     f"<b>Encours de QQQ</b> : {md(float(q['encours_musd']), 0)}."])}</div></div>'''
@@ -1729,7 +1726,7 @@ def plan(n_sources):
     add("La méthode GARP", "Trois scénarios", s_scenarios)
     add("La méthode GARP", "La zone d'achat", s_zone)
     add("La méthode GARP", "Quand vendre", s_vendre)
-    add("La méthode GARP", "Construire le portefeuille", s_portefeuille)
+    add("La méthode GARP", "Diversifier les moteurs", s_portefeuille)
     add("La méthode GARP", "Les biais", s_biais)
     opener("Enveloppes, frais et impôts")
     add("Enveloppes, frais et impôts", "Le tableau des enveloppes", s_enveloppes)
@@ -1772,7 +1769,6 @@ def plan(n_sources):
 def teasers():
     n = R["NVDA"]
     pe5 = D["pe5"]
-    c = D["comparaison"]
     t = lambda big, txt: f'<div class="op-tz a"><span class="op-big">{big}</span><span class="op-txt">{txt}</span></div>'
     fx = [float(r["frais_courants_pct"]) for r in D["etf"] if r["frais_courants_pct"]]
     return {
@@ -1781,7 +1777,7 @@ def teasers():
         "Les bases": t(cnt(n["bpa_gaap"], 2, NBSP + "$"), "de bénéfice par action pour NVIDIA sur l'exercice 2026"),
         "Lire les comptes": t(cnt(n["marge_operationnelle"] * 100, 1, NBSP + "%"), "de marge opérationnelle chez NVIDIA : 60 cents gardés sur chaque dollar vendu"),
         "Valoriser": t(f'{fr(min(p for *_, p in pe5), 1)} → {fr(max(p for *_, p in pe5), 1)}', "les cinq P/E de NVIDIA, pour un seul et même cours"),
-        "La méthode GARP": t(cnt(c["peg_lt"]["ptf"], 2), f"le PEG de long terme du portefeuille, contre {fr(c['peg_lt']['ndx'], 2)} pour le Nasdaq 100"),
+        "La méthode GARP": t("7", "critères chiffrés, les mêmes pour chaque société"),
         "Enveloppes, frais et impôts": t(f'{fr(fv("ps_2026"), 1)} <small>contre</small> {fr(fv("pfu_total"), 1)}{NBSP}%', "l'impôt sur les gains d'un PEA de plus de 5 ans, contre celui d'un compte-titres"),
         "Intérêts composés": t("×" + fr(D["interets"][1]["valeur_30ans"] / H["calc_capital"], 1), "votre capital en 30 ans à 7 % par an, sans rien ajouter"),
         "Grands investisseurs": t(cnt(float(D["lynch"]["rendement_annuel"]["valeur"]), 1, NBSP + "%"), "par an pour Peter Lynch au fonds Magellan, de 1977 à 1990"),
@@ -1953,7 +1949,7 @@ i.dot { font-style:normal; }
 .mini-b i { position:absolute; left:0; top:15%; height:70%; width:var(--w); background:var(--c); opacity:.35; border-radius:4px; transform-origin:left; }
 .mini-b span { position:relative; padding-left:8px; font-family:"GZ Plex Mono", monospace; font-weight:600; }
 .t.marg td { padding-top:6u; padding-bottom:6u; }
-.t.stress td { padding-top:7u; padding-bottom:7u; } .t.stress td:first-child { font-weight:400; }
+.ln-r .mot { font-size:var(--fs-s); color:var(--muted); text-align:right; max-width:62%; }
 
 /* citations */
 .q { display:flex; flex-direction:column; gap:10u; border-left:3px solid var(--gold); padding-left:16px; min-width:0; }
