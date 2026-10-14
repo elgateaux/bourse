@@ -11,7 +11,8 @@ stress_tests.csv et data/zacks_2026-10-13.csv), puis écrit :
 - interets_composes.csv, frais.csv, enveloppes.csv : intérêts composés, frais et fiscalité ;
 - calculatrice_tests.csv : cas de contrôle de la calculatrice (le JavaScript doit retrouver ces valeurs) ;
 - diaporama/donnees_formation.json : tout ce qu'affiche le diaporama, dont l'exemple de DCF, le risque de change,
-  le plafond du PER et l'exemple d'investissement locatif (rendement net, crédit, effet de levier).
+  le plafond du PER, l'exemple d'investissement locatif (rendement net, crédit, effet de levier) et la simulation
+  immobilier à crédit contre ETF en PEA à effort d'épargne égal (immobilier_simulation.csv).
 
 La simulation `simuler()` est la référence : le JavaScript de la calculatrice en est la traduction ligne à ligne.
 """
@@ -245,6 +246,141 @@ def grille(R, VAL, ady):
     return lignes
 
 
+# ---------------------------------------------------------------- immobilier à crédit contre ETF dans un PEA, à effort d'épargne égal
+def tri(flux):
+    """Taux de rendement interne annuel d'une suite de flux mensuels (négatif = versement), par dichotomie."""
+    def van(r_m):
+        return sum(f / (1 + r_m) ** t for t, f in enumerate(flux))
+    lo, hi = -0.05, 0.05
+    if van(lo) * van(hi) > 0:
+        return None
+    for _ in range(200):
+        mi = (lo + hi) / 2
+        if van(lo) * van(mi) <= 0:
+            hi = mi
+        else:
+            lo = mi
+    return (1 + (lo + hi) / 2) ** 12 - 1
+
+
+def abattements_pv(annees, IV):
+    """Abattements pour durée de détention (impôt, prélèvements sociaux) après `annees` années pleines."""
+    ir = ps = 0.0
+    for a in range(6, int(annees) + 1):
+        if a <= 21:
+            ir += IV("pv_ab_ir_6_21"); ps += IV("pv_ab_ps_6_21")
+        elif a == 22:
+            ir += IV("pv_ab_ir_22"); ps += IV("pv_ab_ps_22")
+        elif a <= 30:
+            ps += IV("pv_ab_ps_23_30")
+    return min(ir, 100.0) / 100, min(ps, 100.0) / 100
+
+
+def simuler_immo(IV, P, hausse, rdt_actions, annees_vente=None, credit=True):
+    """Investisseur A : logement loué nu (régime réel), acheté à crédit ou comptant, revendu après `annees_vente` ans.
+    Investisseur B : verse les mêmes sommes, aux mêmes dates, dans un ETF logé dans un PEA ; au-delà du plafond
+    des versements du PEA, le surplus va sur un compte-titres (même ETF, flat tax à la sortie).
+    Mensuel : loyers et charges indexés sur l'inflation, impôt payé en fin d'année, déficit reporté 10 ans."""
+    n_credit = int(HYP["immo_duree_credit"] * 12)
+    T = int((annees_vente or HYP["immo_duree_credit"]) * 12)
+    infl = HYP["calc_inflation"] / 100
+    frais_acq = P * IV("frais_notaire") / 100
+    emprunt = P * (1 - HYP["immo_apport"] / 100) if credit else 0.0
+    apport = P + frais_acq - emprunt
+    i_m = IV("credit_taux_20") / 100 / 12
+    mens = emprunt * i_m / (1 - (1 + i_m) ** -n_credit) if credit else 0.0
+    assur_m = emprunt * HYP["immo_assurance"] / 100 / 12
+    taux_imp = (HYP["tmi_exemple"] + IV("ps_foncier")) / 100
+    g_e = (1 + rdt_actions) ** (1 / 12) * (1 - HYP["immo_frais_etf"] / 100) ** (1 / 12)
+    plafond = PARAMS["pea_plafond"]
+    solde, verse = emprunt, apport
+    pea, v_pea = min(apport, plafond), min(apport, plafond)
+    cto, v_cto = apport - pea, apport - v_pea
+    flux, base_an, reports, serie = [-apport], 0.0, [], []
+    for m in range(1, T + 1):
+        an = (m - 1) // 12
+        loyer = P * IV("rendement_brut_france") / 100 / 12 * (1 + infl) ** an
+        charges = loyer * HYP["immo_charges"] / 100
+        interet = solde * i_m if m <= n_credit else 0.0
+        capital = (mens - interet) if (credit and m <= n_credit) else 0.0
+        solde -= capital
+        paye = (mens + assur_m if (credit and m <= n_credit) else 0.0) + charges - loyer
+        base_an += loyer - charges - interet - (assur_m if m <= n_credit else 0.0)
+        if m % 12 == 0:                       # impôt de l'année, déficits reportés dix ans
+            reports = [[mt, age + 1] for mt, age in reports if age + 1 <= 10]
+            if base_an < 0:
+                reports.append([-base_an, 0])
+                impot = 0.0
+            else:
+                for r_ in reports:
+                    pris = min(r_[0], base_an); r_[0] -= pris; base_an -= pris
+                reports = [r_ for r_ in reports if r_[0] > 0]
+                impot = base_an * taux_imp
+            paye += impot
+            base_an = 0.0
+        flux.append(-paye)
+        pea, cto = pea * g_e, cto * g_e
+        if paye >= 0:                         # versement : PEA jusqu'au plafond, puis compte-titres
+            vers_pea = min(paye, max(0.0, plafond - v_pea))
+            pea += vers_pea; v_pea += vers_pea
+            cto += paye - vers_pea; v_cto += paye - vers_pea
+        else:                                 # le logement rapporte : retrait symétrique, compte-titres d'abord
+            r_cto = min(-paye, cto)
+            cto -= r_cto; v_cto -= r_cto * (v_cto / (cto + r_cto)) if cto + r_cto > 0 else 0.0
+            pea += paye + r_cto
+        etf = pea + cto
+        verse += paye
+        if m % 12 == 0:
+            serie.append({"annee": m // 12, "etf_brut": etf})
+    annees = T / 12
+    prix_vente = P * (1 + hausse) ** annees
+    net_vendeur = prix_vente * (1 - HYP["immo_frais_vente"] / 100)
+    prix_revient = P * (1 + IV("pv_forfait_acq") / 100 + (IV("pv_forfait_travaux") / 100 if annees > 5 else 0.0))
+    pv = max(0.0, net_vendeur - prix_revient)
+    ab_ir, ab_ps = abattements_pv(annees, IV)
+    impot_pv = pv * (1 - ab_ir) * IV("pv_ir_taux") / 100 + pv * (1 - ab_ps) * IV("ps_foncier") / 100
+    net_immo = net_vendeur - solde - impot_pv
+    flux_immo = flux[:-1] + [flux[-1] + net_immo]
+    net_etf = (pea - impot_sortie("PEA", annees, pea - v_pea, v_pea, False)) + (cto - impot_sortie("CTO", annees, cto - v_cto, v_cto, False))
+    flux_etf = flux[:-1] + [flux[-1] + net_etf]
+    return {"apport": apport, "emprunt": emprunt, "mensualite": mens, "verse": verse, "prix_vente": prix_vente, "pv": pv, "impot_pv": impot_pv,
+            "net_immo": net_immo, "net_etf": net_etf, "ecart": net_immo - net_etf, "tri_immo": tri(flux_immo), "tri_etf": tri(flux_etf),
+            "levier": P / apport, "effort_an1": -sum(flux[1:13]) / 12, "verse_cto": v_cto, "brut_etf": etf}
+
+
+def bloc_levier(IMMO):
+    IV = lambda k: float(IMMO[k]["valeur"])
+    P = HYP["immo_prix"]
+    g0, r0 = HYP["immo_hausse"] / 100, HYP["immo_rdt_actions"] / 100
+    base = simuler_immo(IV, P, g0, r0)
+    comptant = simuler_immo(IV, P, g0, r0, credit=False)
+    horizon = [dict(simuler_immo(IV, P, g0, r0, annees_vente=a), annee=a) for a in range(1, int(HYP["immo_duree_credit"]) + 1)]
+    hausses = [0.0, 0.01, 0.02, 0.03, 0.04]          # grille de sensibilité : hausse annuelle du prix du logement
+    actions = [0.04, 0.05, r0, 0.08]                  # grille de sensibilité : rendement annuel de l'ETF
+    grille = [[simuler_immo(IV, P, g, r) for r in actions] for g in hausses]
+    lo, hi = -0.03, 0.08                              # hausse du prix qui égalise les deux patrimoines
+    for _ in range(60):
+        mi = (lo + hi) / 2
+        if simuler_immo(IV, P, mi, r0)["ecart"] < 0:
+            lo = mi
+        else:
+            hi = mi
+    # formule du levier sur la première année : rentabilité des fonds propres = ROA + (ROA − coût de la dette) × D/E
+    frais = P * IV("frais_notaire") / 100
+    rdt_net = P * IV("rendement_brut_france") / 100 * (1 - HYP["immo_charges"] / 100) / (P + frais)
+    cout_dette = IV("credit_taux_20") / 100 + HYP["immo_assurance"] / 100
+    d_e = base["emprunt"] / base["apport"]
+    formule = []
+    for g in hausses:
+        roa = rdt_net + g * P / (P + frais)
+        formule.append({"hausse": g, "roa": roa, "roe": roa + (roa - cout_dette) * d_e})
+    vol_l, vol_a = float(ETUDES["jkkst_vol_logement"]["valeur"]) / 100, float(ETUDES["jkkst_vol_actions"]["valeur"]) / 100
+    return {"base": base, "comptant": comptant, "horizon": horizon, "hausses": hausses, "actions": actions,
+            "grille": [[{"net_immo": c["net_immo"], "net_etf": c["net_etf"], "ecart": c["ecart"], "tri_immo": c["tri_immo"], "tri_etf": c["tri_etf"]} for c in l] for l in grille],
+            "hausse_equilibre": (lo + hi) / 2, "rdt_net": rdt_net, "cout_dette": cout_dette, "d_e": d_e, "formule": formule,
+            "vol_logement": vol_l, "vol_actions": vol_a, "vol_levier": vol_l * base["levier"]}
+
+
 def main():
     R = ratios()
     VAL = valorisation(R)
@@ -413,6 +549,8 @@ def main():
     BIB = {r["id"]: r for r in opt("bible.csv")}
     IMMO = {r["id"]: r for r in opt("immobilier.csv")}
     SUP = opt("super_investisseurs.csv")
+    global ETUDES
+    ETUDES = {r["id"]: r for r in opt("etudes_immobilier.csv")}
 
     def dcf(fcf0, g, n, g_lt, r_):
         """Somme des flux actualisés des n années explicites + valeur terminale de Gordon-Shapiro actualisée."""
@@ -458,6 +596,9 @@ def main():
                 "frais_part_apport": frais_acq / apport,
                 "annees_frais": math.log(1 + frais_acq / prix) / math.log(1 + HYP["immo_hausse"] / 100),
                 "transactions_var": iv("transactions_2023") / iv("transactions_2022") - 1}
+        immo["levier"] = bloc_levier(IMMO)
+        ecrire("immobilier_simulation.csv", [{"hausse_prix": g, "rdt_etf": r, **{k: c[k] for k in ("net_immo", "net_etf", "ecart", "tri_immo", "tri_etf")}}
+                                             for g, l in zip(immo["levier"]["hausses"], immo["levier"]["grille"]) for r, c in zip(immo["levier"]["actions"], l)])
 
     D = {
         "date": "13/10/2026", "date_cours": "12/10/2026", "params": PARAMS, "defauts": dflt,
@@ -470,7 +611,7 @@ def main():
         "retro": RETRO, "stress": STRESS, "investisseurs": INV, "lynch": LYN,
         "etf": ETF, "etf_regles": {r["id"]: r for r in ETF_R}, "horizon": {r["id"]: r for r in HZ}, "etf_us": {r["ticker"]: r for r in ETF_US},
         "qqq": QQQ, "dca": dca_res, "etf_frais": etf_fr,
-        "moat": MOAT, "bible": BIB, "immo_data": IMMO, "immo": immo, "super": SUP, "dcf": dcf_res, "change": change, "per": per,
+        "moat": MOAT, "bible": BIB, "immo_data": IMMO, "immo": immo, "etudes": ETUDES, "super": SUP, "dcf": dcf_res, "change": change, "per": per,
         "sources_societes": {"adyen": load(os.path.join(DATA, "adyen_s1_2026.csv")), "nu": load(os.path.join(DATA, "nu_t2_2026.csv")),
                              "reddit": load(os.path.join(DATA, "reddit_t2_2026.csv"))},
         "calc_serie_defaut": simuler(dflt["capital"], dflt["mensuel"], dflt["annees"], dflt["rendement"], dflt["frais"], "PEA", False, dflt["inflation"]),
@@ -500,6 +641,11 @@ def main():
         print("Immo : net France", pct(immo["net"]["france"]["rdt_net"], 2), "Paris", pct(immo["net"]["paris"]["rdt_net"], 2),
               "| mensualité", eur(immo["mensualite"]), "effort", eur(immo["effort_m"]), "| levier ±", pct(immo["effet_apport"]),
               "| frais/apport", pct(immo["frais_part_apport"]), "| années pour effacer les frais", fr(immo["annees_frais"], 1))
+    if immo:
+        b = immo["levier"]["base"]
+        print("Levier : apport", eur(b["apport"]), "| net immo", eur(b["net_immo"]), "TRI", pct(b["tri_immo"], 2), "| net ETF", eur(b["net_etf"]), "TRI", pct(b["tri_etf"], 2),
+              "| comptant TRI", pct(immo["levier"]["comptant"]["tri_immo"], 2), "| hausse d'équilibre", pct(immo["levier"]["hausse_equilibre"], 2),
+              "| versé", eur(b["verse"]), "dont compte-titres", eur(b["verse_cto"]))
     print("Adyen take rate", pct(ady["take_rate"], 3), "marge nette", pct(ady["marge_nette"]))
 
 

@@ -54,6 +54,10 @@ per_versement,5000,€,exemple PER,exemple pédagogique : versement annuel sur u
 immo_prix,200000,€,immobilier locatif,exemple pédagogique : prix d'achat du logement hors frais
 immo_apport,10,% du prix,immobilier locatif,"exemple pédagogique : apport de 10 % du prix, en plus des frais d'acquisition payés comptant"
 immo_charges,25,% des loyers,immobilier locatif,"hyp. éditoriale : taxe foncière, charges non récupérables, assurance, entretien et environ un mois de vacance par an ; à adapter à chaque bien"
-immo_duree_credit,20,ans,immobilier locatif,durée associée au taux moyen sourcé de 3,27 % (data/immobilier.csv)
+immo_duree_credit,20,ans,immobilier locatif,"durée associée au taux moyen sourcé de 3,27 % (data/immobilier.csv)"
 immo_variation,10,%,immobilier locatif,"exemple pédagogique : variation du prix du bien de ±10 %, de l'ordre de la baisse de 2023-2024 en Île-de-France (−7,9 % sur un an pour les appartements)"
-immo_hausse,2,% par an,immobilier locatif,"hyp. : hausse des prix égale à la cible d'inflation de la BCE ; sur longue période, les prix ont suivi le revenu des ménages (tunnel de Friggit, 1965-2000)"
+immo_hausse,2,% par an,immobilier locatif et simulation immobilier contre ETF,"hyp. : hausse des prix égale à l'inflation de 2 %, soit 0 % réel : à Paris, le rendement réel du logement est venu entièrement des loyers (Eichholtz et al., 2021) ; aux États-Unis, le prix réel a progressé de moins de 0,6 % par an depuis 1890 (Shiller) ; voir data/etudes_immobilier.csv"
+immo_assurance,0.3,% du capital emprunté par an,simulation immobilier contre ETF,"hyp. : dans la fourchette observée de 0,09 à 0,45 % (data/immobilier.csv), sous les 0,36 % d'un contrat bancaire à 35-45 ans"
+immo_frais_vente,5,% du prix de vente,simulation immobilier contre ETF,"hyp. : frais d'agence à la revente, entre les moyennes de 4,87 % et 5,78 % relevées (data/immobilier.csv)"
+immo_rdt_actions,6.6,% par an,simulation immobilier contre ETF,"hyp. : inflation de 2 % plus 4,6 % réels, rendement réel composé des actions sur 1870-2015 dans 16 pays (Jordà et al., data/etudes_immobilier.csv) ; sous les 12,4 % de l'IEIF sur 1983-2023"
+immo_frais_etf,0.2,% par an,simulation immobilier contre ETF,"hyp. : frais courants d'un ETF large éligible au PEA, dans la fourchette de 0,07 à 0,38 % (data/etf.csv)"

@@ -1410,7 +1410,9 @@ GLOSS = [("Action", "Part du capital d'une société : droit aux bénéfices, au
          ("IFI", f"Impôt sur la fortune immobilière, au-delà de {fr(float(D['immo_data']['ifi_seuil']['valeur']) / 1e6, 1)} M€ de patrimoine immobilier net."),
          ("Micro-foncier", f"Régime simplifié des petits revenus de location nue : abattement forfaitaire de {fr(float(D['immo_data']['micro_foncier']['valeur']), 0)} %."),
          ("Réflexivité", "Idée de Soros : les cours influencent les fondamentaux, qui influencent les cours."),
-         ("Formule magique", "Méthode de Greenblatt : classer les actions par rendement du capital et par rendement bénéficiaire.")]
+         ("Formule magique", "Méthode de Greenblatt : classer les actions par rendement du capital et par rendement bénéficiaire."),
+         ("TRI", "Taux de rendement interne : le rendement annuel qui égalise les sommes versées et récupérées, à leurs dates."),
+         ("Méta-analyse", "Synthèse statistique des résultats de plusieurs études sur une même question.")]
 
 
 def cle_alpha(x):
@@ -2153,9 +2155,10 @@ def s_immo_verdict(ctx):
   <div class="card hl a"><span class="lab">La Bourse</span><p class="cq">La diversification, la liquidité, des frais faibles.</p><p class="p sm">Le meilleur rendement de long terme selon l'IEIF, une fiscalité douce dans le PEA. Le prix à payer : supporter des baisses visibles, sans vendre.</p></div>
   <div class="card a" style="grid-column:1 / -1"><span class="lab">L'œil de l'investisseur GARP</span>{ul([f"<b>Un logement se juge comme une action</b> : son « P/E » (prix ÷ loyer annuel) est d'environ {fr(f['annees_loyers'], 0)} ans en France. Une action à ce P/E doit croître pour rapporter ; un logement aussi, par ses loyers et son prix.",
       f"<b>L'immobilier est cher au regard de l'histoire</b> : {e(im('friggit_ratio')['fait'])}",
-      f"<b>Les SCPI mutualisent</b>, mais leurs parts peuvent baisser : {e(im('scpi_baisse_2024')['fait'].removeprefix('SCPI : '))}"], "sm")}</div>
+      f"<b>Les SCPI mutualisent</b>, mais leurs parts peuvent baisser : {e(im('scpi_baisse_2024')['fait'].removeprefix('SCPI : '))}",
+      f"<b>À effort égal sur 20 ans</b> (hyp.) : {eur(D['immo']['levier']['base']['net_immo'])} pour le logement à crédit, {eur(D['immo']['levier']['base']['net_etf'])} pour l'ETF. Le logement ne gagne que si son prix monte de plus de {pc(D['immo']['levier']['hausse_equilibre'], 1)} par an."], "sm")}</div>
 </div>'''
-    return body, "Friggit " + IM("friggit_ratio") + " ; SCPI " + IM("scpi_baisse_2024") + " ; IEIF " + IM("ieif_actions_40") + " ; " + HYPS()
+    return body, "Friggit " + IM("friggit_ratio") + " ; SCPI " + IM("scpi_baisse_2024") + " ; IEIF " + IM("ieif_actions_40") + " ; simulation : " + HYPS()
 
 
 # ---- autres super-investisseurs
@@ -2218,6 +2221,151 @@ def s_si_table(ctx):
     body += table(["Investisseur", "Chiffre clé", "À votre portée ?", "Ce qu'on en garde"], rows, cls="w")
     return body, "Sources : " + SU(*ordre)
 
+
+
+# ---- Bourse ou immobilier : la littérature et l'effet de levier
+ETU = D.get("etudes", {})
+
+
+def ET(*ids):
+    return SRCS(ETU, *ids)
+
+
+def etv(i):
+    return float(ETU[i]["valeur"])
+
+
+def ref_etude(i):
+    r = ETU[i]
+    return f'<b>{e(r["auteurs"])}</b> <small>({e(r["annee"])})</small><br><span class="m sm"><i>{e(r["etude"])}</i>, {e(r["publication"])}</span>'
+
+
+def s_immo_etudes(ctx):
+    ids = ["jkkst_logement", "eichholtz_paris", "chambers_residentiel", "amaral_ecart", "giacoletti", "shiller_prix"]
+    rows = [[ref_etude(i), e(ETU[i]["periode"]) + "<br><small>" + e(ETU[i]["lieu"]) + "</small>", e(ETU[i]["resultat"])] for i in ids]
+    body = hd("Bourse ou immobilier · la recherche", "Ce que disent les grandes études académiques",
+              "Six travaux de référence, publiés dans les meilleures revues. Leur désaccord est instructif.")
+    body += table(["Étude", "Période et lieu", "Résultat"], rows, cls="w etu")
+    return body, "Études : " + ET(*ids)
+
+
+def s_immo_etudes_fr(ctx):
+    ids = ["senat_1990_2015", "igf_cgedd_2021", "igf_cgedd_pinel"]
+    rows = [[ref_etude(i), e(ETU[i]["periode"]), e(ETU[i]["resultat"])] for i in ids]
+    rv, am = ETU["revue_2024"], ETU["allocation_mixte"]
+    body = hd("Bourse ou immobilier · la recherche française", "En France : un placement intermédiaire",
+              "Les travaux publics français convergent : sans levier, le logement rapporte un peu moins que les actions, avec moins de risque.")
+    body += f'''<div class="g c32 main">{table(["Étude", "Période", "Résultat"], rows, cls="etu")}
+  <div class="g">
+    <div class="card hl a"><span class="lab">Et les méta-analyses ?</span><p class="p sm">Aucune méta-analyse statistique des rendements du logement n'a été trouvée. La synthèse la plus proche est une revue de la littérature : {ref_etude("revue_2024")}.</p><p class="p sm m">{e(rv["resultat"])}</p></div>
+    <div class="card a"><span class="lab">Dans un portefeuille</span><p class="p sm">{e(am["resultat"])}</p><p class="p sm m">{e(am["fiabilite"]).capitalize()}.</p></div>
+  </div></div>'''
+    return body, "Études : " + ET(*ids, "revue_2024", "allocation_mixte")
+
+
+def s_immo_debat(ctx):
+    barres = [("Logement, 16 pays (indices nationaux)", "Jordà et al., 1870-2015", etv("jkkst_logement"), "var(--ndx)"),
+              ("Actions, 16 pays", "Jordà et al., 1870-2015", etv("jkkst_actions"), "var(--gold)"),
+              ("Logement à Amsterdam, net de frais et d'impôts", "Eichholtz et al., 1900-1979", etv("eichholtz_amsterdam"), "var(--ndx)"),
+              ("Logement à Paris, net de frais et d'impôts", "Eichholtz et al., 1809-1943", etv("eichholtz_paris"), "var(--ndx)"),
+              ("Logement au Royaume-Uni, net de frais", "Chambers et al., 1901-1983", etv("chambers_residentiel"), "var(--ndx)"),
+              ("Prix seul des logements américains (au plus)", "Shiller, 1890-2019", etv("shiller_prix"), "var(--dim)")]
+    vmax = max(v for *_, v, _ in barres)
+    bars = "".join(hbar(a, v / vmax, f"{fr(v, 2 if round(v * 10) != v * 10 or v < 1 else 1)}{NBSP}%", c, b) for a, b, v, c in barres)
+    body = hd("Bourse ou immobilier · le débat", "7 % ou 2 % ? Tout dépend de ce qu'on mesure",
+              "Les indices nationaux donnent au logement le rendement des actions. Les études bien par bien, frais réels déduits, trouvent deux à trois fois moins. Rendements réels, après inflation.")
+    body += f'''<div class="g c2 main"><div class="card tight a"><span class="lab">Rendement réel annuel moyen du logement et des actions</span>{bars}</div>
+  <div class="g">{ul([f"<b>L'usure et l'entretien</b> : un bâtiment se déprécie. Au Royaume-Uni, les revenus locatifs réels ont baissé de {fr(-etv('chambers_loyers'), 1)}{NBSP}% par an (Chambers et al.).",
+                    "<b>Les frais et la vacance</b> : frais d'achat et de vente, gestion, mois sans locataire, impôts. Les indices les ignorent souvent.",
+                    f"<b>La volatilité</b> : {fr(etv('jkkst_vol_logement'), 0)}{NBSP}% par an pour un indice national de logement, contre {fr(etv('jkkst_vol_actions'), 0)}{NBSP}% pour les actions (Jordà et al.). Mais un logement isolé est bien plus risqué que l'indice (Giacoletti).",
+                    f"<b>Les grandes villes</b> : un rendement total inférieur d'environ {fr(-etv('amaral_ecart'), 0)} point par an au reste du pays, sur 150 ans (Amaral et al.).",
+                    "<b>À retenir</b> : sans levier et net de frais, le logement rapporte moins que les actions, mais fluctue moins."], "sm")}</div></div>'''
+    return body, "Études : " + ET("jkkst_logement", "jkkst_actions", "jkkst_vol_logement", "jkkst_vol_actions", "eichholtz_paris", "eichholtz_amsterdam", "chambers_residentiel", "chambers_loyers", "shiller_prix", "giacoletti", "amaral_ecart")
+
+
+def s_immo_formule(ctx):
+    L = D["immo"]["levier"]
+    rows = []
+    for f in L["formule"]:
+        cl = "pos" if f["roe"] > f["roa"] else "neg"
+        rows.append([pc(f["hausse"], 0), pc(f["roa"], 1), f'<b class="{cl}">{pc(f["roe"], 1)}</b>'])
+    body = hd("Bourse ou immobilier · la formule", "Le levier n'aide que si le bien bat le crédit",
+              f"Le crédit multiplie l'écart entre le rendement du bien et le coût de la dette ({pc(L['cout_dette'], 2)} assurance comprise, hyp.), par le rapport dette ÷ apport ({fr(L['d_e'], 1)} ici).")
+    body += f'''<div class="g c2 main">
+  <div class="g"><div class="formula a">Apport : R + (R − coût de la dette) × dette ÷ apport<br><small>R = loyer net de charges ÷ coût total + hausse du prix</small></div>
+    {table(["Hausse du prix", "Rendement du bien (R)", "Rendement de l'apport"], rows, num=(0, 1, 2))}
+    <p class="p m sm a">Première année, avant impôts, sans frais de revente (hyp.). À 0 % de hausse, le bien rapporte {pc(L["formule"][0]["roa"], 1)}, moins que le crédit : le levier fait baisser le rendement de l'apport.</p></div>
+  <div class="g">
+    <div class="card stat a" style="--c:var(--neg)"><span class="v">{cnt(L["vol_levier"] * 100, 0, NBSP + "%")}</span><span class="l">de volatilité annuelle pour l'apport, au départ : {fr(L["vol_logement"] * 100, 0)}{NBSP}% pour un indice de logement (Jordà et al.) multipliés par un levier de {fr(L["base"]["levier"], 1)}. Contre {fr(L["vol_actions"] * 100, 0)}{NBSP}% pour un ETF d'actions sans levier.</span></div>
+    {ul([f"<b>Un levier prévisible</b> : {e(im('taux_fixe')['fait'])} Pas d'appel de marge : la banque ne force pas la vente si le prix baisse.",
+         "<b>Mais pas de sortie facile</b> : le prêt reste dû en entier, quel que soit le prix du logement.",
+         "<b>Le levier s'use</b> : chaque mensualité rembourse du capital, la dette baisse, l'effet multiplicateur aussi."], "sm")}
+  </div></div>'''
+    return body, "Volatilités : " + ET("jkkst_vol_logement", "jkkst_vol_actions") + " ; taux fixe " + IM("taux_fixe") + " ; crédit " + IM("credit_taux_20", "assurance_fourchette") + " ; " + HYPS()
+
+
+def svg_horizon():
+    hz = D["immo"]["levier"]["horizon"]
+    W, Hh, l, r, t, b = 1000, 470, 100, 50, 30, 410
+    vmax = max(max(h["net_etf"], h["net_immo"], h["verse"]) for h in hz)
+    step = 50000
+    ymax = math.ceil(vmax / step) * step
+    n = len(hz)
+    X = lambda a: l + (a - 1) / (n - 1) * (W - l - r)
+    Y = lambda v: b - v / ymax * (b - t)
+    out = []
+    for yv in range(0, int(ymax) + 1, step):
+        out.append(f'<line x1="{l}" x2="{W - r}" y1="{Y(yv):.1f}" y2="{Y(yv):.1f}" stroke="rgba(242,237,226,.08)"/>')
+        out.append(f'<text x="{l - 12}" y="{Y(yv) + 7:.1f}" text-anchor="end" font-size="20" fill="#8d96a8" font-family="GZ Plex Mono">{fr(yv / 1000, 0)}{NBSP}k€</text>')
+    for a in (1, 5, 10, 15, 20):
+        out.append(f'<text x="{X(a):.1f}" y="{b + 34}" text-anchor="middle" font-size="20" fill="#8d96a8" font-family="GZ Plex Mono">{a} an{"s" if a > 1 else ""}</text>')
+    for cle, col, dash in (("verse", "#8d96a8", ' stroke-dasharray="8 8"'), ("net_immo", "#8da2c8", ""), ("net_etf", "#ffc94a", "")):
+        pts = " ".join(f"{X(h['annee']):.1f},{Y(h[cle]):.1f}" for h in hz)
+        out.append(f'<polyline class="ln" pathLength="1" points="{pts}" fill="none" stroke="{col}" stroke-width="{3 if dash else 5}"{dash} stroke-linejoin="round"/>')
+        out.append(f'<circle cx="{X(hz[-1]["annee"]):.1f}" cy="{Y(hz[-1][cle]):.1f}" r="{5 if dash else 8}" fill="{col}"/>')
+    return f'<svg viewBox="0 0 {W} {Hh + 10}" role="img" aria-label="Patrimoine net selon l\'année de revente : immobilier à crédit, ETF, sommes versées">{"".join(out)}</svg>'
+
+
+def s_immo_simul(ctx):
+    L = D["immo"]["levier"]
+    b, c = L["base"], L["comptant"]
+    body = hd("Bourse ou immobilier · la simulation", "Pierre à crédit contre ETF, à effort égal",
+              f"Deux investisseurs versent les mêmes sommes aux mêmes dates : {eur(b['apport'])}, puis l'effort mensuel du logement (d'abord {eur(b['effort_an1'])}). L'un achète {eur(H['immo_prix'])} à crédit, l'autre un ETF (hyp.).")
+    body += f'''<div class="g c32 main">
+  <figure class="ch a"><span class="lab">Patrimoine net d'impôts et de frais si l'on revend après N années</span>{svg_horizon()}
+    <div class="leg"><span><i style="background:#ffc94a"></i>ETF (PEA, puis compte-titres)</span><span><i style="background:#8da2c8"></i>Logement à crédit</span><span><i class="dash"></i>Sommes versées</span></div></figure>
+  <div class="g">
+    <div class="g c2 lc2">{kv("Logement à crédit, 20 ans", eur(b["net_immo"]), "TRI " + pc(b["tri_immo"], 2), "var(--ndx)")}
+    {kv("ETF, 20 ans", eur(b["net_etf"]), "TRI " + pc(b["tri_etf"], 2), "var(--gold)")}
+    {kv("Logement payé comptant", "TRI " + pc(c["tri_immo"], 2), "le levier ajoute " + fr((b["tri_immo"] - c["tri_immo"]) * 100, 1) + " point", "var(--ndx)")}
+    {kv("Sommes versées", eur(b["verse"]), "dont " + eur(b["verse_cto"]) + " hors PEA", "var(--dim)")}</div>
+    {ul([f"<b>Hypothèses centrales</b> : prix du logement +{fr(H['immo_hausse'], 0)}{NBSP}% par an, soit 0 % réel comme dans les études ; ETF à {fr(H['immo_rdt_actions'], 1)}{NBSP}% brut, soit {fr(etv('jkkst_cagr_actions'), 1)}{NBSP}% réels comme les actions de 1870 à 2015 (Jordà et al.).",
+         f"<b>Tout compris</b> : régime réel, plus-value après abattements, {fr(H['immo_frais_vente'], 0)}{NBSP}% de frais de revente ; PEA à {fr(fv('ps_2026'), 1)}{NBSP}%. Les frais d'achat partent dès le premier jour."], "sm")}
+  </div></div>'''
+    return body, "Simulation (calcul.py, immobilier_simulation.csv) : " + HYPS() + " ; données " + IM("rendement_brut_france", "credit_taux_20", "frais_notaire", "pv_ab_ir_6_21", "pv_ab_ps_6_21", "deficit_foncier") + " ; " + ET("jkkst_cagr_actions")
+
+
+def s_immo_sensi(ctx):
+    L = D["immo"]["levier"]
+    emax = max(abs(c["ecart"]) for l in L["grille"] for c in l)
+    rows = []
+    for g, l in zip(L["hausses"], L["grille"]):
+        cells = [f'<b>{pc(g, 0, True)}</b> <small>par an</small>']
+        for c in l:
+            a = 0.08 + 0.32 * abs(c["ecart"]) / emax
+            col = f"rgba(91,227,143,{a:.2f})" if c["ecart"] > 0 else f"rgba(255,106,95,{a:.2f})"
+            cells.append(f'<span class="hm" style="background:{col}">{fr(c["ecart"] / 1000, 0, True)}{NBSP}k€</span>')
+        cells.append(pc(l[0]["tri_immo"], 1))
+        rows.append(cells)
+    head = ["Prix du logement"] + [f"ETF à {fr(r * 100, 1 if r * 100 % 1 else 0)}{NBSP}%" for r in L["actions"]] + ["TRI du logement"]
+    body = hd("Bourse ou immobilier · la sensibilité", "Qui gagne ? Tout dépend de deux chiffres",
+              f"Écart de patrimoine net après 20 ans, logement à crédit moins ETF, à effort égal. En vert, le logement gagne ; en rouge, l'ETF. Avec l'ETF à {fr(H['immo_rdt_actions'], 1)}{NBSP}%, le logement gagne si son prix monte de plus de {pc(L['hausse_equilibre'], 1)} par an.")
+    body += f'''<div class="g c32 main">{table(head, rows, num=tuple(range(1, len(head))), cls="sens")}
+  <div class="g">{ul([f"<b>Le point d'équilibre</b> : {pc(L['hausse_equilibre'], 1)} de hausse par an, soit environ {fr((L['hausse_equilibre'] - H['calc_inflation'] / 100) * 100, 1)} point au-dessus de l'inflation (hyp. {fr(H['calc_inflation'], 0)}{NBSP}%), pendant 20 ans.",
+                     f"<b>L'histoire longue</b> : le prix réel des logements a progressé de moins de {fr(etv('shiller_prix'), 1)}{NBSP}% par an aux États-Unis depuis 1890, et pas du tout à Paris de 1809 à 1943.",
+                     f"<b>Notre lecture</b> : la longue baisse des taux a porté les prix jusqu'en 2022 ({e(im('friggit_ratio')['fait'][0].lower() + im('friggit_ratio')['fait'][1:].rstrip('.'))}). Avec un crédit à {pc(imv('credit_taux_20') / 100, 2)}, ce moteur est presque épuisé.",
+                     "<b>Le choix de l'actif compte plus que le levier</b> : le prix d'achat, la ville et le loyer réel décident de tout."], "sm")}</div></div>'''
+    return body, "Simulation : " + HYPS() + " ; " + ET("shiller_prix", "eichholtz_paris") + " ; " + IM("friggit_ratio", "credit_taux_20")
 
 
 # ============================================================ assemblage du plan
@@ -2297,8 +2445,14 @@ def plan(n_sources):
     add("Les ETF", "Choisir son ETF", s_etf_choisir)
     opener("Bourse ou immobilier")
     add("Bourse ou immobilier", "Quarante ans de rendements", s_immo_perf)
+    add("Bourse ou immobilier", "Les grandes études", s_immo_etudes)
+    add("Bourse ou immobilier", "La recherche française", s_immo_etudes_fr)
+    add("Bourse ou immobilier", "7 % ou 2 % ?", s_immo_debat)
     add("Bourse ou immobilier", "Du loyer brut au loyer net", s_immo_net)
     add("Bourse ou immobilier", "Le crédit et l'effet de levier", s_immo_levier)
+    add("Bourse ou immobilier", "La formule du levier", s_immo_formule)
+    add("Bourse ou immobilier", "Vingt ans à effort égal", s_immo_simul)
+    add("Bourse ou immobilier", "Qui gagne ?", s_immo_sensi)
     add("Bourse ou immobilier", "Le risque", s_immo_risque)
     add("Bourse ou immobilier", "Le match en dix critères", s_immo_match)
     add("Bourse ou immobilier", "Chacun à sa place", s_immo_verdict)
@@ -2703,7 +2857,8 @@ input[type=number]:focus-visible, input[type=range]:focus-visible, button:focus-
 .srcs li { break-inside:avoid; padding:3u 0 5u; color:var(--muted); overflow-wrap:anywhere; }
 .srcs a { text-decoration:none; color:var(--paper); } .srcs a:hover { color:var(--gold); text-decoration:underline; }
 .srcs .num { color:var(--gold); }
-.nw { white-space:nowrap; } .si { gap:7u; } .si-n { font:900 var(--fs-n4)/1 "GZ Archivo", sans-serif; font-stretch:62%; text-transform:uppercase; }
+.nw { white-space:nowrap; } .hm { display:inline-block; min-width:5.2em; padding:2px 8px; border-radius:6px; color:var(--paper); }
+.t.etu td { vertical-align:top; } .t.etu td:first-child { min-width:16em; } %P .t.etu td { font-size:var(--fs-s); line-height:1.35; } .si { gap:7u; } .si-n { font:900 var(--fs-n4)/1 "GZ Archivo", sans-serif; font-stretch:62%; text-transform:uppercase; }
 .si-f { font:500 var(--fs-xs)/1.3 "GZ Plex Mono", monospace; color:var(--dim); }
 .si-big { font:900 var(--fs-n3)/1 "GZ Archivo", sans-serif; font-stretch:62%; font-variant-numeric:tabular-nums; }
 .si-big small { font-size:.42em; font-stretch:100%; font-weight:500; color:var(--muted); }

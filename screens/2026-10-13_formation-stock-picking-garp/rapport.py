@@ -91,6 +91,47 @@ w(f"- **Bourse ou immobilier.** IEIF, 1983-2023 : {fr(IM['ieif_actions_40'], 1)}
 w(f"- **Grands investisseurs.** Huit stratégies de plus, sourcées : Dalio, Druckenmiller, Soros, Simons, Greenblatt, Templeton, Terry Smith, Nick Sleep ; "
   "classées selon qu'elles sont à la portée d'un particulier ou non.")
 w("")
+w("## Immobilier : ce que dit la recherche, et l'effet de levier")
+w("")
+ETU = D["etudes"]
+LV = immo["levier"]
+refs = []
+def cite(i):
+    r = ETU[i]
+    out = []
+    for t, u in ((r["source_titre"], r["source_url"]), (r["source2_titre"], r["source2_url"])):
+        if (t, u) not in refs:
+            refs.append((t, u))
+        out.append(refs.index((t, u)) + 1)
+    return "".join(f"[{n}]" for n in out)
+w("Aucune méta-analyse statistique des rendements du logement n'a été trouvée. La revue de littérature la plus proche est celle de Chambers, Dimson, Ilmanen et Rintamäki (2024) " + cite("revue_2024") + ". Les études de référence :")
+w("")
+w("| Étude | Période, lieu | Résultat |")
+w("|---|---|---|")
+for i, r in ETU.items():
+    if r["resultat"]:
+        w(f"| {r['auteurs']} ({r['annee']}), *{r['etude']}*, {r['publication']} {cite(i)} | {r['periode']} ; {r['lieu']} | {r['resultat']} |")
+w("")
+w(f"Chiffres repris : logement {fr(float(ETU['jkkst_logement']['valeur']), 2)} % réels par an contre {fr(float(ETU['jkkst_actions']['valeur']), 2)} % pour les actions dans 16 pays (1870-2015), "
+  f"volatilité de {fr(float(ETU['jkkst_vol_logement']['valeur']), 0)} % contre {fr(float(ETU['jkkst_vol_actions']['valeur']), 0)} % {cite('jkkst_logement')} ; "
+  f"Paris {fr(float(ETU['eichholtz_paris']['valeur']), 1)} % réels nets de frais et d'impôts (1809-1943) {cite('eichholtz_paris')} ; Royaume-Uni {fr(float(ETU['chambers_residentiel']['valeur']), 1)} % réels nets (1901-1983) {cite('chambers_residentiel')}.")
+w("")
+b, c = LV["base"], LV["comptant"]
+w(f"**Simulation à effort égal sur {fr(H['immo_duree_credit'], 0)} ans** (`simuler_immo()` dans `calcul.py`, résultats dans [immobilier_simulation.csv](immobilier_simulation.csv)). "
+  f"Un logement de {eur(H['immo_prix'])} acheté avec {eur(b['apport'])} d'apport et {eur(b['emprunt'])} de crédit à {pct(immo['taux'], 2)}, loué nu au régime réel, revendu après {fr(H['immo_duree_credit'], 0)} ans ; "
+  f"en face, les mêmes sommes, aux mêmes dates, dans un ETF (PEA jusqu'au plafond, puis compte-titres).")
+w(f"- Cas central (prix +{fr(H['immo_hausse'], 0)} % par an, ETF à {fr(H['immo_rdt_actions'], 1)} % brut) : logement {eur(b['net_immo'])} nets (TRI {pct(b['tri_immo'], 2)}), ETF {eur(b['net_etf'])} (TRI {pct(b['tri_etf'], 2)}) ; "
+  f"le même logement payé comptant rapporte {pct(c['tri_immo'], 2)} : le levier ajoute {fr((b['tri_immo'] - c['tri_immo']) * 100, 1)} point de TRI.")
+w(f"- Point d'équilibre : avec l'ETF à {fr(H['immo_rdt_actions'], 1)} %, le logement gagne si son prix monte de plus de {pct(LV['hausse_equilibre'], 2)} par an pendant {fr(H['immo_duree_credit'], 0)} ans.")
+w(f"- Risque : un levier de {fr(b['levier'], 1)} porte la volatilité de l'apport à environ {pct(LV['vol_levier'], 0)} au départ, contre {pct(LV['vol_actions'], 0)} pour un ETF d'actions.")
+w(f"- Limites : rendements des actions et des prix supposés réguliers (pas de krach simulé) ; pas de travaux exceptionnels ni d'impayés au-delà des {fr(H['immo_charges'], 0)} % de charges ; "
+  "déficit foncier reporté seulement sur les revenus fonciers (prudent : l'imputation de 10 700 € sur le revenu global est ignorée) ; frais de garantie et de dossier du crédit non comptés.")
+w("")
+w("Sources de cette section :")
+w("")
+for k, (t, u) in enumerate(refs, 1):
+    w(f"{k}. [{t}]({u})")
+w("")
 w("## Données signalées et corrigées")
 w("")
 w(f"- BPA 2028 de NVIDIA : {fr(V['NVDA']['bpa_f2'], 2)} $ dans le comparateur Zacks, {D['nvda_zacks']['bpa_fy2028_fiche'].replace('.', ',')} $ sur la fiche Zacks du même jour. La formation retient le premier, comme le modèle.")
@@ -119,7 +160,8 @@ w("Toutes les hypothèses éditoriales sont marquées « hyp. » et justifiées 
   f"(rendement de {fr(H['calc_rendement'], 0)} % brut par an), seuils de la grille GARP, noyau de "
   f"{fr(H['noyau_min'], 0)} à {fr(H['noyau_max'], 0)} %, exemples pédagogiques (formule cours = BPA × P/E, DCA, DCF, PER), et l'exemple d'investissement locatif : "
   f"logement de {eur(H['immo_prix'])}, apport de {fr(H['immo_apport'], 0)} % plus les frais, charges de {fr(H['immo_charges'], 0)} % des loyers, tranche marginale de {fr(H['tmi_exemple'], 0)} %, "
-  f"hausse des prix de {fr(H['immo_hausse'], 0)} % par an.")
+  f"hausse des prix de {fr(H['immo_hausse'], 0)} % par an, assurance emprunteur de {fr(H['immo_assurance'], 2)} %, frais de revente de {fr(H['immo_frais_vente'], 0)} %, "
+  f"ETF à {fr(H['immo_rdt_actions'], 1)} % brut et {fr(H['immo_frais_etf'], 1)} % de frais.")
 w("")
 w("## Calculatrice")
 w("")
@@ -147,7 +189,7 @@ w("```")
 w("")
 w("Données d'entrée dans [data/](data/) : comptes annuels et consensus Zacks, résultats trimestriels de Nu, Reddit et Adyen, fiscalité 2026, citations, ETF, horizon et DCA, "
   "moat ([moat.csv](data/moat.csv)), compléments de la bible ([bible.csv](data/bible.csv)), immobilier ([immobilier.csv](data/immobilier.csv)), "
-  "super-investisseurs ([super_investisseurs.csv](data/super_investisseurs.csv)), "
+  "super-investisseurs ([super_investisseurs.csv](data/super_investisseurs.csv)), études sur l'immobilier ([etudes_immobilier.csv](data/etudes_immobilier.csv)), "
   "chacune avec deux sources par chiffre clé. Les P/E NTM, croissances supposées, scénarios et zones d'achat par société viennent du modèle PEG du dépôt, daté du même jour.")
 w("")
 w("## Contrôles avant livraison")
@@ -163,7 +205,8 @@ ligne = (f"| {D['date']} | [Formation : le stock picking GARP, de zéro à auton
          f"Bourse contre immobilier, quinze grands investisseurs, ordres, arnaques), "
          f"avec calculatrice : {eur(D['defauts']['capital'])} + {eur(D['defauts']['mensuel'])}/mois sur {fr(D['defauts']['annees'], 0)} ans à {fr(D['defauts']['rendement'] * 100, 0)} % brut "
          f"donnent {eur(env['PEA']['net'])} nets en PEA contre {eur(env['CTO']['net'])} sur un compte-titres ; {pct(fx[2]['frais'], 0)} de frais par an coûtent {pct(fx[2]['part_perdue'], 0)} du capital en 30 ans ; "
-         f"IEIF sur 40 ans : {fr(IM['ieif_actions_40'], 1)} % par an pour les actions françaises contre {fr(IM['ieif_paris_40'], 1)} % pour le logement parisien "
+         f"IEIF sur 40 ans : {fr(IM['ieif_actions_40'], 1)} % par an pour les actions françaises contre {fr(IM['ieif_paris_40'], 1)} % pour le logement parisien ; "
+         f"à effort égal sur 20 ans, logement à crédit {eur(immo['levier']['base']['net_immo'])} contre {eur(immo['levier']['base']['net_etf'])} en ETF (hyp.) "
          f"· [PDF]({DOSSIER}/Formation_GARP_2026-10-13.pdf)" + (f" · [en ligne]({lien})" if lien else "") + " |")
 readme = os.path.join(RACINE, "README.md")
 lignes = open(readme, encoding="utf-8").read().split("\n")
