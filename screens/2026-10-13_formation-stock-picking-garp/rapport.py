@@ -53,6 +53,9 @@ if lien:
 w("- [diaporama/index.html](diaporama/index.html) : la page autonome (polices embarquées, fonctionne hors ligne). Flèches du clavier pour avancer, T pour le sommaire ; mode lecture automatique sur téléphone.")
 w("- [Formation_GARP_2026-10-13.pdf](Formation_GARP_2026-10-13.pdf) : une diapositive par page A4 paysage, rendue par Chromium et Playwright.")
 w("- [planche_contact.jpg](planche_contact.jpg) : toutes les pages du PDF en vignettes.")
+w(f"- [Formation_GARP_L-essentiel_2026-10-13.pdf](Formation_GARP_L-essentiel_2026-10-13.pdf) : le parcours « L'essentiel », {sum(1 for x in PLAN if x.get('niv') == 'e')} diapositives, "
+  "avec une page « À retenir » par chapitre. Dans le diaporama, la touche E ou le bouton « Parcours » bascule entre l'essentiel et le complet.")
+w("- [AUDIT_DONNEES.md](AUDIT_DONNEES.md) : audit des données (`audit.py`) : chaque ligne des CSV utilisée dans le document, ou la raison de son absence.")
 w("")
 w("## Plan")
 w("")
@@ -195,7 +198,8 @@ w("python3 calcul.py                       # ratios, valorisation, grille, frais
 w("python3 build_slides.py                 # diaporama/index.html (ajouter --fragment CHEMIN pour la version Artifact)")
 w("NODE_PATH=$(npm root -g) node verifier.js /tmp/captures   # captures, débordements, chevauchements, lisibilité, calculatrice, téléphone")
 w("NODE_PATH=$(npm root -g) node pdf.js \"$PWD/Formation_GARP_2026-10-13.pdf\"")
-w("python3 planche_contact.py && python3 rapport.py")
+w("python3 planche_contact.py && python3 audit.py && python3 rapport.py")
+w("NODE_PATH=$(npm root -g) node pdf.js \"$PWD/Formation_GARP_L-essentiel_2026-10-13.pdf\" --essentiel")
 w("```")
 w("")
 w("Données d'entrée dans [data/](data/) : comptes annuels et consensus Zacks, résultats trimestriels de Nu, Reddit et Adyen, fiscalité 2026, citations, ETF, horizon et DCA, "

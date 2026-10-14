@@ -1,6 +1,6 @@
 # Formation : le stock picking GARP, de zéro à autonome
 
-Diaporama du 13/10/2026 (cours du 12/10/2026) pour un investisseur français débutant : 127 diapositives, une calculatrice d'intérêts composés, un calculateur de PEG, un quiz de 16 questions, un glossaire et des sources numérotées. Même style que la vidéo du même jour. Conçu comme une « bible » de l'investisseur français : moat, DCF, taux, change, PER, déclaration fiscale, ordres de Bourse, arnaques, comparaison Bourse-immobilier et stratégies de quinze grands investisseurs. NVIDIA, TSMC, Nu, Reddit et Adyen servent uniquement d'exemples d'analyse : le diaporama ne présente ni portefeuille ni comparaison de performance avec un indice.
+Diaporama du 13/10/2026 (cours du 12/10/2026) pour un investisseur français débutant : 141 diapositives, une calculatrice d'intérêts composés, un calculateur de PEG, un quiz de 16 questions, un glossaire et des sources numérotées. Même style que la vidéo du même jour. Conçu comme une « bible » de l'investisseur français : moat, DCF, taux, change, PER, déclaration fiscale, ordres de Bourse, arnaques, comparaison Bourse-immobilier et stratégies de quinze grands investisseurs. NVIDIA, TSMC, Nu, Reddit et Adyen servent uniquement d'exemples d'analyse : le diaporama ne présente ni portefeuille ni comparaison de performance avec un indice.
 
 *La Gazette du PEG est un titre fictif : il ne correspond à aucune publication existante. Analyse quantitative et datée, qui ne constitue pas un conseil en investissement personnalisé.*
 
@@ -10,24 +10,26 @@ Diaporama du 13/10/2026 (cours du 12/10/2026) pour un investisseur français dé
 - [diaporama/index.html](diaporama/index.html) : la page autonome (polices embarquées, fonctionne hors ligne). Flèches du clavier pour avancer, T pour le sommaire ; mode lecture automatique sur téléphone.
 - [Formation_GARP_2026-10-13.pdf](Formation_GARP_2026-10-13.pdf) : une diapositive par page A4 paysage, rendue par Chromium et Playwright.
 - [planche_contact.jpg](planche_contact.jpg) : toutes les pages du PDF en vignettes.
+- [Formation_GARP_L-essentiel_2026-10-13.pdf](Formation_GARP_L-essentiel_2026-10-13.pdf) : le parcours « L'essentiel », 45 diapositives, avec une page « À retenir » par chapitre. Dans le diaporama, la touche E ou le bouton « Parcours » bascule entre l'essentiel et le complet.
+- [AUDIT_DONNEES.md](AUDIT_DONNEES.md) : audit des données (`audit.py`) : chaque ligne des CSV utilisée dans le document, ou la raison de son absence.
 
 ## Plan
 
 | Chapitre | Diapositives |
 |---|---|
-| Ouverture | 1 à 3 |
-| Objectifs et horizon | 4 à 10 |
-| Les bases | 11 à 16 |
-| Lire les comptes | 17 à 29 |
-| Le moat | 30 à 36 |
-| Valoriser | 37 à 46 |
-| La méthode GARP | 47 à 55 |
-| Enveloppes, frais et impôts | 56 à 64 |
-| Les ETF | 65 à 72 |
-| Bourse ou immobilier | 73 à 88 |
-| Intérêts composés | 89 à 94 |
-| Grands investisseurs | 95 à 107 |
-| Passer à l'action | 108 à 127 |
+| Ouverture | 1 à 4 |
+| Objectifs et horizon | 5 à 12 |
+| Les bases | 13 à 19 |
+| Lire les comptes | 20 à 33 |
+| Le moat | 34 à 41 |
+| Valoriser | 42 à 52 |
+| La méthode GARP | 53 à 62 |
+| Enveloppes, frais et impôts | 63 à 72 |
+| Les ETF | 73 à 81 |
+| Bourse ou immobilier | 82 à 98 |
+| Intérêts composés | 99 à 105 |
+| Grands investisseurs | 106 à 119 |
+| Passer à l'action | 120 à 141 |
 
 ## Chiffres clés (tous calculés par `calcul.py`)
 
@@ -157,7 +159,8 @@ python3 calcul.py                       # ratios, valorisation, grille, frais, e
 python3 build_slides.py                 # diaporama/index.html (ajouter --fragment CHEMIN pour la version Artifact)
 NODE_PATH=$(npm root -g) node verifier.js /tmp/captures   # captures, débordements, chevauchements, lisibilité, calculatrice, téléphone
 NODE_PATH=$(npm root -g) node pdf.js "$PWD/Formation_GARP_2026-10-13.pdf"
-python3 planche_contact.py && python3 rapport.py
+python3 planche_contact.py && python3 audit.py && python3 rapport.py
+NODE_PATH=$(npm root -g) node pdf.js "$PWD/Formation_GARP_L-essentiel_2026-10-13.pdf" --essentiel
 ```
 
 Données d'entrée dans [data/](data/) : comptes annuels et consensus Zacks, résultats trimestriels de Nu, Reddit et Adyen, fiscalité 2026, citations, ETF, horizon et DCA, moat ([moat.csv](data/moat.csv)), compléments de la bible ([bible.csv](data/bible.csv)), immobilier ([immobilier.csv](data/immobilier.csv)), super-investisseurs ([super_investisseurs.csv](data/super_investisseurs.csv)), études sur l'immobilier ([etudes_immobilier.csv](data/etudes_immobilier.csv)), chacune avec deux sources par chiffre clé. Les P/E NTM, croissances supposées, scénarios et zones d'achat par société viennent du modèle PEG du dépôt, daté du même jour.

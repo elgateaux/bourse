@@ -157,6 +157,19 @@ const LISIBILITE = (seuil) => {
   const score = await p.$eval(`#s${qis[qis.length - 1] + 1} .qz-score`, el => el.textContent);
   console.log('quiz :', score);
   if (!/(\d+) \/ \1 — terminé/.test(score)) echecs++;
+  // parcours « L'essentiel » : la touche E, puis la flèche droite ne doit passer que par des diapositives essentielles
+  await p.evaluate(() => window.GZ.aller(0));
+  await p.keyboard.press('e');
+  const nEss = await p.evaluate(() => document.querySelectorAll('.slide[data-niv="e"]').length);
+  const vus = [];
+  for (let k = 0; k < nEss + 2; k++) {
+    vus.push(await p.evaluate(() => { const s = document.querySelector('.slide.on'); return s ? s.dataset.niv : '?'; }));
+    await p.keyboard.press('ArrowRight');
+  }
+  const horsParcours = vus.filter(v => v !== 'e').length;
+  console.log(`parcours essentiel : ${nEss} diapositives, ${vus.length} pas, ${horsParcours} hors parcours, compteur « ${await p.$eval('.ctrl .cn', el => el.textContent)} »`);
+  if (horsParcours) echecs++;
+  await p.keyboard.press('e');
   console.log('erreurs JavaScript :', erreurs.length ? erreurs.join(' | ') : 'aucune');
   if (erreurs.length) echecs++;
 

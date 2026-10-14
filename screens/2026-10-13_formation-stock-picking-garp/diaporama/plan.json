@@ -2,636 +2,847 @@
  {
   "n": 1,
   "section": "Ouverture",
-  "titre": "Couverture"
+  "titre": "Couverture",
+  "niv": "e"
  },
  {
   "n": 2,
   "section": "Ouverture",
-  "titre": "Le parcours"
+  "titre": "Le parcours",
+  "niv": "e"
  },
  {
   "n": 3,
   "section": "Ouverture",
-  "titre": "À la fin, vous saurez…"
+  "titre": "Comment lire cette formation",
+  "niv": "e"
  },
  {
   "n": 4,
-  "section": "Objectifs et horizon",
-  "titre": "Objectifs et horizon"
+  "section": "Ouverture",
+  "titre": "À la fin, vous saurez…",
+  "niv": "e"
  },
  {
   "n": 5,
   "section": "Objectifs et horizon",
-  "titre": "L'épargne de précaution"
+  "titre": "Objectifs et horizon",
+  "niv": "a"
  },
  {
   "n": 6,
   "section": "Objectifs et horizon",
-  "titre": "Un objectif, un horizon, un support"
+  "titre": "L'épargne de précaution",
+  "niv": "e"
  },
  {
   "n": 7,
   "section": "Objectifs et horizon",
-  "titre": "Le temps réduit le risque"
+  "titre": "Un objectif, un horizon, un support",
+  "niv": "a"
  },
  {
   "n": 8,
   "section": "Objectifs et horizon",
-  "titre": "Le noyau et les satellites"
+  "titre": "Le temps réduit le risque",
+  "niv": "e"
  },
  {
   "n": 9,
   "section": "Objectifs et horizon",
-  "titre": "En une fois ou progressivement ?"
+  "titre": "Le noyau et les satellites",
+  "niv": "a"
  },
  {
   "n": 10,
   "section": "Objectifs et horizon",
-  "titre": "Le DCA en pratique"
+  "titre": "En une fois ou progressivement ?",
+  "niv": "a"
  },
  {
   "n": 11,
-  "section": "Les bases",
-  "titre": "Les bases"
+  "section": "Objectifs et horizon",
+  "titre": "Le DCA en pratique",
+  "niv": "a"
  },
  {
   "n": 12,
-  "section": "Les bases",
-  "titre": "Une action, c'est une part d'entreprise"
+  "section": "Objectifs et horizon",
+  "titre": "À retenir",
+  "niv": "e"
  },
  {
   "n": 13,
   "section": "Les bases",
-  "titre": "Cours = BPA × P/E"
+  "titre": "Les bases",
+  "niv": "a"
  },
  {
   "n": 14,
   "section": "Les bases",
-  "titre": "ETF ou stock picking"
+  "titre": "Une action, c'est une part d'entreprise",
+  "niv": "e"
  },
  {
   "n": 15,
   "section": "Les bases",
-  "titre": "Le risque"
+  "titre": "Cours = BPA × P/E",
+  "niv": "e"
  },
  {
   "n": 16,
   "section": "Les bases",
-  "titre": "Le risque de change"
+  "titre": "ETF ou stock picking",
+  "niv": "e"
  },
  {
   "n": 17,
-  "section": "Lire les comptes",
-  "titre": "Lire les comptes"
+  "section": "Les bases",
+  "titre": "Le risque",
+  "niv": "a"
  },
  {
   "n": 18,
-  "section": "Lire les comptes",
-  "titre": "Trois documents, trois questions"
+  "section": "Les bases",
+  "titre": "Le risque de change",
+  "niv": "a"
  },
  {
   "n": 19,
-  "section": "Lire les comptes",
-  "titre": "La cascade du compte de résultat"
+  "section": "Les bases",
+  "titre": "À retenir",
+  "niv": "e"
  },
  {
   "n": 20,
   "section": "Lire les comptes",
-  "titre": "Les marges"
+  "titre": "Lire les comptes",
+  "niv": "a"
  },
  {
   "n": 21,
   "section": "Lire les comptes",
-  "titre": "La croissance (TCAM)"
+  "titre": "Trois documents, trois questions",
+  "niv": "e"
  },
  {
   "n": 22,
   "section": "Lire les comptes",
-  "titre": "BPA GAAP et non-GAAP"
+  "titre": "La cascade du compte de résultat",
+  "niv": "a"
  },
  {
   "n": 23,
   "section": "Lire les comptes",
-  "titre": "Dilution, rachats, dividendes"
+  "titre": "Les marges",
+  "niv": "a"
  },
  {
   "n": 24,
   "section": "Lire les comptes",
-  "titre": "Le FCF et le capex"
+  "titre": "La croissance (TCAM)",
+  "niv": "a"
  },
  {
   "n": 25,
   "section": "Lire les comptes",
-  "titre": "Le bilan"
+  "titre": "BPA GAAP et non-GAAP",
+  "niv": "a"
  },
  {
   "n": 26,
   "section": "Lire les comptes",
-  "titre": "ROE et ROIC"
+  "titre": "Dilution, rachats, dividendes",
+  "niv": "a"
  },
  {
   "n": 27,
   "section": "Lire les comptes",
-  "titre": "Lire une banque : Nu"
+  "titre": "Le FCF et le capex",
+  "niv": "e"
  },
  {
   "n": 28,
   "section": "Lire les comptes",
-  "titre": "Lire une plateforme : Reddit et Adyen"
+  "titre": "Le bilan",
+  "niv": "a"
  },
  {
   "n": 29,
   "section": "Lire les comptes",
-  "titre": "Les cycliques : Micron et Intel"
+  "titre": "ROE et ROIC",
+  "niv": "e"
  },
  {
   "n": 30,
-  "section": "Le moat",
-  "titre": "Le moat"
+  "section": "Lire les comptes",
+  "titre": "Lire une banque : Nu",
+  "niv": "a"
  },
  {
   "n": 31,
-  "section": "Le moat",
-  "titre": "Les douves autour du château"
+  "section": "Lire les comptes",
+  "titre": "Lire une plateforme : Reddit et Adyen",
+  "niv": "a"
  },
  {
   "n": 32,
-  "section": "Le moat",
-  "titre": "Cinq sources de moat"
+  "section": "Lire les comptes",
+  "titre": "Les cycliques : Micron et Intel",
+  "niv": "a"
  },
  {
   "n": 33,
-  "section": "Le moat",
-  "titre": "Le moat de nos cinq exemples"
+  "section": "Lire les comptes",
+  "titre": "À retenir",
+  "niv": "e"
  },
  {
   "n": 34,
   "section": "Le moat",
-  "titre": "Mesurer un moat"
+  "titre": "Le moat",
+  "niv": "a"
  },
  {
   "n": 35,
   "section": "Le moat",
-  "titre": "Quand le moat s'effondre : Intel"
+  "titre": "Les douves autour du château",
+  "niv": "e"
  },
  {
   "n": 36,
   "section": "Le moat",
-  "titre": "Les faux moats"
+  "titre": "Cinq sources de moat",
+  "niv": "e"
  },
  {
   "n": 37,
-  "section": "Valoriser",
-  "titre": "Valoriser"
+  "section": "Le moat",
+  "titre": "Le moat de nos cinq exemples",
+  "niv": "a"
  },
  {
   "n": 38,
-  "section": "Valoriser",
-  "titre": "Capitalisation et valeur d'entreprise"
+  "section": "Le moat",
+  "titre": "Mesurer un moat",
+  "niv": "a"
  },
  {
   "n": 39,
-  "section": "Valoriser",
-  "titre": "Cinq P/E pour une action"
+  "section": "Le moat",
+  "titre": "Quand le moat s'effondre : Intel",
+  "niv": "a"
  },
  {
   "n": 40,
-  "section": "Valoriser",
-  "titre": "Les autres multiples"
+  "section": "Le moat",
+  "titre": "Les faux moats",
+  "niv": "a"
  },
  {
   "n": 41,
-  "section": "Valoriser",
-  "titre": "Le PEG"
+  "section": "Le moat",
+  "titre": "À retenir",
+  "niv": "e"
  },
  {
   "n": 42,
   "section": "Valoriser",
-  "titre": "Le piège du PEG de court terme"
+  "titre": "Valoriser",
+  "niv": "a"
  },
  {
   "n": 43,
   "section": "Valoriser",
-  "titre": "Consensus et rang Zacks"
+  "titre": "Capitalisation et valeur d'entreprise",
+  "niv": "a"
  },
  {
   "n": 44,
   "section": "Valoriser",
-  "titre": "Le DCF"
+  "titre": "Cinq P/E pour une action",
+  "niv": "a"
  },
  {
   "n": 45,
   "section": "Valoriser",
-  "titre": "Les taux d'intérêt"
+  "titre": "Les autres multiples",
+  "niv": "a"
  },
  {
   "n": 46,
   "section": "Valoriser",
-  "titre": "Ce que le prix suppose"
+  "titre": "Le PEG",
+  "niv": "e"
  },
  {
   "n": 47,
-  "section": "La méthode GARP",
-  "titre": "La méthode GARP"
+  "section": "Valoriser",
+  "titre": "Le piège du PEG de court terme",
+  "niv": "a"
  },
  {
   "n": 48,
-  "section": "La méthode GARP",
-  "titre": "Les six catégories de Lynch"
+  "section": "Valoriser",
+  "titre": "Consensus et rang Zacks",
+  "niv": "a"
  },
  {
   "n": 49,
-  "section": "La méthode GARP",
-  "titre": "La grille en sept critères"
+  "section": "Valoriser",
+  "titre": "Le DCF",
+  "niv": "a"
  },
  {
   "n": 50,
-  "section": "La méthode GARP",
-  "titre": "La grille appliquée"
+  "section": "Valoriser",
+  "titre": "Les taux d'intérêt",
+  "niv": "a"
  },
  {
   "n": 51,
-  "section": "La méthode GARP",
-  "titre": "Trois scénarios"
+  "section": "Valoriser",
+  "titre": "Ce que le prix suppose",
+  "niv": "a"
  },
  {
   "n": 52,
-  "section": "La méthode GARP",
-  "titre": "La zone d'achat"
+  "section": "Valoriser",
+  "titre": "À retenir",
+  "niv": "e"
  },
  {
   "n": 53,
   "section": "La méthode GARP",
-  "titre": "Quand vendre"
+  "titre": "La méthode GARP",
+  "niv": "a"
  },
  {
   "n": 54,
   "section": "La méthode GARP",
-  "titre": "Diversifier les moteurs"
+  "titre": "Les six catégories de Lynch",
+  "niv": "a"
  },
  {
   "n": 55,
   "section": "La méthode GARP",
-  "titre": "Les biais"
+  "titre": "La grille en sept critères",
+  "niv": "e"
  },
  {
   "n": 56,
-  "section": "Enveloppes, frais et impôts",
-  "titre": "Enveloppes, frais et impôts"
+  "section": "La méthode GARP",
+  "titre": "La grille appliquée",
+  "niv": "a"
  },
  {
   "n": 57,
-  "section": "Enveloppes, frais et impôts",
-  "titre": "Le tableau des enveloppes"
+  "section": "La méthode GARP",
+  "titre": "Trois scénarios",
+  "niv": "a"
  },
  {
   "n": 58,
-  "section": "Enveloppes, frais et impôts",
-  "titre": "Le PEA"
+  "section": "La méthode GARP",
+  "titre": "La zone d'achat",
+  "niv": "a"
  },
  {
   "n": 59,
-  "section": "Enveloppes, frais et impôts",
-  "titre": "Le compte-titres"
+  "section": "La méthode GARP",
+  "titre": "Quand vendre",
+  "niv": "e"
  },
  {
   "n": 60,
-  "section": "Enveloppes, frais et impôts",
-  "titre": "L'assurance-vie"
+  "section": "La méthode GARP",
+  "titre": "Diversifier les moteurs",
+  "niv": "a"
  },
  {
   "n": 61,
-  "section": "Enveloppes, frais et impôts",
-  "titre": "Le PER"
+  "section": "La méthode GARP",
+  "titre": "Les biais",
+  "niv": "a"
  },
  {
   "n": 62,
-  "section": "Enveloppes, frais et impôts",
-  "titre": "Les frais"
+  "section": "La méthode GARP",
+  "titre": "À retenir",
+  "niv": "e"
  },
  {
   "n": 63,
   "section": "Enveloppes, frais et impôts",
-  "titre": "Quelle enveloppe pour quelle valeur"
+  "titre": "Enveloppes, frais et impôts",
+  "niv": "a"
  },
  {
   "n": 64,
   "section": "Enveloppes, frais et impôts",
-  "titre": "Déclarer ses revenus"
+  "titre": "Le tableau des enveloppes",
+  "niv": "e"
  },
  {
   "n": 65,
-  "section": "Les ETF",
-  "titre": "Les ETF"
+  "section": "Enveloppes, frais et impôts",
+  "titre": "Le PEA",
+  "niv": "a"
  },
  {
   "n": 66,
-  "section": "Les ETF",
-  "titre": "Comment fonctionne un ETF"
+  "section": "Enveloppes, frais et impôts",
+  "titre": "Le compte-titres",
+  "niv": "a"
  },
  {
   "n": 67,
-  "section": "Les ETF",
-  "titre": "Les grands indices"
+  "section": "Enveloppes, frais et impôts",
+  "titre": "L'assurance-vie",
+  "niv": "a"
  },
  {
   "n": 68,
-  "section": "Les ETF",
-  "titre": "Ce que contient un ETF Nasdaq 100"
+  "section": "Enveloppes, frais et impôts",
+  "titre": "Le PER",
+  "niv": "a"
  },
  {
   "n": 69,
-  "section": "Les ETF",
-  "titre": "Physique ou synthétique"
+  "section": "Enveloppes, frais et impôts",
+  "titre": "Les frais",
+  "niv": "e"
  },
  {
   "n": 70,
-  "section": "Les ETF",
-  "titre": "Capitalisant, distribuant et frais"
+  "section": "Enveloppes, frais et impôts",
+  "titre": "Quelle enveloppe pour quelle valeur",
+  "niv": "a"
  },
  {
   "n": 71,
-  "section": "Les ETF",
-  "titre": "Les principaux ETF"
+  "section": "Enveloppes, frais et impôts",
+  "titre": "Déclarer ses revenus",
+  "niv": "a"
  },
  {
   "n": 72,
-  "section": "Les ETF",
-  "titre": "Choisir son ETF"
+  "section": "Enveloppes, frais et impôts",
+  "titre": "À retenir",
+  "niv": "e"
  },
  {
   "n": 73,
-  "section": "Bourse ou immobilier",
-  "titre": "Bourse ou immobilier"
+  "section": "Les ETF",
+  "titre": "Les ETF",
+  "niv": "a"
  },
  {
   "n": 74,
-  "section": "Bourse ou immobilier",
-  "titre": "Quarante ans de rendements"
+  "section": "Les ETF",
+  "titre": "Comment fonctionne un ETF",
+  "niv": "e"
  },
  {
   "n": 75,
-  "section": "Bourse ou immobilier",
-  "titre": "Les grandes études"
+  "section": "Les ETF",
+  "titre": "Les grands indices",
+  "niv": "a"
  },
  {
   "n": 76,
-  "section": "Bourse ou immobilier",
-  "titre": "La recherche française"
+  "section": "Les ETF",
+  "titre": "Ce que contient un ETF Nasdaq 100",
+  "niv": "a"
  },
  {
   "n": 77,
-  "section": "Bourse ou immobilier",
-  "titre": "7 % ou 2 % ?"
+  "section": "Les ETF",
+  "titre": "Physique ou synthétique",
+  "niv": "a"
  },
  {
   "n": 78,
-  "section": "Bourse ou immobilier",
-  "titre": "Du loyer brut au loyer net"
+  "section": "Les ETF",
+  "titre": "Capitalisant, distribuant et frais",
+  "niv": "a"
  },
  {
   "n": 79,
-  "section": "Bourse ou immobilier",
-  "titre": "Le crédit et l'effet de levier"
+  "section": "Les ETF",
+  "titre": "Les principaux ETF",
+  "niv": "e"
  },
  {
   "n": 80,
-  "section": "Bourse ou immobilier",
-  "titre": "La formule du levier"
+  "section": "Les ETF",
+  "titre": "Choisir son ETF",
+  "niv": "a"
  },
  {
   "n": 81,
-  "section": "Bourse ou immobilier",
-  "titre": "Vingt ans à effort égal"
+  "section": "Les ETF",
+  "titre": "À retenir",
+  "niv": "e"
  },
  {
   "n": 82,
   "section": "Bourse ou immobilier",
-  "titre": "Qui gagne ?"
+  "titre": "Bourse ou immobilier",
+  "niv": "a"
  },
  {
   "n": 83,
   "section": "Bourse ou immobilier",
-  "titre": "Le risque"
+  "titre": "Quarante ans de rendements",
+  "niv": "e"
  },
  {
   "n": 84,
   "section": "Bourse ou immobilier",
-  "titre": "Stress tests"
+  "titre": "Les grandes études",
+  "niv": "a"
  },
  {
   "n": 85,
   "section": "Bourse ou immobilier",
-  "titre": "Les pires trajectoires"
+  "titre": "La recherche française",
+  "niv": "a"
  },
  {
   "n": 86,
   "section": "Bourse ou immobilier",
-  "titre": "Se protéger"
+  "titre": "7 % ou 2 % ?",
+  "niv": "a"
  },
  {
   "n": 87,
   "section": "Bourse ou immobilier",
-  "titre": "Le match en dix critères"
+  "titre": "Du loyer brut au loyer net",
+  "niv": "e"
  },
  {
   "n": 88,
   "section": "Bourse ou immobilier",
-  "titre": "Chacun à sa place"
+  "titre": "Le crédit et l'effet de levier",
+  "niv": "a"
  },
  {
   "n": 89,
-  "section": "Intérêts composés",
-  "titre": "Intérêts composés"
+  "section": "Bourse ou immobilier",
+  "titre": "La formule du levier",
+  "niv": "a"
  },
  {
   "n": 90,
-  "section": "Intérêts composés",
-  "titre": "La mécanique"
+  "section": "Bourse ou immobilier",
+  "titre": "Vingt ans à effort égal",
+  "niv": "e"
  },
  {
   "n": 91,
-  "section": "Intérêts composés",
-  "titre": "La calculatrice"
+  "section": "Bourse ou immobilier",
+  "titre": "Qui gagne ?",
+  "niv": "a"
  },
  {
   "n": 92,
-  "section": "Intérêts composés",
-  "titre": "La tyrannie des frais"
+  "section": "Bourse ou immobilier",
+  "titre": "Le risque",
+  "niv": "a"
  },
  {
   "n": 93,
-  "section": "Intérêts composés",
-  "titre": "L'effet de l'enveloppe"
+  "section": "Bourse ou immobilier",
+  "titre": "Stress tests",
+  "niv": "a"
  },
  {
   "n": 94,
-  "section": "Intérêts composés",
-  "titre": "Le temps plutôt que le timing"
+  "section": "Bourse ou immobilier",
+  "titre": "Les pires trajectoires",
+  "niv": "a"
  },
  {
   "n": 95,
-  "section": "Grands investisseurs",
-  "titre": "Grands investisseurs"
+  "section": "Bourse ou immobilier",
+  "titre": "Se protéger",
+  "niv": "a"
  },
  {
   "n": 96,
-  "section": "Grands investisseurs",
-  "titre": "Peter Lynch"
+  "section": "Bourse ou immobilier",
+  "titre": "Le match en dix critères",
+  "niv": "e"
  },
  {
   "n": 97,
-  "section": "Grands investisseurs",
-  "titre": "Warren Buffett"
+  "section": "Bourse ou immobilier",
+  "titre": "Chacun à sa place",
+  "niv": "a"
  },
  {
   "n": 98,
-  "section": "Grands investisseurs",
-  "titre": "Charlie Munger"
+  "section": "Bourse ou immobilier",
+  "titre": "À retenir",
+  "niv": "e"
  },
  {
   "n": 99,
-  "section": "Grands investisseurs",
-  "titre": "Benjamin Graham"
+  "section": "Intérêts composés",
+  "titre": "Intérêts composés",
+  "niv": "a"
  },
  {
   "n": 100,
-  "section": "Grands investisseurs",
-  "titre": "Fisher et Smith"
+  "section": "Intérêts composés",
+  "titre": "La mécanique",
+  "niv": "e"
  },
  {
   "n": 101,
-  "section": "Grands investisseurs",
-  "titre": "Bogle et Marks"
+  "section": "Intérêts composés",
+  "titre": "La calculatrice",
+  "niv": "e"
  },
  {
   "n": 102,
-  "section": "Grands investisseurs",
-  "titre": "Dalio et Druckenmiller"
+  "section": "Intérêts composés",
+  "titre": "La tyrannie des frais",
+  "niv": "a"
  },
  {
   "n": 103,
-  "section": "Grands investisseurs",
-  "titre": "Soros et Simons"
+  "section": "Intérêts composés",
+  "titre": "L'effet de l'enveloppe",
+  "niv": "a"
  },
  {
   "n": 104,
-  "section": "Grands investisseurs",
-  "titre": "Greenblatt et Templeton"
+  "section": "Intérêts composés",
+  "titre": "Le temps plutôt que le timing",
+  "niv": "e"
  },
  {
   "n": 105,
-  "section": "Grands investisseurs",
-  "titre": "Smith et Sleep"
+  "section": "Intérêts composés",
+  "titre": "À retenir",
+  "niv": "e"
  },
  {
   "n": 106,
   "section": "Grands investisseurs",
-  "titre": "Huit stratégies à votre portée ?"
+  "titre": "Grands investisseurs",
+  "niv": "a"
  },
  {
   "n": 107,
   "section": "Grands investisseurs",
-  "titre": "La synthèse"
+  "titre": "Peter Lynch",
+  "niv": "e"
  },
  {
   "n": 108,
-  "section": "Passer à l'action",
-  "titre": "Passer à l'action"
+  "section": "Grands investisseurs",
+  "titre": "Warren Buffett",
+  "niv": "e"
  },
  {
   "n": 109,
-  "section": "Passer à l'action",
-  "titre": "Check-list et routine"
+  "section": "Grands investisseurs",
+  "titre": "Charlie Munger",
+  "niv": "a"
  },
  {
   "n": 110,
-  "section": "Passer à l'action",
-  "titre": "Passer un ordre"
+  "section": "Grands investisseurs",
+  "titre": "Benjamin Graham",
+  "niv": "a"
  },
  {
   "n": 111,
-  "section": "Passer à l'action",
-  "titre": "Déjouer les arnaques"
+  "section": "Grands investisseurs",
+  "titre": "Fisher et Smith",
+  "niv": "a"
  },
  {
   "n": 112,
-  "section": "Passer à l'action",
-  "titre": "Où s'informer"
+  "section": "Grands investisseurs",
+  "titre": "Bogle et Marks",
+  "niv": "a"
  },
  {
   "n": 113,
-  "section": "Passer à l'action",
-  "titre": "Testez-vous (1/2)"
+  "section": "Grands investisseurs",
+  "titre": "Dalio et Druckenmiller",
+  "niv": "a"
  },
  {
   "n": 114,
-  "section": "Passer à l'action",
-  "titre": "Testez-vous (2/2)"
+  "section": "Grands investisseurs",
+  "titre": "Soros et Simons",
+  "niv": "a"
  },
  {
   "n": 115,
-  "section": "Passer à l'action",
-  "titre": "Glossaire (1/4)"
+  "section": "Grands investisseurs",
+  "titre": "Greenblatt et Templeton",
+  "niv": "a"
  },
  {
   "n": 116,
-  "section": "Passer à l'action",
-  "titre": "Glossaire (2/4)"
+  "section": "Grands investisseurs",
+  "titre": "Smith et Sleep",
+  "niv": "a"
  },
  {
   "n": 117,
-  "section": "Passer à l'action",
-  "titre": "Glossaire (3/4)"
+  "section": "Grands investisseurs",
+  "titre": "Huit stratégies à votre portée ?",
+  "niv": "a"
  },
  {
   "n": 118,
-  "section": "Passer à l'action",
-  "titre": "Glossaire (4/4)"
+  "section": "Grands investisseurs",
+  "titre": "La synthèse",
+  "niv": "a"
  },
  {
   "n": 119,
-  "section": "Passer à l'action",
-  "titre": "Sources (1/8)"
+  "section": "Grands investisseurs",
+  "titre": "À retenir",
+  "niv": "e"
  },
  {
   "n": 120,
   "section": "Passer à l'action",
-  "titre": "Sources (2/8)"
+  "titre": "Passer à l'action",
+  "niv": "a"
  },
  {
   "n": 121,
   "section": "Passer à l'action",
-  "titre": "Sources (3/8)"
+  "titre": "Check-list et routine",
+  "niv": "e"
  },
  {
   "n": 122,
   "section": "Passer à l'action",
-  "titre": "Sources (4/8)"
+  "titre": "Passer un ordre",
+  "niv": "e"
  },
  {
   "n": 123,
   "section": "Passer à l'action",
-  "titre": "Sources (5/8)"
+  "titre": "Déjouer les arnaques",
+  "niv": "a"
  },
  {
   "n": 124,
   "section": "Passer à l'action",
-  "titre": "Sources (6/8)"
+  "titre": "Où s'informer",
+  "niv": "a"
  },
  {
   "n": 125,
   "section": "Passer à l'action",
-  "titre": "Sources (7/8)"
+  "titre": "À retenir",
+  "niv": "e"
  },
  {
   "n": 126,
   "section": "Passer à l'action",
-  "titre": "Sources (8/8)"
+  "titre": "Testez-vous (1/2)",
+  "niv": "x"
  },
  {
   "n": 127,
   "section": "Passer à l'action",
-  "titre": "Ce qu'il faut retenir"
+  "titre": "Testez-vous (2/2)",
+  "niv": "x"
+ },
+ {
+  "n": 128,
+  "section": "Passer à l'action",
+  "titre": "Glossaire (1/4)",
+  "niv": "x"
+ },
+ {
+  "n": 129,
+  "section": "Passer à l'action",
+  "titre": "Glossaire (2/4)",
+  "niv": "x"
+ },
+ {
+  "n": 130,
+  "section": "Passer à l'action",
+  "titre": "Glossaire (3/4)",
+  "niv": "x"
+ },
+ {
+  "n": 131,
+  "section": "Passer à l'action",
+  "titre": "Glossaire (4/4)",
+  "niv": "x"
+ },
+ {
+  "n": 132,
+  "section": "Passer à l'action",
+  "titre": "Les données",
+  "niv": "x"
+ },
+ {
+  "n": 133,
+  "section": "Passer à l'action",
+  "titre": "Sources (1/8)",
+  "niv": "x"
+ },
+ {
+  "n": 134,
+  "section": "Passer à l'action",
+  "titre": "Sources (2/8)",
+  "niv": "x"
+ },
+ {
+  "n": 135,
+  "section": "Passer à l'action",
+  "titre": "Sources (3/8)",
+  "niv": "x"
+ },
+ {
+  "n": 136,
+  "section": "Passer à l'action",
+  "titre": "Sources (4/8)",
+  "niv": "x"
+ },
+ {
+  "n": 137,
+  "section": "Passer à l'action",
+  "titre": "Sources (5/8)",
+  "niv": "x"
+ },
+ {
+  "n": 138,
+  "section": "Passer à l'action",
+  "titre": "Sources (6/8)",
+  "niv": "x"
+ },
+ {
+  "n": 139,
+  "section": "Passer à l'action",
+  "titre": "Sources (7/8)",
+  "niv": "x"
+ },
+ {
+  "n": 140,
+  "section": "Passer à l'action",
+  "titre": "Sources (8/8)",
+  "niv": "x"
+ },
+ {
+  "n": 141,
+  "section": "Passer à l'action",
+  "titre": "Ce qu'il faut retenir",
+  "niv": "e"
  }
 ]
