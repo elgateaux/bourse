@@ -12,6 +12,7 @@ Diaporama du 13/10/2026 (cours du 12/10/2026) pour un investisseur français dé
 - [planche_contact.jpg](planche_contact.jpg) : toutes les pages du PDF en vignettes.
 - [Formation_GARP_L-essentiel_2026-10-13.pdf](Formation_GARP_L-essentiel_2026-10-13.pdf) : le parcours « L'essentiel », 45 diapositives, avec une page « À retenir » par chapitre. Dans le diaporama, la touche E ou le bouton « Parcours » bascule entre l'essentiel et le complet.
 - [AUDIT_DONNEES.md](AUDIT_DONNEES.md) : audit des données (`audit.py`) : chaque ligne des CSV utilisée dans le document, ou la raison de son absence.
+- [Video_GARP_L-essentiel_2026-10-13.mp4](Video_GARP_L-essentiel_2026-10-13.mp4) : le parcours « L'essentiel » en vidéo, 15 min 22 s, 1 920 × 1 080, avec chapitres et bande-son originale (46 Mo). Plan image par image dans [video_essentiel.csv](video_essentiel.csv), vignettes dans [planche_contact_video.jpg](planche_contact_video.jpg).
 
 ## Plan
 
@@ -151,6 +152,37 @@ Capitalisation mensuelle ; frais prélevés sur l'encours ; versement en fin de 
 
 Les dividendes ne sont pas modélisés. Le JavaScript est la traduction ligne à ligne de `simuler()` dans `calcul.py` : `verifier.js` le confronte aux 8 cas de [calculatrice_tests.csv](calculatrice_tests.csv), avec un écart maximal inférieur au centime.
 
+## La vidéo « L'essentiel »
+
+Le parcours « L'essentiel » filmé directement depuis le diaporama : 44 diapositives essentielles, précédées à chaque chapitre de son ouverture en intertitre (12 intertitres), soit 56 plans et 15 min 22 s en 1 920 × 1 080 à 30 images par seconde. Chaque image est une capture de `diaporama/index.html` : les chiffres, les sources numérotées, le titre fictif et la mention « analyse quantitative et datée » sont ceux du diaporama. La vidéo n'ajoute aucun chiffre.
+
+- **Images.** `video_essentiel.js` (Playwright et Chromium) rend le temps du navigateur virtuel. Chaque animation CSS est mise en pause puis positionnée image par image. Les compteurs avancent au rythme des images. Le rendu est donc identique d'une exécution à l'autre. Une fois les animations finies, l'image fixe est répétée jusqu'à la fin du plan.
+- **Durée d'un plan.** 3 s d'animation, plus le temps de lecture à 3,5 mots par seconde. Le résultat est borné entre 8 et 20 s. La couverture dure 9 s, chaque intertitre 5 s, et la dernière diapositive jusqu'à 24 s. Les diapositives denses demandent une pause pour lire les sources.
+- **Retirée de la vidéo :** « Comment lire cette formation ». Ce mode d'emploi du clavier n'a pas de sens à l'écran.
+- **Démonstration.** Sur la calculatrice, la durée passe de 1 à 20 ans. Le diaporama recalcule chaque valeur à chaque image. Le plan s'arrête sur le cas par défaut, celui du PDF.
+- **Habillage.** Barre de progression dorée en bas de l'image. La numérotation passe à celle des plans (« 05 / 56 »). Un chapitre MP4 par chapitre de la formation.
+- **Son.** Bande-son originale, synthétisée par `bande_son.py` avec la seule bibliothèque standard :
+  - nappe en la mineur sur un cycle de 96 s, basse, notes de piano clairsemées ;
+  - souffle à chaque changement de plan, cloche à chaque intertitre.
+  Pas de voix off : aucune synthèse vocale n'est disponible hors ligne dans l'environnement de production.
+- **Encodage.** H.264 (CRF 23, réglage « animation »), AAC à 128 kbit/s, 45,7 Mo.
+
+| Chapitre | Début | Plans |
+|---|---:|---:|
+| Ouverture | 0:00 | 3 |
+| Objectifs et horizon | 0:49 | 4 |
+| Les bases | 1:54 | 5 |
+| Lire les comptes | 3:19 | 5 |
+| Le moat | 4:44 | 4 |
+| Valoriser | 5:49 | 3 |
+| La méthode GARP | 6:34 | 4 |
+| Enveloppes, frais et impôts | 7:38 | 4 |
+| Les ETF | 8:43 | 4 |
+| Bourse ou immobilier | 9:45 | 6 |
+| Intérêts composés | 11:30 | 5 |
+| Grands investisseurs | 12:53 | 4 |
+| Passer à l'action | 13:58 | 5 |
+
 ## Reproduire
 
 ```sh
@@ -161,6 +193,7 @@ NODE_PATH=$(npm root -g) node verifier.js /tmp/captures   # captures, débordeme
 NODE_PATH=$(npm root -g) node pdf.js "$PWD/Formation_GARP_2026-10-13.pdf"
 python3 planche_contact.py && python3 audit.py && python3 rapport.py
 NODE_PATH=$(npm root -g) node pdf.js "$PWD/Formation_GARP_L-essentiel_2026-10-13.pdf" --essentiel
+NODE_PATH=$(npm root -g) node video_essentiel.js && python3 planche_contact_video.py   # vidéo « L'essentiel » (FFmpeg requis, environ 25 min)
 ```
 
 Données d'entrée dans [data/](data/) : comptes annuels et consensus Zacks, résultats trimestriels de Nu, Reddit et Adyen, fiscalité 2026, citations, ETF, horizon et DCA, moat ([moat.csv](data/moat.csv)), compléments de la bible ([bible.csv](data/bible.csv)), immobilier ([immobilier.csv](data/immobilier.csv)), super-investisseurs ([super_investisseurs.csv](data/super_investisseurs.csv)), études sur l'immobilier ([etudes_immobilier.csv](data/etudes_immobilier.csv)), chacune avec deux sources par chiffre clé. Les P/E NTM, croissances supposées, scénarios et zones d'achat par société viennent du modèle PEG du dépôt, daté du même jour.
@@ -171,3 +204,4 @@ Données d'entrée dans [data/](data/) : comptes annuels et consensus Zacks, ré
 - Lisibilité : police d'au moins 14 px en présentation plein écran et 11 px sur téléphone ; contraste du texte d'au moins 4,5:1 (norme WCAG AA).
 - Téléphone (390 px) : pas de défilement horizontal, tableaux et graphiques larges défilent dans leur propre cadre.
 - PDF : polices embarquées, une diapositive par page, planche contact relue.
+- Vidéo : planche contact relue (une image par plan, animations terminées), aucune erreur JavaScript pendant la capture, chapitres et durée vérifiés avec ffprobe.
