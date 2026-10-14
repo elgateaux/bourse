@@ -61,3 +61,10 @@ immo_assurance,0.3,% du capital emprunté par an,simulation immobilier contre ET
 immo_frais_vente,5,% du prix de vente,simulation immobilier contre ETF,"hyp. : frais d'agence à la revente, entre les moyennes de 4,87 % et 5,78 % relevées (data/immobilier.csv)"
 immo_rdt_actions,6.6,% par an,simulation immobilier contre ETF,"hyp. : inflation de 2 % plus 4,6 % réels, rendement réel composé des actions sur 1870-2015 dans 16 pays (Jordà et al., data/etudes_immobilier.csv) ; sous les 12,4 % de l'IEIF sur 1983-2023"
 immo_frais_etf,0.2,% par an,simulation immobilier contre ETF,"hyp. : frais courants d'un ETF large éligible au PEA, dans la fourchette de 0,07 à 0,38 % (data/etf.csv)"
+stress_paris_annees,7,ans,stress tests,durée de la baisse des prix à Paris de 1990 à 1997 (data/immobilier.csv)
+stress_2008_annees,2,ans,stress tests,"du 09/10/2007 au 09/03/2009 : 17 mois, arrondis à 2 ans (data/horizon_dca.csv)"
+stress_2000_annees,3,ans,stress tests,"du 04/09/2000 au 12/03/2003 pour le CAC 40 : 2,5 ans, arrondis à 3 ans (data/immobilier.csv)"
+stress_impaye_mois,12,mois,stress tests,"hyp. : entre le premier impayé et l'expulsion, au moins 8 mois et souvent près de 2 ans (data/immobilier.csv)"
+stress_impaye_annee,3,année,stress tests,"hyp. : choc placé tôt, quand le crédit pèse le plus"
+stress_travaux,30000,€,stress tests,"hyp. : rénovation énergétique d'environ 40 m² à 742 €/m² (étude Ithaque, Paris) ; rénovation globale aidée moyenne de 47 100 € (ONRE, 2023) ; data/immobilier.csv"
+stress_travaux_annee,8,année,stress tests,hyp. : avant l'interdiction de louer les logements classés E en 2034 (data/immobilier.csv)

@@ -324,7 +324,7 @@ def opener(sec):
         teaser = ctx["teasers"].get(sec, "")
         return (f'<div class="wipe"></div><div class="opn" aria-hidden="true">{num}</div>'
                 f'<div class="op-in"><p class="kick a">Chapitre {num}</p><h2 class="xl a">{e(sec)}</h2>'
-                f'<p class="lede a">{e(sous)}</p><ol class="op-list">{liste}</ol>{teaser}</div>'), ""
+                f'<p class="lede a">{e(sous)}</p><ol class="op-list{" op3" if len(items) > 12 else ""}">{liste}</ol>{teaser}</div>'), ""
     add(sec, sec, fn, "op")
 
 
@@ -2368,6 +2368,87 @@ def s_immo_sensi(ctx):
     return body, "Simulation : " + HYPS() + " ; " + ET("shiller_prix", "eichholtz_paris") + " ; " + IM("friggit_ratio", "credit_taux_20")
 
 
+# ---- Bourse ou immobilier : stress tests
+def ST(i):
+    return next(x for x in D["immo"]["levier"]["stress"] if x["id"] == i)
+
+
+def s_immo_stress(ctx):
+    def ligne(x):
+        cl = "pos" if x["ecart"] > 0 else "neg"
+        return [f'<b>{e(x["scenario"])}</b><br><small>{e(x["choc"])}</small>', f'{fr(x["net_immo"] / 1000, 0)}{NBSP}k€', f'{fr(x["net_etf"] / 1000, 0)}{NBSP}k€',
+                f'<b class="{cl}">{fr(x["ecart"] / 1000, 0, True)}{NBSP}k€</b>']
+    st = D["immo"]["levier"]["stress"]
+    tab = lambda cible, titre: (f'<div class="card tight a"><span class="lab">{titre}</span>'
+                                + table(["Scénario", "Logement", "ETF", "Écart"], [ligne(x) for x in st if x["cible"] in cible], num=(1, 2, 3), cls="st")
+                                + "</div>")
+    c0 = st[0]
+    body = hd("Bourse ou immobilier · les stress tests", "Stress tests : neuf chocs",
+              f"Patrimoine net après revente, à effort égal ; cas central : logement {fr(c0['net_immo'] / 1000, 0)}{NBSP}k€, ETF {fr(c0['net_etf'] / 1000, 0)}{NBSP}k€. Après chaque choc, tout revient à la normale.")
+    body += f'<div class="g c2 main">{tab(("logement",), "Chocs sur le logement")}{tab(("ETF", "les deux"), "Chocs sur la Bourse, et vente forcée")}</div>'
+    body += '<p class="p m sm a">À effort égal, un choc payé par le propriétaire (impayé, travaux) est aussi versé dans l\'ETF : il creuse l\'écart sans changer la valeur du logement.</p>'
+    return body, "Chocs : " + IM("paris_krach_1990", "cac_krach_2000", "impayes_2025", "renovation_cout", "dpe_calendrier") + " " + HZS("krach_2008", "krach_2022") + " ; " + HYPS()
+
+
+def svg_stress():
+    lignes = [("central", "immo_si_vente", "#8da2c8", 3, ' stroke-dasharray="6 6"'), ("central", "etf", "#ffc94a", 3, ' stroke-dasharray="6 6"'),
+              ("tempete", "immo_si_vente", "#8da2c8", 5, ""), ("decennie", "etf", "#ffc94a", 5, ""), ("central", "verse", "#8d96a8", 2, ' stroke-dasharray="2 6"')]
+    series = [(ST(i)["serie"], k, c, w, d) for i, k, c, w, d in lignes]
+    vals = [x[k] for s, k, *_ in series for x in s]
+    step = 50000
+    ymin, ymax = math.floor(min(0, min(vals)) / step) * step, math.ceil(max(vals) / step) * step
+    W, Hh, l, r, t, b = 1000, 470, 110, 50, 30, 410
+    n = len(series[0][0])
+    X = lambda a: l + (a - 1) / (n - 1) * (W - l - r)
+    Y = lambda v: b - (v - ymin) / (ymax - ymin) * (b - t)
+    out = []
+    for yv in range(int(ymin), int(ymax) + 1, step):
+        out.append(f'<line x1="{l}" x2="{W - r}" y1="{Y(yv):.1f}" y2="{Y(yv):.1f}" stroke="{"rgba(242,237,226,.35)" if yv == 0 else "rgba(242,237,226,.08)"}"/>')
+        out.append(f'<text x="{l - 12}" y="{Y(yv) + 7:.1f}" text-anchor="end" font-size="20" fill="#8d96a8" font-family="GZ Plex Mono">{fr(yv / 1000, 0)}{NBSP}k€</text>')
+    for a in (1, 5, 10, 15, 20):
+        out.append(f'<text x="{X(a):.1f}" y="{b + 34}" text-anchor="middle" font-size="20" fill="#8d96a8" font-family="GZ Plex Mono">{a} an{"s" if a > 1 else ""}</text>')
+    for s, k, c, w, d in series:
+        pts = " ".join(f"{X(x['annee']):.1f},{Y(x[k]):.1f}" for x in s)
+        out.append(f'<polyline class="ln" pathLength="1" points="{pts}" fill="none" stroke="{c}" stroke-width="{w}"{d} stroke-linejoin="round"/>')
+    return f'<svg viewBox="0 0 {W} {Hh + 10}" role="img" aria-label="Patrimoine net si l\'on revend chaque année : pires scénarios et cas central">{"".join(out)}</svg>'
+
+
+def s_immo_stress_graph(ctx):
+    tp, dc, kf = ST("tempete"), ST("decennie"), ST("kfin")
+    body = hd("Bourse ou immobilier · les pires trajectoires", "Les pires trajectoires : sous l'eau, puis la remontée",
+              "Ce que vaut chaque patrimoine si l'on doit tout vendre en fin d'année, frais de revente et dette déduits. Sous zéro, le propriétaire doit ajouter de l'argent pour vendre.")
+    body += f'''<div class="g c32 main">
+  <figure class="ch a"><span class="lab">Patrimoine si revente en fin d'année (avant impôt sur la plus-value)</span>{svg_stress()}
+    <div class="leg"><span><i style="background:#8da2c8"></i>Logement, tempête parfaite</span><span><i style="background:#ffc94a"></i>ETF, décennie perdue</span><span><i class="dash"></i>Cas centraux, pointillés</span></div></figure>
+  <div class="g">
+    <div class="g c2 lc2">{kv("Logement, tempête parfaite", f'{tp["annees_fp_negatifs"]}{NBSP}ans', "de fonds propres négatifs ; perte latente maximale de " + eur(-tp["perte_max_immo"]), "var(--neg)")}
+    {kv("ETF, décennie perdue", eur(-dc["perte_max_etf"]), "de perte latente maximale, sans jamais devoir vendre", "var(--neg)")}</div>
+    {ul([f"<b>Le logement craint les chocs concentrés</b> : un krach local à l'achat le met sous l'eau pendant {tp['annees_fp_negatifs']} ans ; à 20 ans, il finit à {eur(tp['net_immo'])}.",
+         f"<b>L'ETF craint le krach au mauvais moment</b> : rejoué l'année de la vente, « 2008 » le ramène à {eur(kf['net_etf'])}, sous le logement. À l'approche de l'échéance, on réduit progressivement la part d'actions.",
+         "<b>La règle commune</b> : ne jamais être vendeur forcé. Le temps répare les deux, à condition de pouvoir attendre."], "sm")}
+  </div></div>'''
+    return body, "Simulation : " + HYPS() + " ; chocs " + IM("paris_krach_1990", "cac_krach_2000") + " " + HZS("krach_2008")
+
+
+def s_immo_stress_lecons(ctx):
+    v5 = ST("vente5")
+    body = hd("Bourse ou immobilier · se protéger", "Ce que les stress tests enseignent au propriétaire comme à l'épargnant", "")
+    body += f'''<div class="g c2 main">
+  <div class="card a"><span class="lab">Les risques propres au logement</span>{ul([
+      f"<b>La réglementation</b> : {e(im('dpe_calendrier')['fait'])}",
+      f"<b>Les travaux</b> : {e(im('renovation_cout')['fait'])}",
+      f"<b>Les impayés</b> : {e(im('impayes_2025')['fait'])}",
+      f"<b>La vente forcée</b> : divorce, mutation, perte d'emploi. Revendre après 5 ans dans un marché en baisse laisse {eur(v5['net_immo'])}, contre {eur(v5['net_etf'])} pour l'ETF, lui aussi en baisse."], "sm")}</div>
+  <div class="card hl a"><span class="lab">Cinq règles de survie (hyp.)</span>{ul([
+      "<b>Une réserve</b> d'au moins six mois de mensualités et de charges, en plus de l'épargne de précaution.",
+      "<b>Un DPE vérifié avant d'acheter</b> : une étiquette F ou G annonce des travaux obligatoires pour continuer à louer.",
+      "<b>Un taux fixe</b>, la norme en France : il protège des hausses de taux, pas des baisses de prix.",
+      "<b>Un ETF mondial</b> plutôt qu'un seul pays ou un seul secteur : aucun locataire, aucune toiture, aucune ville ne peut tout faire perdre.",
+      "<b>Une date de besoin connue</b> : sécuriser progressivement l'argent dont on aura besoin dans moins de cinq ans."], "sm")}</div>
+</div>'''
+    return body, "Risques : " + IM("dpe_calendrier", "renovation_cout", "impayes_2025", "taux_fixe") + " ; simulation : " + HYPS()
+
+
 # ============================================================ assemblage du plan
 def plan(n_sources):
     SL.clear()
@@ -2454,6 +2535,9 @@ def plan(n_sources):
     add("Bourse ou immobilier", "Vingt ans à effort égal", s_immo_simul)
     add("Bourse ou immobilier", "Qui gagne ?", s_immo_sensi)
     add("Bourse ou immobilier", "Le risque", s_immo_risque)
+    add("Bourse ou immobilier", "Stress tests", s_immo_stress)
+    add("Bourse ou immobilier", "Les pires trajectoires", s_immo_stress_graph)
+    add("Bourse ou immobilier", "Se protéger", s_immo_stress_lecons)
     add("Bourse ou immobilier", "Le match en dix critères", s_immo_match)
     add("Bourse ou immobilier", "Chacun à sa place", s_immo_verdict)
     opener("Intérêts composés")
@@ -2721,7 +2805,7 @@ i.dot { font-style:normal; }
 .opn { position:absolute; right:-10px; bottom:-20px; z-index:1; font:900 46vw/.8 "GZ Archivo"; font-stretch:62%; color:transparent; -webkit-text-stroke:1.5px rgba(255,201,74,.55); pointer-events:none; }
 %P .opn { font-size:700u; right:60u; bottom:30u; -webkit-text-stroke:3u rgba(255,201,74,.6); }
 .op-list { display:grid; gap:4u 30u; grid-template-columns:minmax(0,1fr); margin-top:10u; }
-%P .op-list { grid-template-columns:repeat(2, minmax(0,1fr)); }
+%P .op-list { grid-template-columns:repeat(2, minmax(0,1fr)); } %P .op-list.op3 { grid-template-columns:repeat(3, minmax(0,1fr)); }
 .op-list a { display:flex; gap:12px; align-items:baseline; text-decoration:none; font-size:var(--fs-b); padding:5u 0; border-bottom:1px solid var(--line2); }
 .op-list a:hover { color:var(--gold); }
 .op-list .num { color:var(--gold); font-size:.8em; }
@@ -2858,6 +2942,7 @@ input[type=number]:focus-visible, input[type=range]:focus-visible, button:focus-
 .srcs a { text-decoration:none; color:var(--paper); } .srcs a:hover { color:var(--gold); text-decoration:underline; }
 .srcs .num { color:var(--gold); }
 .nw { white-space:nowrap; } .hm { display:inline-block; min-width:5.2em; padding:2px 8px; border-radius:6px; color:var(--paper); }
+%P .t.st td { padding-top:5u; padding-bottom:5u; font-size:var(--fs-s); line-height:1.3; } .t.st td small { color:var(--muted); font-size:var(--fs-xs); }
 .t.etu td { vertical-align:top; } .t.etu td:first-child { min-width:16em; } %P .t.etu td { font-size:var(--fs-s); line-height:1.35; } .si { gap:7u; } .si-n { font:900 var(--fs-n4)/1 "GZ Archivo", sans-serif; font-stretch:62%; text-transform:uppercase; }
 .si-f { font:500 var(--fs-xs)/1.3 "GZ Plex Mono", monospace; color:var(--dim); }
 .si-big { font:900 var(--fs-n3)/1 "GZ Archivo", sans-serif; font-stretch:62%; font-variant-numeric:tabular-nums; }

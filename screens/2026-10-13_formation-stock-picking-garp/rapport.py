@@ -127,6 +127,17 @@ w(f"- Risque : un levier de {fr(b['levier'], 1)} porte la volatilité de l'appor
 w(f"- Limites : rendements des actions et des prix supposés réguliers (pas de krach simulé) ; pas de travaux exceptionnels ni d'impayés au-delà des {fr(H['immo_charges'], 0)} % de charges ; "
   "déficit foncier reporté seulement sur les revenus fonciers (prudent : l'imputation de 10 700 € sur le revenu global est ignorée) ; frais de garantie et de dossier du crédit non comptés.")
 w("")
+w("**Stress tests** (`stress_tests()` dans `calcul.py`, résultats dans [stress_tests_immobilier.csv](stress_tests_immobilier.csv)) : chaque choc historique est rejoué sur le cas central, "
+  "puis les hypothèses centrales reprennent. Patrimoine net à la revente, à effort égal.")
+w("")
+w("| Scénario | Choc | Logement à crédit | ETF | Écart | Fonds propres négatifs |")
+w("|---|---|---|---|---|---|")
+for x in LV["stress"]:
+    w(f"| {x['scenario']} | {x['choc']} | {eur(x['net_immo'])} | {eur(x['net_etf'])} | {eur(x['ecart'])} | {x['annees_fp_negatifs']} an(s) |")
+w("")
+w("Lecture : le logement souffre des chocs concentrés (krach local à l'achat, impayé, travaux), l'ETF du krach juste avant la vente. "
+  "À effort égal, un choc payé par le propriétaire est aussi versé dans l'ETF : il creuse l'écart sans changer la valeur du logement.")
+w("")
 w("Sources de cette section :")
 w("")
 for k, (t, u) in enumerate(refs, 1):

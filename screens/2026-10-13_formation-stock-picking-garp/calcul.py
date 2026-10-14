@@ -276,11 +276,14 @@ def abattements_pv(annees, IV):
     return min(ir, 100.0) / 100, min(ps, 100.0) / 100
 
 
-def simuler_immo(IV, P, hausse, rdt_actions, annees_vente=None, credit=True):
+def simuler_immo(IV, P, hausse, rdt_actions, annees_vente=None, credit=True, chocs=None):
     """Investisseur A : logement loué nu (régime réel), acheté à crédit ou comptant, revendu après `annees_vente` ans.
     Investisseur B : verse les mêmes sommes, aux mêmes dates, dans un ETF logé dans un PEA ; au-delà du plafond
     des versements du PEA, le surplus va sur un compte-titres (même ETF, flat tax à la sortie).
-    Mensuel : loyers et charges indexés sur l'inflation, impôt payé en fin d'année, déficit reporté 10 ans."""
+    Mensuel : loyers et charges indexés sur l'inflation, impôt payé en fin d'année, déficit reporté 10 ans.
+    `chocs` (stress tests) : "prix" et "etf", taux annuels année par année ; "vacance", {année: mois sans loyer} ;
+    "travaux", {année: montant payé au milieu de l'année, déductible des revenus fonciers}."""
+    chocs = chocs or {}
     n_credit = int(HYP["immo_duree_credit"] * 12)
     T = int((annees_vente or HYP["immo_duree_credit"]) * 12)
     infl = HYP["calc_inflation"] / 100
@@ -291,7 +294,12 @@ def simuler_immo(IV, P, hausse, rdt_actions, annees_vente=None, credit=True):
     mens = emprunt * i_m / (1 - (1 + i_m) ** -n_credit) if credit else 0.0
     assur_m = emprunt * HYP["immo_assurance"] / 100 / 12
     taux_imp = (HYP["tmi_exemple"] + IV("ps_foncier")) / 100
-    g_e = (1 + rdt_actions) ** (1 / 12) * (1 - HYP["immo_frais_etf"] / 100) ** (1 / 12)
+    n_ans = -(-T // 12)
+    g_prix = list(chocs.get("prix", [hausse] * n_ans))
+    r_etf = list(chocs.get("etf", [rdt_actions] * n_ans))
+    vacance, travaux = chocs.get("vacance", {}), chocs.get("travaux", {})
+    k_frais = (1 - HYP["immo_frais_etf"] / 100) ** (1 / 12)
+    prix = P
     plafond = PARAMS["pea_plafond"]
     solde, verse = emprunt, apport
     pea, v_pea = min(apport, plafond), min(apport, plafond)
@@ -301,11 +309,16 @@ def simuler_immo(IV, P, hausse, rdt_actions, annees_vente=None, credit=True):
         an = (m - 1) // 12
         loyer = P * IV("rendement_brut_france") / 100 / 12 * (1 + infl) ** an
         charges = loyer * HYP["immo_charges"] / 100
+        if (m - 1) % 12 < vacance.get(an + 1, 0):   # mois sans loyer : les charges restent dues
+            loyer = 0.0
         interet = solde * i_m if m <= n_credit else 0.0
         capital = (mens - interet) if (credit and m <= n_credit) else 0.0
         solde -= capital
         paye = (mens + assur_m if (credit and m <= n_credit) else 0.0) + charges - loyer
         base_an += loyer - charges - interet - (assur_m if m <= n_credit else 0.0)
+        if (m - 1) % 12 == 5 and travaux.get(an + 1):
+            paye += travaux[an + 1]
+            base_an -= travaux[an + 1]
         if m % 12 == 0:                       # impôt de l'année, déficits reportés dix ans
             reports = [[mt, age + 1] for mt, age in reports if age + 1 <= 10]
             if base_an < 0:
@@ -319,6 +332,7 @@ def simuler_immo(IV, P, hausse, rdt_actions, annees_vente=None, credit=True):
             paye += impot
             base_an = 0.0
         flux.append(-paye)
+        g_e = (1 + r_etf[an]) ** (1 / 12) * k_frais
         pea, cto = pea * g_e, cto * g_e
         if paye >= 0:                         # versement : PEA jusqu'au plafond, puis compte-titres
             vers_pea = min(paye, max(0.0, plafond - v_pea))
@@ -331,9 +345,11 @@ def simuler_immo(IV, P, hausse, rdt_actions, annees_vente=None, credit=True):
         etf = pea + cto
         verse += paye
         if m % 12 == 0:
-            serie.append({"annee": m // 12, "etf_brut": etf})
+            prix *= 1 + g_prix[an]
+            serie.append({"annee": m // 12, "etf": etf, "verse": verse,
+                          "immo_si_vente": prix * (1 - HYP["immo_frais_vente"] / 100) - solde})
     annees = T / 12
-    prix_vente = P * (1 + hausse) ** annees
+    prix_vente = prix
     net_vendeur = prix_vente * (1 - HYP["immo_frais_vente"] / 100)
     prix_revient = P * (1 + IV("pv_forfait_acq") / 100 + (IV("pv_forfait_travaux") / 100 if annees > 5 else 0.0))
     pv = max(0.0, net_vendeur - prix_revient)
@@ -345,10 +361,50 @@ def simuler_immo(IV, P, hausse, rdt_actions, annees_vente=None, credit=True):
     flux_etf = flux[:-1] + [flux[-1] + net_etf]
     return {"apport": apport, "emprunt": emprunt, "mensualite": mens, "verse": verse, "prix_vente": prix_vente, "pv": pv, "impot_pv": impot_pv,
             "net_immo": net_immo, "net_etf": net_etf, "ecart": net_immo - net_etf, "tri_immo": tri(flux_immo), "tri_etf": tri(flux_etf),
-            "levier": P / apport, "effort_an1": -sum(flux[1:13]) / 12, "verse_cto": v_cto, "brut_etf": etf}
+            "levier": P / apport, "effort_an1": -sum(flux[1:13]) / 12, "verse_cto": v_cto, "brut_etf": etf, "serie": serie,
+            "annees_fp_negatifs": sum(1 for x in serie if x["immo_si_vente"] < 0),
+            "perte_max_immo": min(x["immo_si_vente"] - x["verse"] for x in serie),
+            "perte_max_etf": min(x["etf"] - x["verse"] for x in serie)}
 
 
-def bloc_levier(IMMO):
+def stress_tests(IV, P, g0, r0, HZD):
+    """Chocs historiques rejoués sur la simulation centrale ; après le choc, retour aux hypothèses centrales."""
+    N = int(HYP["immo_duree_credit"])
+    infl = HYP["calc_inflation"] / 100
+    chemin = lambda base, chocs: [chocs.get(a, base) for a in range(1, N + 1)]
+    n_p = int(HYP["stress_paris_annees"])
+    g_paris = (1 + IV("paris_krach_1990") / 100) ** (1 / n_p) * (1 + infl) - 1      # baisse réelle, convertie en nominal
+    k08, n08 = -abs(float(HZD["krach_2008"]["valeur"])) / 100, int(HYP["stress_2008_annees"])
+    r08 = (1 + k08) ** (1 / n08) - 1
+    k00, n00 = IV("cac_krach_2000") / 100, int(HYP["stress_2000_annees"])
+    r00 = (1 + k00) ** (1 / n00) - 1
+    k22 = -abs(float(HZD["krach_2022"]["valeur"])) / 100
+    v = -HYP["immo_variation"] / 100
+    imp = {int(HYP["stress_impaye_annee"]): HYP["stress_impaye_mois"]}
+    trv = {int(HYP["stress_travaux_annee"]): HYP["stress_travaux"]}
+    paris = {a: g_paris for a in range(1, n_p + 1)}
+    S = [("central", "Cas central", "aucun choc", "les deux", {}),
+         ("paris", "Krach immobilier « Paris 1990 »", f"logement {fr(IV('paris_krach_1990'), 0)} % réels en {n_p} ans dès l'achat", "logement", {"prix": chemin(g0, paris)}),
+         ("impaye", "Un an d'impayé", f"{fr(HYP['stress_impaye_mois'], 0)} mois sans loyer la {int(HYP['stress_impaye_annee'])}e année", "logement", {"vacance": imp}),
+         ("travaux", "Gros travaux", f"{eur(HYP['stress_travaux'])} la {int(HYP['stress_travaux_annee'])}e année (rénovation énergétique)", "logement", {"travaux": trv}),
+         ("tempete", "Tempête parfaite", "krach « Paris 1990 », impayé et travaux", "logement", {"prix": chemin(g0, paris), "vacance": imp, "travaux": trv}),
+         ("k2008", "Krach « 2008 » dès le départ", f"ETF {fr(k08 * 100, 1)} % en {n08} ans", "ETF", {"etf": chemin(r0, {a: r08 for a in range(1, n08 + 1)})}),
+         ("k2000", "Krach « 2000-2003 » dès le départ", f"ETF {fr(k00 * 100, 0)} % en {n00} ans (CAC 40)", "ETF", {"etf": chemin(r0, {a: r00 for a in range(1, n00 + 1)})}),
+         ("kfin", "Krach « 2008 » l'année de la vente", f"ETF {fr(k08 * 100, 1)} % la {N}e année", "ETF", {"etf": chemin(r0, {N: k08})}),
+         ("decennie", "Décennie perdue en Bourse", "« 2000-2003 » dès le départ, puis « 2008 » les années 8 et 9", "ETF",
+          {"etf": chemin(r0, {**{a: r00 for a in range(1, n00 + 1)}, **{a: r08 for a in range(8, 8 + n08)}})}),
+         ("vente5", "Vente forcée à 5 ans", f"marchés en baisse : logement {fr(v * 100, 0)} %, ETF {fr(k22 * 100, 1)} % la 5e année", "les deux",
+          {"annees_vente": 5, "prix": chemin(g0, {5: v})[:5], "etf": chemin(r0, {5: k22})[:5]})]
+    out = []
+    for cle, nom, choc, cible, c in S:
+        av = c.pop("annees_vente", None)
+        res = simuler_immo(IV, P, g0, r0, annees_vente=av, chocs=c)
+        out.append({"id": cle, "scenario": nom, "choc": choc, "cible": cible, "annees_vente": av or N,
+                    **{k: res[k] for k in ("net_immo", "net_etf", "ecart", "tri_immo", "tri_etf", "verse", "annees_fp_negatifs", "perte_max_immo", "perte_max_etf", "serie")}})
+    return out
+
+
+def bloc_levier(IMMO, HZD):
     IV = lambda k: float(IMMO[k]["valeur"])
     P = HYP["immo_prix"]
     g0, r0 = HYP["immo_hausse"] / 100, HYP["immo_rdt_actions"] / 100
@@ -378,7 +434,8 @@ def bloc_levier(IMMO):
     return {"base": base, "comptant": comptant, "horizon": horizon, "hausses": hausses, "actions": actions,
             "grille": [[{"net_immo": c["net_immo"], "net_etf": c["net_etf"], "ecart": c["ecart"], "tri_immo": c["tri_immo"], "tri_etf": c["tri_etf"]} for c in l] for l in grille],
             "hausse_equilibre": (lo + hi) / 2, "rdt_net": rdt_net, "cout_dette": cout_dette, "d_e": d_e, "formule": formule,
-            "vol_logement": vol_l, "vol_actions": vol_a, "vol_levier": vol_l * base["levier"]}
+            "vol_logement": vol_l, "vol_actions": vol_a, "vol_levier": vol_l * base["levier"],
+            "stress": stress_tests(IV, P, g0, r0, HZD)}
 
 
 def main():
@@ -596,7 +653,8 @@ def main():
                 "frais_part_apport": frais_acq / apport,
                 "annees_frais": math.log(1 + frais_acq / prix) / math.log(1 + HYP["immo_hausse"] / 100),
                 "transactions_var": iv("transactions_2023") / iv("transactions_2022") - 1}
-        immo["levier"] = bloc_levier(IMMO)
+        immo["levier"] = bloc_levier(IMMO, {r["id"]: r for r in HZ})
+        ecrire("stress_tests_immobilier.csv", [{k: v for k, v in x.items() if k != "serie"} for x in immo["levier"]["stress"]])
         ecrire("immobilier_simulation.csv", [{"hausse_prix": g, "rdt_etf": r, **{k: c[k] for k in ("net_immo", "net_etf", "ecart", "tri_immo", "tri_etf")}}
                                              for g, l in zip(immo["levier"]["hausses"], immo["levier"]["grille"]) for r, c in zip(immo["levier"]["actions"], l)])
 
@@ -646,6 +704,9 @@ def main():
         print("Levier : apport", eur(b["apport"]), "| net immo", eur(b["net_immo"]), "TRI", pct(b["tri_immo"], 2), "| net ETF", eur(b["net_etf"]), "TRI", pct(b["tri_etf"], 2),
               "| comptant TRI", pct(immo["levier"]["comptant"]["tri_immo"], 2), "| hausse d'équilibre", pct(immo["levier"]["hausse_equilibre"], 2),
               "| versé", eur(b["verse"]), "dont compte-titres", eur(b["verse_cto"]))
+        for x in immo["levier"]["stress"]:
+            print(f"  stress {x['id']:9} logement {eur(x['net_immo']):>12} ETF {eur(x['net_etf']):>12} écart {eur(x['ecart']):>12} "
+                  f"| FP<0 {x['annees_fp_negatifs']} an(s) | perte latente max logement {eur(x['perte_max_immo'])} ETF {eur(x['perte_max_etf'])}")
     print("Adyen take rate", pct(ady["take_rate"], 3), "marge nette", pct(ady["marge_nette"]))
 
 

@@ -1,6 +1,6 @@
 # Formation : le stock picking GARP, de zéro à autonome
 
-Diaporama du 13/10/2026 (cours du 12/10/2026) pour un investisseur français débutant : 124 diapositives, une calculatrice d'intérêts composés, un calculateur de PEG, un quiz de 16 questions, un glossaire et des sources numérotées. Même style que la vidéo du même jour. Conçu comme une « bible » de l'investisseur français : moat, DCF, taux, change, PER, déclaration fiscale, ordres de Bourse, arnaques, comparaison Bourse-immobilier et stratégies de quinze grands investisseurs. NVIDIA, TSMC, Nu, Reddit et Adyen servent uniquement d'exemples d'analyse : le diaporama ne présente ni portefeuille ni comparaison de performance avec un indice.
+Diaporama du 13/10/2026 (cours du 12/10/2026) pour un investisseur français débutant : 127 diapositives, une calculatrice d'intérêts composés, un calculateur de PEG, un quiz de 16 questions, un glossaire et des sources numérotées. Même style que la vidéo du même jour. Conçu comme une « bible » de l'investisseur français : moat, DCF, taux, change, PER, déclaration fiscale, ordres de Bourse, arnaques, comparaison Bourse-immobilier et stratégies de quinze grands investisseurs. NVIDIA, TSMC, Nu, Reddit et Adyen servent uniquement d'exemples d'analyse : le diaporama ne présente ni portefeuille ni comparaison de performance avec un indice.
 
 *La Gazette du PEG est un titre fictif : il ne correspond à aucune publication existante. Analyse quantitative et datée, qui ne constitue pas un conseil en investissement personnalisé.*
 
@@ -24,10 +24,10 @@ Diaporama du 13/10/2026 (cours du 12/10/2026) pour un investisseur français dé
 | La méthode GARP | 47 à 55 |
 | Enveloppes, frais et impôts | 56 à 64 |
 | Les ETF | 65 à 72 |
-| Bourse ou immobilier | 73 à 85 |
-| Intérêts composés | 86 à 91 |
-| Grands investisseurs | 92 à 104 |
-| Passer à l'action | 105 à 124 |
+| Bourse ou immobilier | 73 à 88 |
+| Intérêts composés | 89 à 94 |
+| Grands investisseurs | 95 à 107 |
+| Passer à l'action | 108 à 127 |
 
 ## Chiffres clés (tous calculés par `calcul.py`)
 
@@ -69,6 +69,23 @@ Chiffres repris : logement 7,05 % réels par an contre 6,98 % pour les actions d
 - Point d'équilibre : avec l'ETF à 6,6 %, le logement gagne si son prix monte de plus de 3,02 % par an pendant 20 ans.
 - Risque : un levier de 5,7 porte la volatilité de l'apport à environ 57 % au départ, contre 22 % pour un ETF d'actions.
 - Limites : rendements des actions et des prix supposés réguliers (pas de krach simulé) ; pas de travaux exceptionnels ni d'impayés au-delà des 25 % de charges ; déficit foncier reporté seulement sur les revenus fonciers (prudent : l'imputation de 10 700 € sur le revenu global est ignorée) ; frais de garantie et de dossier du crédit non comptés.
+
+**Stress tests** (`stress_tests()` dans `calcul.py`, résultats dans [stress_tests_immobilier.csv](stress_tests_immobilier.csv)) : chaque choc historique est rejoué sur le cas central, puis les hypothèses centrales reprennent. Patrimoine net à la revente, à effort égal.
+
+| Scénario | Choc | Logement à crédit | ETF | Écart | Fonds propres négatifs |
+|---|---|---|---|---|---|
+| Cas central | aucun choc | 276 789 € | 329 970 € | −53 181 € | 0 an(s) |
+| Krach immobilier « Paris 1990 » | logement −42 % réels en 7 ans dès l'achat | 163 751 € | 329 970 € | −166 219 € | 5 an(s) |
+| Un an d'impayé | 12 mois sans loyer la 3e année | 276 789 € | 345 043 € | −68 254 € | 0 an(s) |
+| Gros travaux | 30 000 € la 8e année (rénovation énergétique) | 276 789 € | 365 199 € | −88 410 € | 0 an(s) |
+| Tempête parfaite | krach « Paris 1990 », impayé et travaux | 163 751 € | 380 152 € | −216 401 € | 5 an(s) |
+| Krach « 2008 » dès le départ | ETF −56,8 % en 2 ans | 276 789 € | 258 244 € | 18 545 € | 0 an(s) |
+| Krach « 2000-2003 » dès le départ | ETF −65 % en 3 ans (CAC 40) | 276 789 € | 240 777 € | 36 012 € | 0 an(s) |
+| Krach « 2008 » l'année de la vente | ETF −56,8 % la 20e année | 276 789 € | 152 581 € | 124 208 € | 0 an(s) |
+| Décennie perdue en Bourse | « 2000-2003 » dès le départ, puis « 2008 » les années 8 et 9 | 276 789 € | 168 480 € | 108 309 € | 0 an(s) |
+| Vente forcée à 5 ans | marchés en baisse : logement −10 %, ETF −25,4 % la 5e année | 39 741 € | 59 339 € | −19 599 € | 0 an(s) |
+
+Lecture : le logement souffre des chocs concentrés (krach local à l'achat, impayé, travaux), l'ETF du krach juste avant la vente. À effort égal, un choc payé par le propriétaire est aussi versé dans l'ETF : il creuse l'écart sans changer la valeur du logement.
 
 Sources de cette section :
 
