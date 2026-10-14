@@ -1,0 +1,57 @@
+ordre,diapositive,section,titre,type,mots,debut_s,duree_s
+1,1,Ouverture,Couverture,couverture,195,0.000,9.000
+2,2,Ouverture,Le parcours,essentiel,235,9.000,20.000
+3,4,Ouverture,"À la fin, vous saurez…",essentiel,169,29.000,20.000
+4,5,Objectifs et horizon,Objectifs et horizon,intertitre,0,49.000,5.000
+5,6,Objectifs et horizon,L'épargne de précaution,essentiel,150,54.000,20.000
+6,8,Objectifs et horizon,Le temps réduit le risque,essentiel,120,74.000,20.000
+7,12,Objectifs et horizon,À retenir,a_retenir,74,94.000,20.000
+8,13,Les bases,Les bases,intertitre,0,114.000,5.000
+9,14,Les bases,"Une action, c'est une part d'entreprise",essentiel,135,119.000,20.000
+10,15,Les bases,Cours = BPA × P/E,essentiel,147,139.000,20.000
+11,16,Les bases,ETF ou stock picking,essentiel,172,159.000,20.000
+12,19,Les bases,À retenir,a_retenir,73,179.000,20.000
+13,20,Lire les comptes,Lire les comptes,intertitre,0,199.000,5.000
+14,21,Lire les comptes,"Trois documents, trois questions",essentiel,115,204.000,20.000
+15,27,Lire les comptes,Le FCF et le capex,essentiel,132,224.000,20.000
+16,29,Lire les comptes,ROE et ROIC,essentiel,106,244.000,20.000
+17,33,Lire les comptes,À retenir,a_retenir,61,264.000,20.000
+18,34,Le moat,Le moat,intertitre,0,284.000,5.000
+19,35,Le moat,Les douves autour du château,essentiel,231,289.000,20.000
+20,36,Le moat,Cinq sources de moat,essentiel,192,309.000,20.000
+21,41,Le moat,À retenir,a_retenir,63,329.000,20.000
+22,42,Valoriser,Valoriser,intertitre,0,349.000,5.000
+23,46,Valoriser,Le PEG,essentiel,119,354.000,20.000
+24,52,Valoriser,À retenir,a_retenir,61,374.000,20.000
+25,53,La méthode GARP,La méthode GARP,intertitre,0,394.000,5.000
+26,55,La méthode GARP,La grille en sept critères,essentiel,152,399.000,20.000
+27,59,La méthode GARP,Quand vendre,essentiel,177,419.000,20.000
+28,62,La méthode GARP,À retenir,a_retenir,57,439.000,19.300
+29,63,"Enveloppes, frais et impôts","Enveloppes, frais et impôts",intertitre,0,458.300,5.000
+30,64,"Enveloppes, frais et impôts",Le tableau des enveloppes,essentiel,142,463.300,20.000
+31,69,"Enveloppes, frais et impôts",Les frais,essentiel,148,483.300,20.000
+32,72,"Enveloppes, frais et impôts",À retenir,a_retenir,64,503.300,20.000
+33,73,Les ETF,Les ETF,intertitre,0,523.300,5.000
+34,74,Les ETF,Comment fonctionne un ETF,essentiel,180,528.300,20.000
+35,79,Les ETF,Les principaux ETF,essentiel,111,548.300,20.000
+36,81,Les ETF,À retenir,a_retenir,49,568.300,17.000
+37,82,Bourse ou immobilier,Bourse ou immobilier,intertitre,0,585.300,5.000
+38,83,Bourse ou immobilier,Quarante ans de rendements,essentiel,136,590.300,20.000
+39,87,Bourse ou immobilier,Du loyer brut au loyer net,essentiel,202,610.300,20.000
+40,90,Bourse ou immobilier,Vingt ans à effort égal,essentiel,156,630.300,20.000
+41,96,Bourse ou immobilier,Le match en dix critères,essentiel,155,650.300,20.000
+42,98,Bourse ou immobilier,À retenir,a_retenir,81,670.300,20.000
+43,99,Intérêts composés,Intérêts composés,intertitre,0,690.300,5.000
+44,100,Intérêts composés,La mécanique,essentiel,168,695.300,20.000
+45,101,Intérêts composés,La calculatrice,essentiel,83,715.300,20.000
+46,104,Intérêts composés,Le temps plutôt que le timing,essentiel,91,735.300,20.000
+47,105,Intérêts composés,À retenir,a_retenir,51,755.300,17.567
+48,106,Grands investisseurs,Grands investisseurs,intertitre,0,772.867,5.000
+49,107,Grands investisseurs,Peter Lynch,essentiel,174,777.867,20.000
+50,108,Grands investisseurs,Warren Buffett,essentiel,280,797.867,20.000
+51,119,Grands investisseurs,À retenir,a_retenir,63,817.867,20.000
+52,120,Passer à l'action,Passer à l'action,intertitre,0,837.867,5.000
+53,121,Passer à l'action,Check-list et routine,essentiel,160,842.867,20.000
+54,122,Passer à l'action,Passer un ordre,essentiel,194,862.867,20.000
+55,125,Passer à l'action,À retenir,a_retenir,44,882.867,15.567
+56,141,Passer à l'action,Ce qu'il faut retenir,fin,266,898.433,24.000

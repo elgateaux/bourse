@@ -6,6 +6,7 @@
 import csv
 import json
 import os
+import re
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -27,6 +28,21 @@ etf = D["etf"]
 IM = {k: float(v["valeur"]) for k, v in D["immo_data"].items() if v["valeur"]}
 immo, dcf, chg, per = D["immo"], D["dcf"], D["change"], D["per"]
 NQ = open(os.path.join(HERE, "diaporama", "index.html"), encoding="utf-8").read().count('class="card qz-q')
+MP4 = "Video_GARP_L-essentiel_2026-10-13.mp4"
+VID = list(csv.DictReader(open(os.path.join(HERE, "video_essentiel.csv"), encoding="utf-8"))) if os.path.exists(os.path.join(HERE, "video_essentiel.csv")) else []
+VID_S = float(VID[-1]["debut_s"]) + float(VID[-1]["duree_s"]) if VID else 0
+VID_MO = os.path.getsize(os.path.join(HERE, MP4)) / 1e6 if os.path.exists(os.path.join(HERE, MP4)) else 0
+_js = open(os.path.join(HERE, "video_essentiel.js"), encoding="utf-8").read() if VID else ""
+DUREE = {k: float(v) for k, v in re.findall(r"(\w+): ([\d.]+)", re.search(r"const DUREE = \{([^}]*)\}", _js).group(1))} if VID else {}
+
+
+CRF = re.search(r"'-crf', '(\d+)'", _js).group(1) if VID else ""
+AAC = re.search(r"'-b:a', '(\d+)k'", _js).group(1) if VID else ""
+
+
+def mmss(x, court=False):
+    s_ = round(x)
+    return f"{s_ // 60}:{s_ % 60:02d}" if court else f"{s_ // 60} min {s_ % 60:02d} s"
 
 chap = []
 for x in PLAN:
@@ -56,6 +72,9 @@ w("- [planche_contact.jpg](planche_contact.jpg) : toutes les pages du PDF en vig
 w(f"- [Formation_GARP_L-essentiel_2026-10-13.pdf](Formation_GARP_L-essentiel_2026-10-13.pdf) : le parcours « L'essentiel », {sum(1 for x in PLAN if x.get('niv') == 'e')} diapositives, "
   "avec une page « À retenir » par chapitre. Dans le diaporama, la touche E ou le bouton « Parcours » bascule entre l'essentiel et le complet.")
 w("- [AUDIT_DONNEES.md](AUDIT_DONNEES.md) : audit des données (`audit.py`) : chaque ligne des CSV utilisée dans le document, ou la raison de son absence.")
+if VID:
+    w(f"- [{MP4}]({MP4}) : le parcours « L'essentiel » en vidéo, {mmss(VID_S)}, 1 920 × 1 080, avec chapitres et bande-son originale "
+      f"({fr(VID_MO, 0)} Mo). Plan image par image dans [video_essentiel.csv](video_essentiel.csv), vignettes dans [planche_contact_video.jpg](planche_contact_video.jpg).")
 w("")
 w("## Plan")
 w("")
@@ -190,6 +209,44 @@ w("Les dividendes ne sont pas modélisés. "
   f"Le JavaScript est la traduction ligne à ligne de `simuler()` dans `calcul.py` : `verifier.js` le confronte aux {len(TESTS)} cas de "
   "[calculatrice_tests.csv](calculatrice_tests.csv), avec un écart maximal inférieur au centime.")
 w("")
+if VID:
+    n_int = sum(1 for r in VID if r["type"] == "intertitre")
+    n_dia = len(VID) - n_int
+    dans = {int(r["diapositive"]) for r in VID}
+    retirees = [x["titre"] for x in PLAN if x.get("niv") == "e" and x["n"] not in dans]
+    w("## La vidéo « L'essentiel »")
+    w("")
+    w(f"Le parcours « L'essentiel » filmé directement depuis le diaporama : {n_dia} diapositives essentielles, précédées à chaque chapitre de son ouverture "
+      f"en intertitre ({n_int} intertitres), soit {len(VID)} plans et {mmss(VID_S)} en 1 920 × 1 080 à 30 images par seconde. Chaque image est une capture de "
+      "`diaporama/index.html` : les chiffres, les sources numérotées, le titre fictif et la mention « analyse quantitative et datée » sont ceux du diaporama. "
+      "La vidéo n'ajoute aucun chiffre.")
+    w("")
+    w("- **Images.** `video_essentiel.js` (Playwright et Chromium) rend le temps du navigateur virtuel. Chaque animation CSS est mise en pause puis positionnée image par image. "
+      "Les compteurs avancent au rythme des images. Le rendu est donc identique d'une exécution à l'autre. Une fois les animations finies, l'image fixe est répétée jusqu'à la fin du plan.")
+    w(f"- **Durée d'un plan.** {fr(DUREE['base'], 0)} s d'animation, plus le temps de lecture à {fr(DUREE['mots_par_s'], 1)} mots par seconde. "
+      f"Le résultat est borné entre {fr(DUREE['min'], 0)} et {fr(DUREE['max'], 0)} s. La couverture dure {fr(DUREE['couverture'], 0)} s, chaque intertitre "
+      f"{fr(DUREE['ouverture'], 0)} s, et la dernière diapositive jusqu'à {fr(DUREE['fin_max'], 0)} s. Les diapositives denses demandent une pause pour lire les sources.")
+    if retirees:
+        w(f"- **Retirée de la vidéo :** « {retirees[0]} »" + "".join(f", « {t} »" for t in retirees[1:]) + ". Ce mode d'emploi du clavier n'a pas de sens à l'écran.")
+    w(f"- **Démonstration.** Sur la calculatrice, la durée passe de 1 à {fr(D['defauts']['annees'], 0)} ans. Le diaporama recalcule chaque valeur à chaque image. "
+      "Le plan s'arrête sur le cas par défaut, celui du PDF.")
+    w("- **Habillage.** Barre de progression dorée en bas de l'image. La numérotation passe à celle des plans (« 05 / " + str(len(VID)) + " »). Un chapitre MP4 par chapitre de la formation.")
+    w("- **Son.** Bande-son originale, synthétisée par `bande_son.py` avec la seule bibliothèque standard :")
+    w("  - nappe en la mineur sur un cycle de 96 s, basse, notes de piano clairsemées ;")
+    w("  - souffle à chaque changement de plan, cloche à chaque intertitre.")
+    w("  Pas de voix off : aucune synthèse vocale n'est disponible hors ligne dans l'environnement de production.")
+    w(f"- **Encodage.** H.264 (CRF {CRF}, réglage « animation »), AAC à {AAC} kbit/s, {fr(VID_MO, 1)} Mo.")
+    w("")
+    w("| Chapitre | Début | Plans |")
+    w("|---|---:|---:|")
+    vus = []
+    for r in VID:
+        if not vus or vus[-1][0] != r["section"]:
+            vus.append([r["section"], float(r["debut_s"]), 0])
+        vus[-1][2] += 1
+    for sec, t0, n in vus:
+        w(f"| {sec} | {mmss(t0, True)} | {n} |")
+    w("")
 w("## Reproduire")
 w("")
 w("```sh")
@@ -200,6 +257,7 @@ w("NODE_PATH=$(npm root -g) node verifier.js /tmp/captures   # captures, débord
 w("NODE_PATH=$(npm root -g) node pdf.js \"$PWD/Formation_GARP_2026-10-13.pdf\"")
 w("python3 planche_contact.py && python3 audit.py && python3 rapport.py")
 w("NODE_PATH=$(npm root -g) node pdf.js \"$PWD/Formation_GARP_L-essentiel_2026-10-13.pdf\" --essentiel")
+w("NODE_PATH=$(npm root -g) node video_essentiel.js && python3 planche_contact_video.py   # vidéo « L'essentiel » (FFmpeg requis, environ 25 min)")
 w("```")
 w("")
 w("Données d'entrée dans [data/](data/) : comptes annuels et consensus Zacks, résultats trimestriels de Nu, Reddit et Adyen, fiscalité 2026, citations, ETF, horizon et DCA, "
@@ -213,6 +271,8 @@ w("- Aucun élément ne sort de sa diapositive ni ne passe sous le pied de page 
 w("- Lisibilité : police d'au moins 14 px en présentation plein écran et 11 px sur téléphone ; contraste du texte d'au moins 4,5:1 (norme WCAG AA).")
 w("- Téléphone (390 px) : pas de défilement horizontal, tableaux et graphiques larges défilent dans leur propre cadre.")
 w("- PDF : polices embarquées, une diapositive par page, planche contact relue.")
+if VID:
+    w("- Vidéo : planche contact relue (une image par plan, animations terminées), aucune erreur JavaScript pendant la capture, chapitres et durée vérifiés avec ffprobe.")
 open(os.path.join(HERE, "RAPPORT.md"), "w", encoding="utf-8").write("\n".join(L) + "\n")
 
 ligne = (f"| {D['date']} | [Formation : le stock picking GARP, de zéro à autonome]({DOSSIER}/RAPPORT.md) | "
@@ -222,7 +282,7 @@ ligne = (f"| {D['date']} | [Formation : le stock picking GARP, de zéro à auton
          f"donnent {eur(env['PEA']['net'])} nets en PEA contre {eur(env['CTO']['net'])} sur un compte-titres ; {pct(fx[2]['frais'], 0)} de frais par an coûtent {pct(fx[2]['part_perdue'], 0)} du capital en 30 ans ; "
          f"IEIF sur 40 ans : {fr(IM['ieif_actions_40'], 1)} % par an pour les actions françaises contre {fr(IM['ieif_paris_40'], 1)} % pour le logement parisien ; "
          f"à effort égal sur 20 ans, logement à crédit {eur(immo['levier']['base']['net_immo'])} contre {eur(immo['levier']['base']['net_etf'])} en ETF (hyp.) "
-         f"· [PDF]({DOSSIER}/Formation_GARP_2026-10-13.pdf)" + (f" · [en ligne]({lien})" if lien else "") + " |")
+         f"· [PDF]({DOSSIER}/Formation_GARP_2026-10-13.pdf)" + (f" · [vidéo de l'essentiel, {mmss(VID_S)}]({DOSSIER}/{MP4})" if VID else "") + (f" · [en ligne]({lien})" if lien else "") + " |")
 readme = os.path.join(RACINE, "README.md")
 lignes = open(readme, encoding="utf-8").read().split("\n")
 idx = [i for i, l in enumerate(lignes) if l.startswith(f"| {D['date']} | [Formation")]
