@@ -361,7 +361,7 @@ def s_sommaire(ctx):
         cards.append(f'<a class="card toc-card a" href="#s{idx[0] + 1}"><span class="tc-n">{num}</span><span class="tc-t">{e(sec)}</span>'
                      f'<span class="tc-s">{e(sous)}</span><span class="tc-r">diapos {idx[0] + 1} à {idx[-1] + 1}</span></a>')
     return hd("Le parcours", "Dix chapitres pour tout maîtriser",
-              "Chaque notion est illustrée par une société réelle et des chiffres datés. Cliquez sur un chapitre pour y aller ; les flèches du clavier font avancer la présentation.") + \
+              "Chaque notion est illustrée par une société réelle et des chiffres datés. Cliquez sur un chapitre ; les flèches du clavier font avancer.") + \
         f'<div class="g c5 lc2 main">{"".join(cards)}</div>', ""
 
 
@@ -935,7 +935,7 @@ def s_scenarios(ctx):
     ticks = "".join(f'<span style="left:{pos(x / 100):.2f}%">{fr(x, 0, x > 0)}{NBSP}%</span>' for x in range(-20, 41, 10))
     body = hd("La méthode GARP · l'incertitude", "Penser en fourchettes : trois scénarios par valeur",
               "Pessimiste, central, optimiste, pondérés 25 / 50 / 25 : on en tire un rendement annuel espéré sur quatre ans.")
-    body += f'''<div class="g c31 main"><div class="card a"><div class="rg-head"><span class="lab">Rendement annuel sur 4 ans : pessimiste · central (trait) · optimiste ; losange = espérance</span><span class="lab">Espéré</span></div>
+    body += f'''<div class="g c31 main"><div class="card tight a"><div class="rg-head"><span class="lab">Rendement annuel sur 4 ans : pessimiste · central (trait) · optimiste ; losange = espérance</span><span class="lab">Espéré</span></div>
     {"".join(rows)}<div class="rg-ticks">{ticks}</div></div>
   <div class="g">{ul(["<b>L'espérance se calcule sur les valeurs finales</b>, pas sur les taux : le scénario optimiste pèse plus qu'il n'y paraît.",
                     "<b>Le pessimiste n'est pas le pire</b> : c'est un scénario plausible et défavorable, avec un P/E de sortie comprimé."])}</div></div>'''
@@ -1237,8 +1237,7 @@ def s_munger(ctx):
 
 
 def s_graham(ctx):
-    body = hd("Grands investisseurs · Benjamin Graham", "Benjamin Graham : M. Marché et la marge de sécurité",
-              "Le professeur de Buffett. Chaque jour, un associé lunatique, M. Marché, vous propose un prix pour vos parts : on en profite ou on l'ignore, jamais on ne lui obéit.")
+    body = hd("Grands investisseurs · Benjamin Graham", "Benjamin Graham : M. Marché et la marge de sécurité")
     body += f'''<div class="g c3 main">{quote("graham_mrmarket", "sm", avec_lecon=True)}{quote("graham_margin", "sm", avec_lecon=True)}{quote("graham_voting", "sm", avec_lecon=True)}</div>'''
     return body, "Attribution corrigée : la formule de la machine à voter et à peser est de Buffett, qui résumait les idées de Graham et Dodd ; elle est souvent prêtée à Graham. Sources sous chaque citation"
 
@@ -1306,14 +1305,17 @@ def s_quiz(ctx):
           ("À 8 % par an, en combien de temps un capital double-t-il ?", [f"{fr(72 / 8, 0)} ans", f"{fr(100 / 8, 1)} ans", "6 ans"], 0, "Règle de 72 : 72 ÷ 8 = 9."),
           (f"Une cyclique affiche un P/E de {fr(V['MU']['pe_f1'], 1)} au sommet de son cycle. Pour Lynch, c'est…", ["une aubaine", "un possible signal de vente", "un PEG de 0,1"], 1, "Au sommet, les bénéfices sont au plus haut et vont baisser."),
           (f"{fr(fx2['frais'] * 100, 0)} % de frais par an pendant {fr(H['frais_duree'], 0)} ans : quelle part du capital final disparaît ?",
-           [pc(fx2["frais"] * H["frais_duree"] / 100 * 0 + fx2["frais"], 0), pc(fx2["part_perdue"], 0), pc(0.6, 0)], 1, "Les frais se composent, comme les gains.")]
+           [pc(fx2["frais"], 0), pc(fx2["part_perdue"], 0), pc(0.6, 0)], 1, "Les frais se composent, comme les gains."),
+          ("Un ETF qui suit le Nasdaq 100 peut-il entrer dans un PEA ?", ["Jamais", "Oui, en synthétique", "S'il est américain"], 1, "Le swap échange la performance d'un panier européen contre celle du Nasdaq 100."),
+          ("Selon Vanguard (2023), investir en une fois a battu un DCA de trois mois dans quelle part des cas ?",
+           [pc(1 - float(D["horizon"]["dca_vanguard_2023"]["valeur"]) / 100, 0), "50 %", pc(float(D["horizon"]["dca_vanguard_2023"]["valeur"]) / 100, 0)], 2, "Le marché monte plus souvent qu'il ne baisse : l'argent investi tôt travaille plus longtemps.")]
     cards = []
     for i, (q, opts, ok, why) in enumerate(qs):
         bt = "".join(f'<button type="button" class="opt{" good" if j == ok else ""}" data-ok="{1 if j == ok else 0}">{o}</button>' for j, o in enumerate(opts))
         cards.append(f'<div class="card qz-q a"><p class="p"><span class="num gold">{i + 1:02d}</span> {q}</p><div class="opts">{bt}</div><p class="why">{why}</p></div>')
-    body = hd("Passer à l'action · testez-vous", "Testez-vous : huit questions",
-              'Cliquez sur une réponse : tout se trouve dans les diapositives précédentes. <span class="score" id="qz-score"></span>')
-    body += f'<div class="g c4 lc1 main qz">{"".join(cards)}</div>'
+    body = hd("Passer à l'action · testez-vous", "Testez-vous : dix questions",
+              'Cliquez sur une réponse. <span class="score" id="qz-score"></span>')
+    body += f'<div class="g c5 lc1 main qz">{"".join(cards)}</div>'
     return body, "Données des diapositives précédentes"
 
 
@@ -1389,7 +1391,7 @@ def s_sources(part, nparts):
         lst = S.liste
         per = math.ceil(len(lst) / nparts)
         chunk = list(enumerate(lst))[part * per:(part + 1) * per]
-        li = "".join(f'<li><span class="num">[{i + 1}]</span> <a href="{e(u)}" target="_blank" rel="noopener">{e(t)}</a></li>' if u else f'<li><span class="num">[{i + 1}]</span> {e(t)}</li>' for i, (t, u) in chunk)
+        li = "".join(f'<li><span class="num">[{i + 1}]</span> <a href="{e(u.replace(" ", "%20"))}" target="_blank" rel="noopener">{e(t)}</a></li>' if u else f'<li><span class="num">[{i + 1}]</span> {e(t)}</li>' for i, (t, u) in chunk)
         body = hd("Passer à l'action · les sources", f"Sources ({part + 1}/{nparts})",
                   "Chaque chiffre clé renvoie à ces sources numérotées. Les pages Zacks sont datées du 13/10/2026 ; les opinions y sont des opinions datées." if part == 0 else "")
         body += f'<ol class="srcs main">{li}</ol>'
@@ -1422,7 +1424,7 @@ def s_noyau(ctx):
     ex = 10000
     body = hd("Objectifs et horizon · l'allocation", "Le noyau et les satellites",
               "Un débutant n'a pas d'historique qui prouve qu'il bat l'indice. Le noyau du portefeuille suit donc l'indice ; le stock picking occupe les satellites, une part qu'on accepte de voir sous-performer.")
-    body += f\'\'\'<div class="g c2 main">
+    body += f'''<div class="g c2 main">
   <div class="card a"><span class="lab">Exemple pour {eur(ex)} (hyp.)</span>
     <div class="ns"><div class="ns-n" style="flex:{nmax - 10:.0f}"><b>{eur(ex * (nmax - 10) / 100)}</b><span>noyau : un ou deux ETF larges (monde, Nasdaq 100)</span></div>
     <div class="ns-s" style="flex:{110 - nmax:.0f}"><b>{eur(ex * (110 - nmax) / 100)}</b><span>satellites : 5 actions GARP de {eur(ex * (110 - nmax) / 100 / 5)}</span></div></div>
@@ -1433,7 +1435,7 @@ def s_noyau(ctx):
     <div class="card hl a"><p class="p"><b>Le portefeuille de cette formation est 100 % satellites.</b> Cinq valeurs, aucun ETF : c'est le choix d'un investisseur qui accepte l'écart à l'indice. Sur 12 mois, il a fait {fr(float(D["retro"]["1an"]["portefeuille_poids_egaux"]), 1, True)}{NBSP}%, contre {fr(float(D["retro"]["1an"]["QQQ"]), 1, True)}{NBSP}% pour le Nasdaq 100.</p></div>
     {quote("bogle_haystack", "sm")}
   </div>
-</div>\'\'\'
+</div>'''
     return body, HYPS() + " ; rétroviseur " + VID()
 
 
@@ -1446,16 +1448,16 @@ def s_dca_ex(ctx):
         pmax = max(d["prix"])
         barres = "".join(f'<div class="px-b"><i style="height:{x / pmax * 100:.1f}%"></i><span>{fr(x, 0)}</span><small>m{i + 1}</small></div>' for i, x in enumerate(d["prix"]))
         gagnant = "DCA" if d["valeur_dca"] > d["valeur_lump"] else "En une fois"
-        cards.append(f\'\'\'<div class="card a"><span class="lab">{noms[sc]}</span><div class="px">{barres}</div>
+        cards.append(f'''<div class="card a"><span class="lab">{noms[sc]}</span><div class="px">{barres}</div>
       <div class="ln-r"><span>Parts achetées en une fois (mois 1)</span><b>{fr(d["parts_lump"], 1)}</b></div>
       <div class="ln-r"><span>Parts achetées en DCA ({eur(d["tranche"])} par mois)</span><b>{fr(d["parts_dca"], 1)}</b></div>
       <div class="ln-r"><span>Coût moyen DCA · prix moyen</span><b>{fr(d["cout_moyen_dca"], 2)} · {fr(d["prix_moyen"], 2)}</b></div>
       <div class="ln-r"><span>Valeur finale : en une fois · DCA</span><b>{eur(d["valeur_lump"])} · {eur(d["valeur_dca"])}</b></div>
-      <p class="p"><b class="{"pos" if gagnant == "DCA" else "gold"}">{gagnant} gagne</b> : {eur(abs(d["valeur_dca"] - d["valeur_lump"]))} d'écart.</p></div>\'\'\')
+      <p class="p"><b class="{"pos" if gagnant == "DCA" else "gold"}">{gagnant} gagne</b> : {eur(abs(d["valeur_dca"] - d["valeur_lump"]))} d'écart.</p></div>''')
     body = hd("Objectifs et horizon · le DCA en pratique", "Le DCA en pratique : deux scénarios",
               f"{eur(H['dca_montant'])} à investir : tout au premier mois, ou {eur(H['dca_montant'] / H['dca_mois'])} par mois pendant {fr(H['dca_mois'], 0)} mois. Le DCA achète plus de parts quand le prix baisse : son coût moyen est toujours inférieur ou égal au prix moyen.")
     body += f'<div class="g c2 main">{"".join(cards)}</div>'
-    body += '<p class="p m a">Conclusion : le DCA protège du mauvais moment, au prix d\\'un rendement moyen plus faible quand le marché monte. Pour une épargne prélevée chaque mois sur le salaire, la question ne se pose pas : le versement programmé est du DCA naturel.</p>'
+    body += '<p class="p m a">Conclusion : le DCA protège du mauvais moment, au prix d\'un rendement moyen plus faible quand le marché monte. Pour une épargne prélevée chaque mois sur le salaire, la question ne se pose pas : le versement programmé est du DCA naturel.</p>'
     return body, "Exemple pédagogique (data/dca_exemple.csv) ; " + HYPS()
 
 
@@ -1469,12 +1471,12 @@ def s_etf_contenu(ctx):
     top10 = sum(float(x["poids_pct"]) for x in pos)
     body = hd("Les ETF · le contenu", "Ce que contient un ETF Nasdaq 100",
               f"L'ETF américain QQQ réplique le Nasdaq 100 : {q['nombre_lignes']} lignes pour {fr(float(q['frais_pct']), 2)}{NBSP}% de frais par an. Ses dix premières lignes pèsent {fr(float(q['poids_10_premieres_pct']), 1)}{NBSP}% du fonds.")
-    body += f\'\'\'<div class="g c32 main"><div class="card a"><span class="lab">Les dix premières lignes de QQQ, positions au 04/09/2026</span>{bars}
+    body += f'''<div class="g c32 main"><div class="card tight a"><span class="lab">Les dix premières lignes de QQQ, positions au 04/09/2026</span>{bars}
     <p class="p m">Total des dix premières : {fr(top10, 1)}{NBSP}% (Alphabet compte deux fois : actions A et C).</p></div>
   <div class="g">{ul([f"<b>Une seule de nos cinq valeurs</b> est dans le Nasdaq 100 : NVIDIA, première ligne à {fr(float(pos[0]['poids_pct']), 2)}{NBSP}%. TSMC, Nu et Reddit sont cotées au NYSE ; Adyen à Amsterdam.",
                     f"<b>Un indice achète aussi les cycliques au sommet</b> : Micron pèse {fr(float(D['qqq'][3]['poids_pct']), 2)}{NBSP}% après {pc(V['MU']['chg_52s'], 0, True)} en un an.",
                     "<b>Pondération par la capitalisation</b> : plus une action monte, plus elle pèse. L'indice renforce ses gagnants, sans jamais regarder le prix.",
-                    f"<b>Encours de QQQ</b> : {md(float(q['encours_musd']), 0)}."])}</div></div>\'\'\'
+                    f"<b>Encours de QQQ</b> : {md(float(q['encours_musd']), 0)}."])}</div></div>'''
     return body, "Positions et métriques de QQQ : " + S.refs([("Zacks Investment Research : fiche QQQ, positions au 04/09/2026 (servi le 13/10/2026)", "https://www.zacks.com/stock/quote/QQQ")]) + " ; Micron : " + Z("MU")
 
 
@@ -1525,12 +1527,12 @@ def s_precaution(ctx):
               ("3", "Projets datés", "Voiture, apport immobilier : l'argent nécessaire avant 5 ans ne va pas en actions.", "livrets, fonds en euros"),
               ("4", "Long terme", "Retraite, liberté financière, transmission : là commence l'investissement en actions.", "PEA, assurance-vie, compte-titres")]
     cards = "".join(f'<div class="card st-c a"><span class="tc-n">{n}</span><span class="tc-t">{t}</span><p class="p sm">{d}</p><span class="tc-r">{x}</span></div>' for n, t, d, x in etapes)
-    body += f\'\'\'<div class="g main"><div class="g c4 lc1">{cards}</div>
+    body += f'''<div class="g main"><div class="g c4 lc1">{cards}</div>
   <div class="g c3 lc1">
     {kv("Livret A, depuis le " + e(HZ("livret_a_taux")["periode"]), cnt(HZv("livret_a_taux"), 1, NBSP + "%"), "net d'impôt ; " + e(la["precision"]), "var(--gold)")}
     {kv("Plafonds", eur(HZv("livret_a_plafond")) + " <small>+ " + eur(HZv("ldds_plafond")) + " (LDDS)</small>", "par personne", "var(--gold)")}
     {kv("Inflation en France", cnt(HZv("inflation_2026"), 1, NBSP + "%"), e(HZ("inflation_2026")["periode"]) + " ; " + e(HZ("inflation_2026")["precision"]), "var(--ndx)")}
-  </div></div>\'\'\'
+  </div></div>'''
     return body, "Sources : " + HZS("precaution_regle", "livret_a_taux", "livret_a_plafond", "ldds_plafond", "inflation_2026")
 
 
@@ -1543,10 +1545,10 @@ def s_horizon_table(ctx):
             ["Transmission", "long", "assurance-vie", "selon l'horizon des bénéficiaires"]]
     body = hd("Objectifs et horizon · planifier", "Un objectif, un horizon, un support",
               "Chaque euro a une mission et une date. C'est la date qui décide du support : plus elle est lointaine, plus on peut accepter les variations des actions.")
-    body += f\'\'\'<div class="g c32 main">{table(["Objectif", "Horizon", "Supports adaptés (hyp.)", "Part d'actions"], rows)}
-  <div class="g">{ul([f"<b>L'horizon minimal en actions</b> : {e(HZ('amf_horizon')['fait'])}",
+    body += f'''<div class="g c32 main">{table(["Objectif", "Horizon", "Supports adaptés (hyp.)", "Part d'actions"], rows)}
+  <div class="g">{ul([f"<b>Les horizons de l'AMF</b> : {e(HZ('amf_horizon')['fait'])}",
                     "<b>Un objectif chiffré</b> : « 300 € par mois pendant 20 ans pour compléter ma retraite » vaut mieux que « gagner de l'argent ».",
-                    "<b>La tolérance au risque</b> : pourrez-vous voir votre portefeuille perdre 40 % sans vendre ? Si la réponse est non, réduisez la part d'actions."])}</div></div>\'\'\'
+                    "<b>La tolérance au risque</b> : pourrez-vous voir votre portefeuille perdre 40 % sans vendre ? Si la réponse est non, réduisez la part d'actions."])}</div></div>'''
     return body, "Tableau : proposition pédagogique (hyp.) ; horizon " + HZS("amf_horizon")
 
 
@@ -1554,13 +1556,13 @@ def s_horizon_risque(ctx):
     per = [(k, lab) for k, lab in (("sp500_neg_1an", "1 an"), ("sp500_neg_5ans", "5 ans"), ("sp500_neg_10ans", "10 ans"), ("sp500_neg_15ans", "15 ans"), ("sp500_neg_20ans", "20 ans")) if k in D["horizon"]]
     vmax = max(HZv(k) for k, _ in per) or 1
     bars = "".join(hbar(f"Détention de {lab}", HZv(k) / vmax, f"{fr(HZv(k), 1)}{NBSP}%", "var(--neg)" if HZv(k) > 0 else "var(--pos)", e(HZ(k)["periode"])) for k, lab in per)
-    kr = [k for k in ("krach_2000", "krach_2008", "krach_2020", "krach_2022") if k in D["horizon"]]
-    krows = "".join(f'<div class="ln-r a"><span>{e(HZ(k)["periode"])}</span><b class="neg">{fr(-abs(HZv(k)), 1)}{NBSP}%</b></div>' for k in kr)
+    kr = [k for k in ("krach_2000", "krach_2008", "krach_2020", "krach_2022", "pire_annee") if k in D["horizon"]]
+    krows = "".join(f'<div class="ln-r a"><span>{e(HZ(k)["fait"].split(" : ")[0])} <small>{e(HZ(k)["periode"])}</small></span><b class="neg">{fr(-abs(HZv(k)), 1)}{NBSP}%</b></div>' for k in kr)
     body = hd("Objectifs et horizon · le temps", "Le temps réduit le risque de perte",
               "Sur un an, les actions perdent souvent. Sur vingt ans, l'histoire américaine n'a jamais montré de perte. Le risque ne disparaît pas : il change de nature.")
-    body += f\'\'\'<div class="g c32 main"><div class="card a"><span class="lab">Part des périodes de détention en perte, {e(HZ(per[0][0])["precision"])}</span>{bars}</div>
+    body += f'''<div class="g c32 main"><div class="card a"><span class="lab">Part des périodes de détention en perte, {e(HZ(per[0][0])["precision"])}</span>{bars}</div>
   <div class="g"><div class="card a"><span class="lab">Les grandes chutes du S&amp;P 500</span>{krows}</div>
-    <p class="p m a">Le passé ne garantit rien : ces chiffres décrivent un marché, les États-Unis, sur une période favorable. Un indice mondial ou européen a connu des décennies plus longues sans gain.</p></div></div>\'\'\'
+    <p class="p m a">Le passé ne garantit rien : ces chiffres décrivent un marché, les États-Unis, sur une période favorable. Un indice mondial ou européen a connu des décennies plus longues sans gain.</p></div></div>'''
     return body, "Sources : " + HZS(*[k for k, _ in per], *kr)
 
 
@@ -1573,15 +1575,103 @@ def s_dca(ctx):
             ["Pour qui", "une somme disponible et des nerfs solides", "un salaire épargné chaque mois, ou un héritage qu'on n'ose pas placer"]]
     body = hd("Objectifs et horizon · entrer sur le marché", "En une fois ou progressivement ?",
               "Le DCA (dollar-cost averaging) investit la même somme à intervalles réguliers. L'investissement en une fois (lump sum) place tout tout de suite. Les études tranchent sur le rendement ; la psychologie, parfois, autrement.")
-    body += f\'\'\'<div class="g c23 main">
+    body += f'''<div class="g c23 main">
   <div class="g">
     <div class="card stat a" style="--c:var(--gold)"><span class="v">{cnt(float(v23["valeur"] or v12["valeur"]), 0, NBSP + "%")}</span><span class="l">{e(v23["fait"])}</span></div>
     <p class="p m a">{e(v12["fait"])}</p>
     <p class="p m a">{e(HZ("dca_comportement")["fait"])}</p>
   </div>
   {table(["", "En une fois", "Progressivement (DCA)"], rows)}
-</div>\'\'\'
+</div>'''
     return body, "Sources : " + HZS("dca_vanguard_2012", "dca_vanguard_2023", "dca_comportement")
+
+
+
+def etf_frais_txt(r):
+    return f'{fr(float(r["frais_courants_pct"]), 2)}{NBSP}%' if r["frais_courants_pct"] else "à vérifier"
+
+
+def s_etf_fonctionne(ctx):
+    fx = [float(r["frais_courants_pct"]) for r in D["etf"] if r["frais_courants_pct"]]
+    etapes = [("L'indice", "Une liste d'actions et leurs poids : Nasdaq 100, S&P 500, MSCI World. Personne ne choisit : la règle décide."),
+              ("Le fonds", "Un émetteur (Amundi, iShares, Vanguard…) gère un fonds qui reproduit l'indice. Vous en détenez des parts."),
+              ("La Bourse", "La part se négocie comme une action, toute la journée, au prix du marché."),
+              ("L'arbitrage", e(ER("creation_rachat")["regle"]))]
+    fl = "".join(f'<div class="card fl a"><span class="tc-n">{i + 1}</span><span class="tc-t">{t}</span><p class="p sm">{d}</p></div>' + ('<span class="fl-ar" aria-hidden="true">→</span>' if i < 3 else "") for i, (t, d) in enumerate(etapes))
+    body = hd("Les ETF · le principe", "Comment fonctionne un ETF",
+              "Un ETF (exchange-traded fund, ou tracker) est un fonds coté en Bourse qui reproduit un indice. Une seule part donne accès à des centaines d'actions.")
+    body += f'''<div class="g main"><div class="flow">{fl}</div>
+  <div class="g c3 lc1">
+    {kv("Frais courants des ETF du tableau", f"{fr(min(fx), 2)} à {fr(max(fx), 2)}{NBSP}%", "par an, prélevés chaque jour sur l'actif du fonds : on ne les voit pas, on les subit", "var(--gold)")}
+    {kv("Écart de suivi", "le vrai coût", e(ER("ecart_suivi")["regle"]), "var(--ndx)")}
+    {kv("Valeur liquidative", "la référence", "la valeur des actifs du fonds par part, calculée chaque jour ; le cours de Bourse s'en écarte très peu", "var(--ndx)")}
+  </div></div>'''
+    return body, "Sources : " + ERS("creation_rachat", "ecart_suivi") + " ; frais : " + ETFS(D["etf"])
+
+
+def s_etf_replication(ctx):
+    phys = [r for r in D["etf"] if r["replication"].startswith("physique")]
+    synt = [r for r in D["etf"] if r["replication"].startswith("synth")]
+    lst = lambda rows: ", ".join(r["ticker"].split(" ")[0] for r in rows)
+    body = hd("Les ETF · la réplication", "Physique ou synthétique ?",
+              "Deux façons de suivre un indice. Les deux sont encadrées par la directive européenne UCITS ; seule la seconde ouvre le PEA aux indices américains et mondiaux.")
+    body += f'''<div class="g c2 main">
+  <div class="card a"><span class="lab">Réplication physique</span><p class="cq">Le fonds achète les actions de l'indice.</p>
+    {ul(["<b>Complète</b> : toutes les actions, aux mêmes poids.", "<b>Par échantillonnage</b> : un sous-ensemble représentatif, pour les indices de milliers de lignes.",
+         "<b>Atout</b> : on sait ce qu'on détient. <b>Limite</b> : pas d'actions américaines dans un PEA.", f"Exemples : {lst(phys)}."])}</div>
+  <div class="card hl a"><span class="lab">Réplication synthétique (swap)</span><p class="cq">Le fonds détient un autre panier et échange sa performance contre celle de l'indice.</p>
+    {ul([e(ER("pea_swap")["regle"]),
+         f"<b>Risque de contrepartie</b> : si la banque fait défaut, le fonds garde son panier ; l'exposition est plafonnée à {fr(float(ER('ucits_contrepartie')['valeur']), 0)}{NBSP}% de l'actif par banque.",
+         f"<b>2026</b> : {e(ER('pea_swap_2026')['regle'])}", f"Exemples : {lst(synt)}."])}</div>
+</div>'''
+    return body, "Sources : " + ERS("pea_swap", "ucits_contrepartie", "pea_swap_2026") + " ; exemples " + ETFS(D["etf"])
+
+
+def s_etf_capi(ctx):
+    fb, fh = D["etf_frais"]["etf_frais_bas"], D["etf_frais"]["etf_frais_haut"]
+    d = D["defauts"]
+    rows = [["Compte-titres", "dividendes taxés chaque année à la flat tax", "impôt reporté à la vente"],
+            ["PEA", "pas d'impôt tant que l'argent reste dans le plan", "idem"],
+            ["Assurance-vie", "pas d'impôt avant un rachat", "idem ; offre surtout capitalisante"]]
+    body = hd("Les ETF · les coûts", "Capitalisant ou distribuant, et le vrai prix des frais", e(ER("capi_distri")["regle"]))
+    body += f'''<div class="g c2 main">
+  {table(["Enveloppe", "ETF distribuant", "ETF capitalisant"], rows)}
+  <div class="card a"><span class="lab">{eur(d["capital"])} puis {eur(d["mensuel"])} par mois, {fr(d["annees"], 0)} ans, {fr(d["rendement"] * 100, 0)}{NBSP}% brut</span>
+    {hbar(f"Frais de {fr(fb['frais'] * 100, 2)}{NBSP}%", 1.0, eur(fb["valeur"]), "var(--pos)")}
+    {hbar(f"Frais de {fr(fh['frais'] * 100, 2)}{NBSP}%", fh["valeur"] / fb["valeur"], eur(fh["valeur"]), "var(--neg)")}
+    <p class="p">Écart : <b class="gold">{eur(fb["valeur"] - fh["valeur"])}</b> pour {eur(fb["verse"])} versés, avant impôts. À indice égal, les frais courants sont le premier critère de choix.</p></div>
+</div>'''
+    return body, "Sources : " + ERS("capi_distri") + " ; calcul : " + HYPS()
+
+
+def s_etf_table(ctx):
+    rows = []
+    for r in sorted(D["etf"], key=lambda r: (r["pea"] != "oui", r["indice"])):
+        rows.append([f'<b>{e(r["nom"])}</b> <small>{e(r["ticker"])} · {e(r["isin"])}</small>', e(r["indice"]), e(r["replication"]), etf_frais_txt(r),
+                     f'<span class="{"pos" if r["pea"] == "oui" else "na"}">{e(r["pea"])}</span>', e(r["domicile"])])
+    body = hd("Les ETF · la sélection", "Les principaux ETF pour un investisseur français",
+              "Les synthétiques ouvrent le PEA aux indices américains et mondiaux ; les physiques irlandais sont souvent moins chers, mais réservés au compte-titres et à l'assurance-vie.")
+    body += table(["ETF", "Indice", "Réplication", "Frais courants", "PEA", "Domicile"], rows, num=(3,), cls="etf w")
+    body += "<p class=\"p m sm a\">Frais « à vérifier » : sources contradictoires (Vanguard FTSE All-World : 0,14 % à 0,22 % ; Amundi PEA Emergent : 0,20 % à 0,30 %). Tous ces ETF sont capitalisants. Avant d'acheter, lisez le document d'informations clés (DIC) de l'émetteur. Liste indicative, pas une recommandation.</p>"
+    return body, "Sources : " + ETFS(D["etf"])
+
+
+def s_etf_choisir(ctx):
+    us = D["etf_us"]
+    q = ["<b>Quel indice ?</b> Monde pour le socle ; États-Unis ou Nasdaq 100 pour plus de croissance et plus de concentration.",
+         "<b>Quelle enveloppe ?</b> PEA : un synthétique éligible. Compte-titres ou assurance-vie : un physique, souvent moins cher.",
+         "<b>Quels frais courants ?</b> À indice égal, le moins cher gagne presque toujours sur la durée.",
+         "<b>Quel écart de suivi ?</b> Il mesure le coût réel, au-delà des frais affichés.",
+         "<b>Capitalisant ou distribuant ?</b> Capitalisant sur un compte-titres, pour reporter l'impôt.",
+         "<b>Quel encours et quel émetteur ?</b> Un fonds important et un émetteur solide limitent le risque de fermeture."]
+    body = hd("Les ETF · choisir", "Choisir son ETF en six questions", "")
+    body += f'''<div class="g c32 main"><div class="card a">{ul(q)}</div>
+  <div class="card a" style="border-color:var(--neg)"><span class="lab">Pourquoi pas QQQ ou SPY ?</span><p class="p">{e(ER("priips")["regle"])}</p>
+    <div class="ln-r"><span>QQQ (Nasdaq 100)</span><b>{fr(float(us["QQQ"]["frais_pct"]), 2)}{NBSP}%</b></div>
+    <div class="ln-r"><span>SPY (S&amp;P 500)</span><b>{fr(float(us["SPY"]["frais_pct"]), 2)}{NBSP}%</b></div>
+    <div class="ln-r"><span>VOO (S&amp;P 500)</span><b>{fr(float(us["VOO"]["frais_pct"]), 2)}{NBSP}%</b></div>
+    <p class="p m sm">Frais annuels selon Zacks. Leurs équivalents européens (CNDX, CSPX, PUST, PSP5) jouent le même rôle, avec un document d'informations clés.</p></div></div>'''
+    return body, "Sources : " + ERS("priips") + " ; frais américains " + S.refs([("Zacks Investment Research : fiches QQQ, SPY, VOO (12/10/2026)", "https://www.zacks.com/stock/quote/QQQ")])
 
 
 # ============================================================ assemblage du plan
@@ -1590,6 +1680,13 @@ def plan(n_sources):
     add("Ouverture", "Couverture", s_cover, "cover")
     add("Ouverture", "Le parcours", s_sommaire)
     add("Ouverture", "À la fin, vous saurez…", s_objectifs)
+    opener("Objectifs et horizon")
+    add("Objectifs et horizon", "L'épargne de précaution", s_precaution)
+    add("Objectifs et horizon", "Un objectif, un horizon, un support", s_horizon_table)
+    add("Objectifs et horizon", "Le temps réduit le risque", s_horizon_risque)
+    add("Objectifs et horizon", "Le noyau et les satellites", s_noyau)
+    add("Objectifs et horizon", "En une fois ou progressivement ?", s_dca)
+    add("Objectifs et horizon", "Le DCA en pratique", s_dca_ex)
     opener("Les bases")
     add("Les bases", "Une action, c'est une part d'entreprise", s_action)
     add("Les bases", "Cours = BPA × P/E", s_formule)
@@ -1632,6 +1729,13 @@ def plan(n_sources):
     add("Enveloppes, frais et impôts", "L'assurance-vie", s_av)
     add("Enveloppes, frais et impôts", "Les frais", s_frais)
     add("Enveloppes, frais et impôts", "Quelle enveloppe pour quelle valeur", s_ou)
+    opener("Les ETF")
+    add("Les ETF", "Comment fonctionne un ETF", s_etf_fonctionne)
+    add("Les ETF", "Ce que contient un ETF Nasdaq 100", s_etf_contenu)
+    add("Les ETF", "Physique ou synthétique", s_etf_replication)
+    add("Les ETF", "Capitalisant, distribuant et frais", s_etf_capi)
+    add("Les ETF", "Les principaux ETF", s_etf_table)
+    add("Les ETF", "Choisir son ETF", s_etf_choisir)
     opener("Intérêts composés")
     add("Intérêts composés", "La mécanique", s_composes)
     add("Intérêts composés", "La calculatrice", s_calc, "calc-sl")
@@ -1661,7 +1765,10 @@ def teasers():
     pe5 = D["pe5"]
     c = D["comparaison"]
     t = lambda big, txt: f'<div class="op-tz a"><span class="op-big">{big}</span><span class="op-txt">{txt}</span></div>'
+    fx = [float(r["frais_courants_pct"]) for r in D["etf"] if r["frais_courants_pct"]]
     return {
+        "Objectifs et horizon": t(cnt(float(D["horizon"]["dca_vanguard_2023"]["valeur"]), 0, NBSP + "%"), "des cas où investir en une fois a battu un DCA de trois mois (Vanguard, MSCI World, 1976-2022)"),
+        "Les ETF": t(f"{fr(min(fx), 2)} → {fr(max(fx), 2)}{NBSP}%", "les frais courants annuels des principaux ETF : des centaines d'actions pour presque rien"),
         "Les bases": t(cnt(n["bpa_gaap"], 2, NBSP + "$"), "de bénéfice par action pour NVIDIA sur l'exercice 2026"),
         "Lire les comptes": t(cnt(n["marge_operationnelle"] * 100, 1, NBSP + "%"), "de marge opérationnelle chez NVIDIA : 60 cents gardés sur chaque dollar vendu"),
         "Valoriser": t(f'{fr(min(p for *_, p in pe5), 1)} → {fr(max(p for *_, p in pe5), 1)}', "les cinq P/E de NVIDIA, pour un seul et même cours"),
@@ -1858,6 +1965,7 @@ i.dot { font-style:normal; }
 .toc-card:hover, .toc-card:focus-visible { border-color:var(--gold); transform:translateY(-2px); }
 .tc-n { font:900 var(--fs-n3)/1 "GZ Archivo"; font-stretch:62%; color:var(--gold); }
 .tc-t { font:800 var(--fs-n4)/1.05 "GZ Archivo"; font-stretch:75%; text-transform:uppercase; }
+%P .toc-card { gap:6u; } %P .toc-card .tc-t { font-size:calc(var(--fs-n4) * .85); } %P .toc-card .tc-s { font-size:var(--fs-xs); }
 .tc-s { font-size:var(--fs-s); color:var(--muted); line-height:1.35; }
 .tc-r { font:500 var(--fs-xs) "GZ Plex Mono"; color:var(--dim); text-transform:uppercase; letter-spacing:.06em; margin-top:auto; }
 
@@ -1901,7 +2009,8 @@ i.dot { font-style:normal; }
 
 /* fourchettes et zones */
 .rg, .zn { display:grid; grid-template-columns:7em minmax(0,1fr) 4.6em; align-items:center; gap:10px; padding:14u 0 22u; border-bottom:1px solid var(--line2); }
-%P .rg, %P .zn { grid-template-columns:230u minmax(0,1fr) 150u; gap:20u; padding:6u 0 24u; }
+%P .rg, %P .zn { grid-template-columns:230u minmax(0,1fr) 150u; gap:20u; padding:5u 0 22u; }
+%P .tight .hb { padding:2u 0; } %P .tight .rg { padding:3u 0 20u; }
 .rg-head { display:flex; justify-content:space-between; gap:12px; }
 .rg-l, .zn-l { font-size:var(--fs-b); font-weight:600; color:var(--c); }
 .rg-x, .zn-x { font:600 var(--fs-b) "GZ Plex Mono"; text-align:right; color:var(--paper); }
@@ -1982,11 +2091,12 @@ input[type=number]:focus-visible, input[type=range]:focus-visible, button:focus-
 .qz-q { gap:8u; } %P .qz-q .p { font-size:var(--fs-s); line-height:1.32; } %P .qz .card { padding:14u 18u; }
 .opts { display:flex; flex-direction:column; gap:6u; }
 %P .opts { flex-direction:row; flex-wrap:wrap; }
-.opt { text-align:left; background:rgba(0,0,0,.2); border:1px solid var(--line); border-radius:8px; padding:8px 10px; cursor:pointer; font:500 var(--fs-s) "GZ Plex Mono"; min-height:40px; }
-%P .opt { padding:8u 12u; min-height:0; }
+.opt { text-align:left; background:rgba(0,0,0,.2); border:1px solid var(--line); border-radius:8px; padding:8px 10px; cursor:pointer; font:600 var(--fs-s) "GZ Archivo", sans-serif; font-variant-numeric:tabular-nums; min-height:40px; }
+%P .opt { padding:6u 10u; min-height:0; }
 .opt:hover { border-color:var(--gold); }
 .opt.ok { border-color:var(--pos); background:rgba(91,227,143,.15); } .opt.ko { border-color:var(--neg); background:rgba(255,106,95,.12); }
-.why { font-size:var(--fs-xs); color:var(--muted); visibility:hidden; } .qz-q.done .why { visibility:visible; }
+.why { font-size:var(--fs-xs); line-height:1.3; color:var(--muted); visibility:hidden; }
+%P .qz-q .opt { font-size:var(--fs-xs); } .qz-q.done .why { visibility:visible; }
 .score { color:var(--gold); font-family:"GZ Plex Mono"; }
 .impression .opt.good { border-color:var(--pos); background:rgba(91,227,143,.15); } .impression .why { visibility:visible; }
 
@@ -2011,6 +2121,12 @@ input[type=number]:focus-visible, input[type=range]:focus-visible, button:focus-
 
 
 .st-c { gap:6u; } .st-c .tc-t { font-size:var(--fs-n4); }
+/* flux ETF */
+.flow { display:grid; grid-template-columns:minmax(0,1fr); gap:10px; }
+%P .flow { grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr); align-items:stretch; gap:14u; }
+.fl { gap:6u; } .fl .tc-t { font-size:var(--fs-n4); }
+.fl-ar { display:none; } %P .fl-ar { display:flex; align-items:center; font:900 var(--fs-n3) "GZ Archivo"; color:var(--gold); }
+.t.etf td { font-size:calc(var(--fs-t) * .9); } .t.etf td small { display:block; font-family:"GZ Plex Mono"; }
 /* noyau et satellites, DCA */
 .ns { display:flex; gap:8px; min-height:90px; }
 %P .ns { min-height:170u; gap:12u; }
@@ -2022,7 +2138,7 @@ input[type=number]:focus-visible, input[type=range]:focus-visible, button:focus-
 %P .px { height:200u; gap:14u; }
 .px-b { height:100%; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; gap:3px; }
 .px-b i { display:block; width:100%; background:var(--gold); opacity:.75; border-radius:4px 4px 0 0; transform-origin:bottom; }
-.px-b span { order:-1; font:600 var(--fs-xs) "GZ Plex Mono"; } .px-b small { font-family:"GZ Plex Mono"; }
+.px-b span { order:-1; font:600 var(--fs-xs) "GZ Plex Mono"; } .px-b small { font:400 var(--fs-xs) "GZ Plex Mono"; color:var(--muted); }
 .js .px-b i { transform:scaleY(0); } .js .on .px-b i { animation:growy .9s cubic-bezier(.2,.8,.2,1) both; animation-delay:calc(400ms + var(--i, 0) * 60ms); }
 .impression .px-b i { animation:none !important; transform:none !important; }
 
