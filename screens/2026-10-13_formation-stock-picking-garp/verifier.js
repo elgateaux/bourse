@@ -89,6 +89,19 @@ const LISIBILITE = (seuil) => {
       s.querySelectorAll('.tw').forEach(t => { if (t.scrollWidth > t.clientWidth + 1) out.push(`tableau trop large (${t.scrollWidth} > ${t.clientWidth})`); if (t.getBoundingClientRect().bottom > foot.top + 1) out.push(`tableau sous le pied (+${Math.round(t.getBoundingClientRect().bottom - foot.top)} px)`); });
       s.querySelectorAll('.ch').forEach(t => { if (t.getBoundingClientRect().bottom > foot.top + 1) out.push(`graphique sous le pied (+${Math.round(t.getBoundingClientRect().bottom - foot.top)} px)`); });
       if (foot.bottom > r.bottom + 1) out.push(`pied de page hors cadre (+${Math.round(foot.bottom - r.bottom)} px)`);
+      // chevauchements : deux éléments porteurs de texte, sans lien de parenté, dont les boîtes se recouvrent
+      const feuilles = [...s.querySelectorAll('.body *, .op-in *')].filter(el => !el.closest('svg') && !el.closest('.tape') && !el.closest('.opn')
+        && [...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim()));
+      // une boîte par ligne pour les éléments en ligne ; on ne retient que les recouvrements nets (plus de 20 % de la plus petite boîte)
+      const boites = [];
+      feuilles.forEach(el => [...el.getClientRects()].forEach(q => { if (q.width > 2 && q.height > 2) boites.push([el, q]); }));
+      for (let a1 = 0; a1 < boites.length; a1++) for (let b1 = a1 + 1; b1 < boites.length; b1++) {
+        const [ea, qa] = boites[a1], [eb, qb] = boites[b1];
+        if (ea === eb || ea.contains(eb) || eb.contains(ea)) continue;
+        const ix = Math.min(qa.right, qb.right) - Math.max(qa.left, qb.left), iy = Math.min(qa.bottom, qb.bottom) - Math.max(qa.top, qb.top);
+        if (ix > 3 && iy > 3 && ix * iy > 0.2 * Math.min(qa.width * qa.height, qb.width * qb.height))
+          out.push(`chevauchement « ${(ea.innerText || '').trim().slice(0, 30)} » / « ${(eb.innerText || '').trim().slice(0, 30)} »`);
+      }
       return [...new Set(out)].slice(0, 6);
     }, i);
     if (pb.length) debord.push([i + 1, pb]);

@@ -451,15 +451,15 @@ def s_etf(ctx):
               "Un ETF (fonds indiciel coté) achète tout l'indice pour quelques frais. Le stock picking choisit quelques actions pour faire mieux. La plupart des professionnels n'y arrivent pas.")
     body += f'''<div class="g c23 main">
   <div class="g">
-    <div class="card stat a" style="--c:var(--neg)"><span class="v">{cnt(s1, 0, NBSP + "%")}</span><span class="l">des fonds actifs de grandes valeurs américaines battus par le S&amp;P 500 en 2025 {F("spiva_2025")}</span></div>
-    <div class="card stat a" style="--c:var(--neg)"><span class="v">{cnt(s15, 1, NBSP + "%")}</span><span class="l">sur 15 ans, au 31/12/2024 {F("spiva_15ans")}</span></div>
+    <div class="g c2 lc2"><div class="card stat a" style="--c:var(--neg)"><span class="v">{cnt(s1, 0, NBSP + "%")}</span><span class="l">des fonds actifs de grandes valeurs américaines battus par le S&amp;P 500 en 2025 {F("spiva_2025")}</span></div>
+    <div class="card stat a" style="--c:var(--neg)"><span class="v">{cnt(s15, 1, NBSP + "%")}</span><span class="l">sur 15 ans, au 31/12/2024 {F("spiva_15ans")}</span></div></div>
+    {quote("bogle_haystack", "sm")}
   </div>
   <div class="g">
     {table(["", "ETF indiciel", "Stock picking"], rows, cls="cmp")}
     <div class="card a" style="border-color:var(--neg)"><p class="p"><b>Notre propre rétroviseur.</b> Sur 12 mois, le portefeuille de cinq valeurs a fait <b class="neg">{fr(float(ro["portefeuille_poids_egaux"]), 1, True)}{NBSP}%</b>, contre <b>{fr(float(ro["QQQ"]), 1, True)}{NBSP}%</b> pour le Nasdaq 100 (QQQ). Le stock picking peut sous-performer longtemps. Il n'a de sens qu'avec une méthode, un horizon de trois à cinq ans et de la discipline.</p></div>
   </div>
 </div>'''
-    body += quote("bogle_haystack", "sm")
     return body, "SPIVA " + F("spiva_2025") + " ; rétroviseur : " + VID()
 
 
@@ -782,7 +782,7 @@ def s_peg(ctx):
     <div class="formula a">PEG = P/E ÷ croissance annuelle du BPA (en %)</div>
     <div class="card a pegcalc" data-forte="{seuils['forte']}" data-zone="{seuils['zone']}" data-elig="{seuils['elig']}" data-vente="{seuils['vente']}">
       <span class="lab">À vous : calculez un PEG</span>
-      <div class="g c2 lc2"><label class="fld"><span>P/E</span><input type="number" id="peg-pe" value="{nv['pe_ntm']:.1f}" min="1" max="200" step="0.1" inputmode="decimal"></label>
+      <div class="g c2 lc2"><label class="fld"><span>P/E</span><input type="number" id="peg-pe" value="{nv['pe_ntm']:.2f}" min="1" max="200" step="0.01" inputmode="decimal"></label>
       <label class="fld"><span>Croissance du BPA (% par an)</span><input type="number" id="peg-g" value="{nv['croissance_retenue'] * 100:.0f}" min="1" max="100" step="0.5" inputmode="decimal"></label></div>
       <div class="peg-out"><span class="peg-v" id="peg-v">{fr(nv['pe_ntm'] / (nv['croissance_retenue'] * 100), 2)}</span><span class="peg-txt" id="peg-txt">éligible à la méthode</span></div>
       <div class="gauge"><i class="gz z1"></i><i class="gz z2"></i><i class="gz z3"></i><i class="gz z4"></i><i class="gz z5"></i><b class="gm" id="peg-m"></b></div>
@@ -844,9 +844,9 @@ def s_suppose(ctx):
     body += f'''<div class="g c2 main">
   <div class="g">
     <div class="g c3 lc1">
-      {kv("P/E NTM", f'{fr(c["pe_ntm"]["ptf"], 1)} <small>contre {fr(c["pe_ntm"]["ndx"], 1)}</small>', "portefeuille contre Nasdaq 100", "var(--gold)")}
-      {kv("Croissance durable retenue", f'{fr(c["g_lt"]["ptf"], 1)}{NBSP}% <small>contre {fr(c["g_lt"]["ndx"], 1)}{NBSP}%</small>', "hyp.", "var(--gold)")}
-      {kv("PEG long terme", f'{fr(c["peg_lt"]["ptf"], 2)} <small>contre {fr(c["peg_lt"]["ndx"], 2)}</small>', "", "var(--gold)")}
+      {kv("P/E NTM du portefeuille", fr(c["pe_ntm"]["ptf"], 1), f'contre {fr(c["pe_ntm"]["ndx"], 1)} pour le Nasdaq 100', "var(--gold)")}
+      {kv("Croissance durable retenue", f'{fr(c["g_lt"]["ptf"], 1)}{NBSP}%', f'contre {fr(c["g_lt"]["ndx"], 1)}{NBSP}% (hyp.)', "var(--gold)")}
+      {kv("PEG de long terme", fr(c["peg_lt"]["ptf"], 2), f'contre {fr(c["peg_lt"]["ndx"], 2)}', "var(--gold)")}
     </div>
     <p class="p a">À {fr(c["pe_ntm"]["ndx"], 1)} fois les bénéfices, le Nasdaq 100 suppose une croissance d'environ {fr(c["pe_ntm"]["ndx"], 0)}{NBSP}% par an pour un PEG de 1. Nous retenons {fr(c["g_lt"]["ndx"], 1)}{NBSP}%. Le portefeuille, lui, est payé à peu près sa croissance.</p>
     {quote("marks_second", "sm")}
@@ -1374,6 +1374,14 @@ GLOSS = [("Action", "Part du capital d'une société : droit aux bénéfices, au
          ("W-8BEN", "Formulaire américain qui ramène la retenue sur dividendes de 30 % à 15 % pour un résident français.")]
 
 
+def cle_alpha(x):
+    import unicodedata
+    return "".join(c for c in unicodedata.normalize("NFD", x[0].lower()) if unicodedata.category(c) != "Mn")
+
+
+GLOSS.sort(key=cle_alpha)
+
+
 def s_glossaire(part, nparts=3):
     def fn(ctx):
         per = math.ceil(len(GLOSS) / nparts)
@@ -1647,12 +1655,13 @@ def s_etf_capi(ctx):
 def s_etf_table(ctx):
     rows = []
     for r in sorted(D["etf"], key=lambda r: (r["pea"] != "oui", r["indice"])):
-        rows.append([f'<b>{e(r["nom"])}</b> <small>{e(r["ticker"])} · {e(r["isin"])}</small>', e(r["indice"]), e(r["replication"]), etf_frais_txt(r),
-                     f'<span class="{"pos" if r["pea"] == "oui" else "na"}">{e(r["pea"])}</span>', e(r["domicile"])])
+        rows.append([f'<b>{e(r["nom"].replace(" UCITS ETF", ""))}</b>', f'<span class="num">{e(r["ticker"])}</span>', f'<span class="num">{e(r["isin"])}</span>',
+                     e(r["indice"].split(" (")[0]), e(r["replication"].replace(" (swap)", "")), etf_frais_txt(r),
+                     f'<span class="{"pos" if r["pea"] == "oui" else "na"}">{e(r["pea"])}</span>'])
     body = hd("Les ETF · la sélection", "Les principaux ETF pour un investisseur français",
               "Les synthétiques ouvrent le PEA aux indices américains et mondiaux ; les physiques irlandais sont souvent moins chers, mais réservés au compte-titres et à l'assurance-vie.")
-    body += table(["ETF", "Indice", "Réplication", "Frais courants", "PEA", "Domicile"], rows, num=(3,), cls="etf w")
-    body += "<p class=\"p m sm a\">Frais « à vérifier » : sources contradictoires (Vanguard FTSE All-World : 0,14 % à 0,22 % ; Amundi PEA Emergent : 0,20 % à 0,30 %). Tous ces ETF sont capitalisants. Avant d'acheter, lisez le document d'informations clés (DIC) de l'émetteur. Liste indicative, pas une recommandation.</p>"
+    body += table(["ETF (tous capitalisants)", "Ticker", "ISIN", "Indice", "Réplication", "Frais", "PEA"], rows, num=(5,), cls="etf w")
+    body += "<p class=\"p m sm a\">« À vérifier » : sources contradictoires (VWCE : 0,14 % à 0,22 % ; PAEEM : 0,20 % à 0,30 %). Lisez le DIC de l'émetteur avant d'acheter. Liste indicative, pas une recommandation.</p>"
     return body, "Sources : " + ETFS(D["etf"])
 
 
@@ -1780,6 +1789,17 @@ def teasers():
     }
 
 
+def typo(h):
+    """Espaces insécables de la typographie française, hors balises et attributs."""
+    morceaux = re.split(r"(<[^>]+>)", h)
+    for k in range(0, len(morceaux), 2):
+        t = morceaux[k]
+        t = re.sub(r" ([:;?!»])", NBSP + r"\1", t)
+        t = t.replace("« ", "«" + NBSP)
+        morceaux[k] = t
+    return "".join(morceaux)
+
+
 def rendre(n_sources):
     global S
     S = Sources()
@@ -1794,6 +1814,7 @@ def rendre(n_sources):
                f'<span class="hnum">{i + 1:02d} / {N}</span></header>')
         foot = f'<footer class="foot"><span class="src">{src}</span><span class="ed">Hors-série formation · {D["date"]}</span></footer>'
         inner = body if "op" in cls else f'<div class="body">{body}</div>'
+        body, src = typo(body), typo(src)
         out.append(f'<section class="slide {cls}" id="s{i + 1}" data-sec="{e(s["sec"])}" data-titre="{e(s["titre"])}" aria-label="{i + 1}. {e(s["titre"])}">'
                    f'<div class="sl-in"><div class="bg" aria-hidden="true"></div>{hud}{inner}{foot}</div></section>')
     return out
@@ -1845,7 +1866,7 @@ body { margin:0; }
 .h1 { font-family:"GZ Archivo", sans-serif; font-weight:900; font-stretch:62%; text-transform:uppercase; font-size:var(--fs-h1); line-height:.95;
   letter-spacing:-.002em; text-wrap:balance; max-width:1720u; }
 .lede { font-family:"GZ Newsreader", Georgia, serif; font-size:var(--fs-lede); line-height:1.36; color:var(--muted); max-width:1400u; text-wrap:pretty; }
-.main { flex:1 1 auto; min-height:0; }
+.main { flex:1 0 auto; } .body > * { flex-shrink:0; }
 .foot { display:flex; gap:6px 24u; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; font:400 var(--fs-foot)/1.4 "GZ Plex Mono", monospace;
   color:var(--dim); padding-top:10u; border-top:1px solid var(--line2); margin-top:14u; }
 .foot .src { min-width:0; flex:1 1 300px; } .foot .ed { white-space:nowrap; }
@@ -1953,7 +1974,7 @@ i.dot { font-style:normal; }
 %P .cv-t { font-size:150u; }
 .cv-t em { font-style:normal; color:var(--gold); } .cv-t span { display:inline; }
 .cv-r { display:flex; flex-direction:column; gap:8u; border-left:3px solid var(--gold); padding-left:22u; }
-.cv-big { font:900 var(--fs-n1)/.9 "GZ Archivo", sans-serif; font-stretch:62%; color:var(--gold); }
+.cv-big { font:900 var(--fs-n1)/1.02 "GZ Archivo", sans-serif; font-stretch:62%; color:var(--gold); }
 .cv-sub { font:400 var(--fs-lede)/1.35 "GZ Newsreader", Georgia, serif; color:var(--muted); }
 .cv-disc { font:400 var(--fs-xs)/1.45 "GZ Plex Mono", monospace; color:var(--dim); }
 .tape { position:relative; overflow:hidden; border-top:1px solid var(--line); border-bottom:1px solid var(--line); height:2.6em; font-size:var(--fs-s); }
@@ -2010,6 +2031,7 @@ i.dot { font-style:normal; }
 /* fourchettes et zones */
 .rg, .zn { display:grid; grid-template-columns:7em minmax(0,1fr) 4.6em; align-items:center; gap:10px; padding:14u 0 22u; border-bottom:1px solid var(--line2); }
 %P .rg, %P .zn { grid-template-columns:230u minmax(0,1fr) 150u; gap:20u; padding:5u 0 22u; }
+%P .zn { padding:36u 0 34u; }
 %P .tight .hb { padding:2u 0; } %P .tight .rg { padding:3u 0 20u; }
 .rg-head { display:flex; justify-content:space-between; gap:12px; }
 .rg-l, .zn-l { font-size:var(--fs-b); font-weight:600; color:var(--c); }
@@ -2126,7 +2148,7 @@ input[type=number]:focus-visible, input[type=range]:focus-visible, button:focus-
 %P .flow { grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr); align-items:stretch; gap:14u; }
 .fl { gap:6u; } .fl .tc-t { font-size:var(--fs-n4); }
 .fl-ar { display:none; } %P .fl-ar { display:flex; align-items:center; font:900 var(--fs-n3) "GZ Archivo"; color:var(--gold); }
-.t.etf td { font-size:calc(var(--fs-t) * .9); } .t.etf td small { display:block; font-family:"GZ Plex Mono"; }
+.t.etf td { font-size:max(calc(var(--fs-t) * .92), 12px); padding-top:9u; padding-bottom:9u; } .t.etf td .num { font-size:max(.9em, 11px); white-space:nowrap; }
 /* noyau et satellites, DCA */
 .ns { display:flex; gap:8px; min-height:90px; }
 %P .ns { min-height:170u; gap:12u; }
@@ -2221,9 +2243,11 @@ input[type=number]:focus-visible, input[type=range]:focus-visible, button:focus-
   break-after:page; page-break-after:always; overflow:hidden; }
 .impression .slide { width:277mm; height:155.8125mm; border:0.3mm solid rgba(242,237,226,.12); }
 .impression .pgf { width:277mm; display:flex; justify-content:space-between; font:400 7.5pt "GZ Plex Mono", monospace; color:#8d96a8; }
+.impression .pgf span:last-child { white-space:nowrap; padding-left:6mm; }
 .impression .a, .impression .hb-t i, .impression .mini-b i, .impression .rg-band, .impression .fb i, .impression .gy, .impression .gt, .impression .opn { animation:none !important; opacity:1 !important; transform:none !important; }
 .impression .ln { stroke-dashoffset:0 !important; animation:none !important; } .impression .wipe { display:none; }
 .impression .tape-in { animation:none !important; }
+.impression .bg::after { display:none; }
 .impression .ctrl, .impression .lhead, .impression .toc { display:none !important; }
 """
 
